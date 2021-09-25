@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "Bartender Assistant"
+version = "0.1"
+description = "Web application to help baman take orders."
+authors = ["oskarmay <46371006+oskarmay@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "3.9"
+Django = "^3.2.7"
+django-bootstrap5 = "^2.1.2"
+python-decouple = "^3.4"
+psycopg2 = "^2.9.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
