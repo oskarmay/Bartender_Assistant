@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Apps
+    "core",
+    "bartender",
     # Third party
     "django_bootstrap5",
 ]
@@ -121,6 +124,10 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 STATIC_ROOT = f"{BASE_DIR}/static"
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = f"{BASE_DIR}/static/media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
