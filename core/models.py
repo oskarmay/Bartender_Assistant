@@ -48,7 +48,7 @@ class Drink(models.Model):
 
     def make_a_drink(self):
         ingredient_needed = IngredientNeeded.objects.filter(drink=self)
-        for ingredient in ingredient_needed:
+        for ingredient in ingredient_needed.all():
             ingredient.subtract_ingredient()
         self.drink_is_possible_to_make()
 
@@ -79,66 +79,51 @@ class Drink(models.Model):
         )
 
 
-class Ingredient(models.Model):
-    """Store Ingredient name, type."""
+class IngredientStorage(models.Model):
+    """Store FK for Ingredient model, amount of Ingredient in our storage."""
 
     class Types(models.TextChoices):
         """Store types of Ingredient."""
 
-        LIQUID = "LIQUID", pgettext_lazy("ingredient", "liquid")
-        OTHER = "OTHER", pgettext_lazy("ingredient", "other")
+        LIQUID = "LIQUID", pgettext_lazy("ingredient_storage", "liquid")
+        OTHER = "OTHER", pgettext_lazy("ingredient_storage", "other")
 
     class Units(models.TextChoices):
         """Store unit of Ingredient."""
 
-        LITER = "LITER", pgettext_lazy("ingredient", "l")
-        MILLILITER = "MILLILITER", pgettext_lazy("ingredient", "ml")
-        PIECE = "PIECE", pgettext_lazy("ingredient", "pc")
+        MILLILITER = "MILLILITER", pgettext_lazy("ingredient_storage", "milliliter")
+        PIECE = "PIECE", pgettext_lazy("ingredient_storage", "piece")
 
     name = models.CharField(
-        max_length=255, blank=False, verbose_name=pgettext_lazy("ingredient", "name")
+        max_length=255,
+        blank=False,
+        verbose_name=pgettext_lazy("ingredient_storage", "name"),
+        unique=True,
     )
 
     type = models.CharField(
         max_length=255,
         choices=Types.choices,
         blank=False,
-        verbose_name=pgettext_lazy("ingredient", "type"),
+        verbose_name=pgettext_lazy("ingredient_storage", "type"),
     )
 
     unit = models.CharField(
         max_length=255,
         choices=Units.choices,
         blank=False,
-        verbose_name=pgettext_lazy("ingredient", "unit"),
+        verbose_name=pgettext_lazy("ingredient_storage", "unit"),
     )
 
     image = models.FileField(
-        verbose_name=pgettext_lazy("ingredient", "image"),
+        verbose_name=pgettext_lazy("ingredient_storage", "image"),
         upload_to=settings.MEDIA_ROOT,
         null=True,
     )
 
-    class Meta:
-        verbose_name = pgettext_lazy("ingredient", "ingredient")
-        verbose_name_plural = pgettext_lazy("ingredient", "ingredients")
-
-    def __str__(self):
-        return ugettext_lazy("ingredient: {name}").format(name=self.name)
-
-
-class IngredientStorage(models.Model):
-    """Store FK for Ingredient model, amount of Ingredient in our storage."""
-
-    ingredient = models.ForeignKey(
-        Ingredient,
-        on_delete=models.CASCADE,
-        related_name="ingredient_storage",
-        verbose_name=pgettext_lazy("ingredient_storage", "ingredient"),
-    )
     storage_amount = models.DecimalField(
-        max_digits=4,
-        decimal_places=2,
+        max_digits=20,
+        decimal_places=3,
         blank=False,
         validators=[MinValueValidator(Decimal("0"))],
         verbose_name=pgettext_lazy("ingredient_storage", "amount in storage"),
@@ -151,7 +136,7 @@ class IngredientStorage(models.Model):
         ).prefetch_related("ingredient_needed")
 
         for drink in related_drinks:
-            for ingredient in drink.ingredient_needed:
+            for ingredient in drink.ingredient_needed.all():
                 ingredient.check_if_enough_ingredient()
             drink.drink_is_possible_to_make()
 
@@ -164,8 +149,8 @@ class IngredientStorage(models.Model):
         )
 
     def __str__(self):
-        return ugettext_lazy("Ingredient: {name}, Amount in storage: {amount}").format(
-            name=self.ingredient, amount=self.storage_amount
+        return ugettext_lazy("{name}: {amount} ({unit})").format(
+            name=self.name, amount=self.storage_amount, unit=self.get_unit_display()
         )
 
 
@@ -179,13 +164,6 @@ class IngredientNeeded(models.Model):
         verbose_name=pgettext_lazy("ingredient_needed", "drink"),
     )
 
-    ingredient = models.ForeignKey(
-        Ingredient,
-        on_delete=models.CASCADE,
-        related_name="ingredient_needed",
-        verbose_name=pgettext_lazy("ingredient_needed", "ingredient"),
-    )
-
     storage_ingredient = models.ForeignKey(
         IngredientStorage,
         on_delete=models.CASCADE,
@@ -194,8 +172,8 @@ class IngredientNeeded(models.Model):
     )
 
     amount = models.DecimalField(
-        max_digits=4,
-        decimal_places=2,
+        max_digits=20,
+        decimal_places=3,
         blank=False,
         validators=[MinValueValidator(Decimal("0"))],
         verbose_name=pgettext_lazy("ingredient_needed", "amount needed"),
@@ -220,8 +198,10 @@ class IngredientNeeded(models.Model):
         verbose_name_plural = pgettext_lazy("ingredient_needed", "ingredients needed")
 
     def __str__(self):
-        return ugettext_lazy("Ingredient: {name}, Amount needed: {amount}").format(
-            name=self.ingredient, amount=self.amount
+        return ugettext_lazy("{name}: {amount} ({unit})").format(
+            name=self.storage_ingredient.name,
+            amount=self.amount,
+            unit=self.storage_ingredient.get_unit_display(),
         )
 
 

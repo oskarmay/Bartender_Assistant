@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # Apps
     "core",
     "bartender",
+    "customer",
     # Third party
     "django_bootstrap5",
 ]
