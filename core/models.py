@@ -1,10 +1,25 @@
 from decimal import Decimal
 
-from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import pgettext_lazy, ugettext_lazy
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
+
+
+class User(AbstractUser):
+    """Add field to User model"""
+
+    one_use_account_password = models.CharField(
+        pgettext_lazy("user", "one-time account password"),
+        null=True,
+        blank=True,
+        max_length=50,
+    )
+    expire_date = models.DateTimeField(
+        pgettext_lazy("user", "expire date"), null=True, blank=True
+    )
+    is_customer = models.BooleanField(pgettext_lazy("user", "customer"), default=False)
 
 
 class Drink(models.Model):
@@ -47,12 +62,14 @@ class Drink(models.Model):
     )
 
     def make_a_drink(self):
+        """Function subtract ingredient use for making drink"""
         ingredient_needed = IngredientNeeded.objects.filter(drink=self)
         for ingredient in ingredient_needed.all():
             ingredient.subtract_ingredient()
         self.drink_is_possible_to_make()
 
     def drink_is_possible_to_make(self):
+        """Function checking if we have enough ingredient in storage to make this drink."""
         related_ingredient = IngredientNeeded.objects.filter(drink=self)
         for ingredient in related_ingredient:
             if not ingredient.is_enough_to_make_drink and self.is_possible_to_make:
@@ -86,6 +103,9 @@ class IngredientStorage(models.Model):
         """Store types of Ingredient."""
 
         LIQUID = "LIQUID", pgettext_lazy("ingredient_storage", "liquid")
+        FRUIT = "FRUIT", pgettext_lazy("ingredient_storage", "fruit")
+        VEGETABLE = "VEGETABLE", pgettext_lazy("ingredient_storage", "vegetable")
+        SNACK = "SNACK", pgettext_lazy("ingredient_storage", "snack")
         OTHER = "OTHER", pgettext_lazy("ingredient_storage", "other")
 
     class Units(models.TextChoices):
@@ -130,7 +150,8 @@ class IngredientStorage(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        """Modify save logic. When user change"""
+        """Modify save logic.
+        When user add amount to storage we check if drink related to ingredient is possible to make."""
         related_drinks = Drink.objects.filter(
             ingredient_needed__storage_ingredient=self
         ).prefetch_related("ingredient_needed")
@@ -182,12 +203,14 @@ class IngredientNeeded(models.Model):
     is_enough_to_make_drink = models.BooleanField(default=False)
 
     def subtract_ingredient(self):
+        """Function subtract ingredient amount needed for drink from storage."""
         self.storage_ingredient.storage_amount = (
             self.storage_ingredient.storage_amount - self.amount
         )
         self.storage_ingredient.save()
 
     def check_if_enough_ingredient(self):
+        """Function checking if we have enough amount of this ingredient in storage to make drink."""
         output = True if self.amount < self.storage_ingredient.storage_amount else False
         self.is_enough_to_make_drink = output
         self.save()

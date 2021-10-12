@@ -1,13 +1,99 @@
 from django.contrib import admin
 from django.contrib.admin import display
 from django.utils.translation import pgettext_lazy
+from django.contrib.auth.admin import UserAdmin
 
 from core.models import (
+    User,
     Drink,
     DrinkQueue,
     IngredientNeeded,
     IngredientStorage,
 )
+
+
+@admin.register(User)
+class UserAdmin(UserAdmin):
+    """
+    Admin for Custom User
+    """
+
+    fieldsets = (
+        (None, {"fields": ("username", "email", "password")}),
+        (
+            ("User Permission"),
+            {
+                "fields": (
+                    "is_customer",
+                    "is_staff",
+                    "is_superuser",
+                    "is_active",
+                ),
+            },
+        ),
+        (
+            ("User info"),
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "first_name",
+                    "last_name",
+                ),
+            },
+        ),
+        (
+            ("Customer info"),
+            {
+                "classes": ("collapse",),
+                "fields": (
+                    "one_use_account_password",
+                    "expire_date",
+                ),
+            },
+        ),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "username",
+                    "password1",
+                    "password2",
+                    "is_customer",
+                    "is_staff",
+                    "is_superuser",
+                ),
+            },
+        ),
+    )
+    list_display = (
+        "username",
+        "email",
+        "first_name",
+        "last_name",
+        "is_customer",
+        "is_staff",
+        "is_superuser",
+        "is_active",
+    )
+
+    list_filter = (
+        "is_customer",
+        "is_staff",
+        "is_superuser",
+        "is_active",
+    )
+    list_display_links = ("username",)
+    search_fields = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+    )
+    ordering = ("username", "is_customer", "is_active")
 
 
 @admin.register(Drink)
