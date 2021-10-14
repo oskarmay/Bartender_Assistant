@@ -21,9 +21,11 @@ class User(AbstractUser):
         blank=True,
         max_length=50,
     )
+
     expire_date = models.DateTimeField(
         pgettext_lazy("user", "expire date"), null=True, blank=True
     )
+
     role = models.CharField(
         pgettext_lazy("user", "role"),
         max_length=2,
@@ -31,6 +33,15 @@ class User(AbstractUser):
         null=True,
         blank=True,
     )
+
+    def is_bartender(self):
+        return self.role == self.Role.BARTENDER
+
+    def is_waiter(self):
+        return self.role == self.Role.WAITER
+
+    def is_customer(self):
+        return self.role == self.Role.CUSTOMER
 
 
 class Drink(models.Model):

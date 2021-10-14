@@ -42,7 +42,13 @@ INSTALLED_APPS = [
     "customer",
     # Third party
     "django_bootstrap5",
+    "rules.apps.AutodiscoverRulesConfig",
 ]
+
+AUTHENTICATION_BACKENDS = (
+    "rules.permissions.ObjectPermissionBackend",
+    "django.contrib.auth.backends.ModelBackend",
+)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
