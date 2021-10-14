@@ -9,6 +9,7 @@ from core.models import (
     DrinkQueue,
     IngredientNeeded,
     IngredientStorage,
+    Earnings,
 )
 
 
@@ -19,12 +20,11 @@ class UserAdmin(UserAdmin):
     """
 
     fieldsets = (
-        (None, {"fields": ("username", "email", "password")}),
+        (None, {"fields": ("username", "email", "password", "role")}),
         (
             ("User Permission"),
             {
                 "fields": (
-                    "is_customer",
                     "is_staff",
                     "is_superuser",
                     "is_active",
@@ -62,7 +62,7 @@ class UserAdmin(UserAdmin):
                     "username",
                     "password1",
                     "password2",
-                    "is_customer",
+                    "role",
                     "is_staff",
                     "is_superuser",
                 ),
@@ -72,28 +72,29 @@ class UserAdmin(UserAdmin):
     list_display = (
         "username",
         "email",
+        "role",
         "first_name",
         "last_name",
-        "is_customer",
         "is_staff",
         "is_superuser",
         "is_active",
     )
 
     list_filter = (
-        "is_customer",
         "is_staff",
+        "role",
         "is_superuser",
         "is_active",
     )
     list_display_links = ("username",)
     search_fields = (
         "username",
+        "role",
         "first_name",
         "last_name",
         "email",
     )
-    ordering = ("username", "is_customer", "is_active")
+    ordering = ("username", "role", "is_active")
 
 
 @admin.register(Drink)
@@ -102,6 +103,7 @@ class DrinkAdmin(admin.ModelAdmin):
         "name",
         "complicated",
         "is_possible_to_make",
+        "price",
         "date_creation",
         "date_modified",
     )
@@ -113,6 +115,7 @@ class DrinkAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "complicated",
+        "price",
         "is_possible_to_make",
         "date_creation",
         "date_modified",
@@ -211,3 +214,19 @@ class DrinkQueueAdmin(admin.ModelAdmin):
     # @display(ordering="drink__name")
     # def get_drink_name(self, obj):
     #     return obj.drink.name
+
+
+@admin.register(Earnings)
+class EarningsAdmin(admin.ModelAdmin):
+    fields = (
+        "sum_date",
+        "sum",
+    )
+    readonly_fields = (
+        "sum_date",
+        "sum",
+    )
+    list_display = (
+        "sum_date",
+        "sum",
+    )

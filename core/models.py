@@ -10,6 +10,11 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     """Add field to User model"""
 
+    class Role(models.TextChoices):
+        BARTENDER = "bt", ugettext_lazy("bartender")
+        WAITER = "wt", ugettext_lazy("waiter")
+        CUSTOMER = "ct", ugettext_lazy("customer")
+
     one_use_account_password = models.CharField(
         pgettext_lazy("user", "one-time account password"),
         null=True,
@@ -19,7 +24,13 @@ class User(AbstractUser):
     expire_date = models.DateTimeField(
         pgettext_lazy("user", "expire date"), null=True, blank=True
     )
-    is_customer = models.BooleanField(pgettext_lazy("user", "customer"), default=False)
+    role = models.CharField(
+        pgettext_lazy("user", "role"),
+        max_length=2,
+        choices=Role.choices,
+        null=True,
+        blank=True,
+    )
 
 
 class Drink(models.Model):
@@ -46,6 +57,13 @@ class Drink(models.Model):
         verbose_name=pgettext_lazy("drink", "complicated"),
     )
 
+    price = models.PositiveIntegerField(
+        default=0,
+        null=False,
+        blank=False,
+        verbose_name=pgettext_lazy("drink", "price"),
+    )
+
     is_possible_to_make = models.BooleanField(
         default=False,
         verbose_name=pgettext_lazy("drink", "is possible to make"),
@@ -53,12 +71,12 @@ class Drink(models.Model):
 
     date_creation = models.DateField(
         auto_now_add=True,
-        verbose_name=pgettext_lazy("drink", "Date created"),
+        verbose_name=pgettext_lazy("drink", "date created"),
     )
 
     date_modified = models.DateField(
         auto_now=True,
-        verbose_name=pgettext_lazy("drink", "Date modified"),
+        verbose_name=pgettext_lazy("drink", "date modified"),
     )
 
     def make_a_drink(self):
@@ -260,7 +278,12 @@ class DrinkQueue(models.Model):
         max_length=255,
         choices=DrinkQueueStatus.choices,
         blank=False,
-        verbose_name=pgettext_lazy("drink", "complicated"),
+        verbose_name=pgettext_lazy("drink_queue", "complicated"),
+    )
+
+    order_date = models.DateField(
+        auto_now_add=True,
+        verbose_name=pgettext_lazy("drink_queue", "order date"),
     )
 
     class Meta:
@@ -297,3 +320,15 @@ class DrinkQueue(models.Model):
         """Set drink in queue status to rejected."""
         self.status = self.DrinkQueueStatus.REJECTED
         self.save()
+
+
+class Earnings(models.Model):
+    sum_date = models.DateField(
+        auto_now_add=True,
+        verbose_name=pgettext_lazy("earnings", "sum date"),
+    )
+    sum = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+        verbose_name=pgettext_lazy("earnings", "sum"),
+    )
