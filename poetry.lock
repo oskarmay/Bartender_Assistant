@@ -54,6 +54,17 @@ beautifulsoup4 = ">=4.8.0"
 Django = ">=2.2"
 
 [[package]]
+name = "djangorestframework"
+version = "3.12.4"
+description = "Web APIs for Django, made easy."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+django = ">=2.2"
+
+[[package]]
 name = "psycopg2"
 version = "2.9.1"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
@@ -104,7 +115,7 @@ python-versions = ">=3.5"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9"
-content-hash = "ef754467169204e67236cce4dc329ea95fc08de95a423a42340bc09764a1ef41"
+content-hash = "d0d7f53a89147fc0368c72dcc3c042b17279f7505bea33cb13bad4d67b5ce6ba"
 
 [metadata.files]
 asgiref = [
@@ -122,6 +133,10 @@ django = [
 django-bootstrap5 = [
     {file = "django-bootstrap5-2.1.2.tar.gz", hash = "sha256:ac05ca69b990e62657c0bf40db14946c22fd64c7fb9dfe094a9f22ecc58f86c5"},
     {file = "django_bootstrap5-2.1.2-py3-none-any.whl", hash = "sha256:0021355df9212c511876e3f5336ba470416a6dd52f61bf5acec5bb783ab41ff5"},
+]
+djangorestframework = [
+    {file = "djangorestframework-3.12.4-py3-none-any.whl", hash = "sha256:6d1d59f623a5ad0509fe0d6bfe93cbdfe17b8116ebc8eda86d45f6e16e819aaf"},
+    {file = "djangorestframework-3.12.4.tar.gz", hash = "sha256:f747949a8ddac876e879190df194b925c177cdeb725a099db1460872f7c0a7f2"},
 ]
 psycopg2 = [
     {file = "psycopg2-2.9.1-cp36-cp36m-win32.whl", hash = "sha256:7f91312f065df517187134cce8e395ab37f5b601a42446bdc0f0d51773621854"},
