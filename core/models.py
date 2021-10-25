@@ -90,6 +90,12 @@ class Drink(models.Model):
         verbose_name=pgettext_lazy("drink", "date modified"),
     )
 
+    image = models.FileField(
+        verbose_name=pgettext_lazy("drink", "drink image"),
+        upload_to=settings.MEDIA_ROOT,
+        null=True,
+    )
+
     def make_a_drink(self):
         """Function subtract ingredient use for making drink"""
         ingredient_needed = IngredientNeeded.objects.filter(drink=self)
@@ -115,7 +121,7 @@ class Drink(models.Model):
 
     def __str__(self):
         return ugettext_lazy(
-            "Drink: {name}, Is possible to make?: {answer}, Complicated: {level} "
+            "Drink: {name} | Is possible to make?: {answer} | Complicated: {level} "
         ).format(
             name=self.name,
             answer=ugettext_lazy("yes")
@@ -165,7 +171,7 @@ class IngredientStorage(models.Model):
     )
 
     image = models.FileField(
-        verbose_name=pgettext_lazy("ingredient_storage", "image"),
+        verbose_name=pgettext_lazy("ingredient_storage", "ingredient image"),
         upload_to=settings.MEDIA_ROOT,
         null=True,
     )
