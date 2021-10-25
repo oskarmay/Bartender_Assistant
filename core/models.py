@@ -115,7 +115,7 @@ class Drink(models.Model):
 
     def __str__(self):
         return ugettext_lazy(
-            "Drink: {name}, Is possible to make?: {answer}, Complicated: {level} "
+            "Drink: {name} | Is possible to make?: {answer} | Complicated: {level} "
         ).format(
             name=self.name,
             answer=ugettext_lazy("yes")
@@ -164,11 +164,11 @@ class IngredientStorage(models.Model):
         verbose_name=pgettext_lazy("ingredient_storage", "unit"),
     )
 
-    image = models.FileField(
-        verbose_name=pgettext_lazy("ingredient_storage", "image"),
-        upload_to=settings.MEDIA_ROOT,
-        null=True,
-    )
+    # image = models.FileField(
+    #     verbose_name=pgettext_lazy("ingredient_storage", "image"),
+    #     upload_to=settings.MEDIA_ROOT,
+    #     null=True,
+    # )
 
     storage_amount = models.DecimalField(
         max_digits=20,
