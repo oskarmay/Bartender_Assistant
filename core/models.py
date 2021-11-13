@@ -57,6 +57,14 @@ class Drink(models.Model):
         MEDIUM = "MEDIUM", pgettext_lazy("drink", "medium")
         HARD = "HARD", pgettext_lazy("drink", "hard")
 
+    class Types(models.TextChoices):
+        """Store types of Drink."""
+
+        ONE_SHOT = "ONE_SHOT", pgettext_lazy("drink", "one shot")
+        MULTIPLE_SHOT = "MULTIPLE_SHOT", pgettext_lazy("drink", "multiple shot")
+        ALCOHOLIC = "ALCOHOLIC", pgettext_lazy("drink", "alcoholic")
+        NON_ALCOHOLIC = "NON_ALCOHOLIC", pgettext_lazy("drink", "non alcoholic")
+
     name = models.CharField(
         max_length=255,
         blank=False,
@@ -71,6 +79,25 @@ class Drink(models.Model):
         verbose_name=pgettext_lazy("drink", "complicated"),
     )
 
+    preparation_description = models.CharField(
+        max_length=1024,
+        blank=False,
+        null=False,
+        verbose_name=pgettext_lazy("drink", "preparation description"),
+    )
+
+    type = models.CharField(
+        max_length=255,
+        choices=Types.choices,
+        blank=False,
+        verbose_name=pgettext_lazy("drink", "type"),
+    )
+    amount = models.PositiveIntegerField(
+        default=1,
+        null=False,
+        blank=False,
+        verbose_name=pgettext_lazy("drink", "amount"),
+    )
     price = models.PositiveIntegerField(
         default=0,
         null=False,
@@ -129,16 +156,12 @@ class Drink(models.Model):
         ingredient_needed = IngredientNeeded.objects.filter(drink=self).select_related(
             "storage_ingredient"
         )
-
-        for ingredient in ingredient_needed:
-            # Subtract ingredient from storage
-            result = ingredient.subtract_ingredient()
-            if result is False:
-                logger.warning(
-                    "There was no enough ingredient in storage. Subtract return value lt 0."
-                )
-                self.is_possible_to_make = False
-                self.save()
+        [ing.if_enough_ingredient_in_storage() for ing in ingredient_needed]
+        ingredient_list = [ing.is_enough_to_make_drink for ing in ingredient_needed]
+        if False not in ingredient_list:
+            for ingredient in ingredient_needed:
+                # Subtract ingredient from storage
+                ingredient.subtract_ingredient()
 
         # Check if we have enough ingredient left to make another drink
         self.check_if_is_possible_to_make_and_update_status()
@@ -220,6 +243,10 @@ class IngredientStorage(models.Model):
             )
         )
 
+    def save(self, *args, **kwargs):
+        self.update_amount_ingredients()
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = pgettext_lazy("ingredient_storage", "ingredient in storage")
         verbose_name_plural = pgettext_lazy(
@@ -259,17 +286,21 @@ class IngredientNeeded(models.Model):
 
     is_enough_to_make_drink = models.BooleanField(default=False)
 
+    def if_enough_ingredient_in_storage(self):
+        return self.amount < self.storage_ingredient.storage_amount
+
     def subtract_ingredient(self):
         """Function for subtract used ingredient"""
-        # Calculate new storage amount
-        output = self.storage_ingredient.storage_amount - self.amount
-        # Checking again if for sure we have enough ingredient in storage to make this drink
-        if output >= 0:
-            self.storage_ingredient.storage_amount = output
+        if self.if_enough_ingredient_in_storage():
+            # Calculate new storage amount
+            self.storage_ingredient.storage_amount -= self.amount
             self.storage_ingredient.save()
-            return True
+        return self.if_enough_ingredient_in_storage()
 
-        return False
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.is_enough_to_make_drink = self.if_enough_ingredient_in_storage()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = pgettext_lazy("ingredient_needed", "ingredient needed")
