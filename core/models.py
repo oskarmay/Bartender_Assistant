@@ -2,9 +2,12 @@ from decimal import Decimal
 
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.db.models import Case, When
 from django.utils.translation import pgettext_lazy, ugettext_lazy
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class User(AbstractUser):
@@ -54,6 +57,14 @@ class Drink(models.Model):
         MEDIUM = "MEDIUM", pgettext_lazy("drink", "medium")
         HARD = "HARD", pgettext_lazy("drink", "hard")
 
+    class Types(models.TextChoices):
+        """Store types of Drink."""
+
+        ONE_SHOT = "ONE_SHOT", pgettext_lazy("drink", "one shot")
+        MULTIPLE_SHOT = "MULTIPLE_SHOT", pgettext_lazy("drink", "multiple shot")
+        ALCOHOLIC = "ALCOHOLIC", pgettext_lazy("drink", "alcoholic")
+        NON_ALCOHOLIC = "NON_ALCOHOLIC", pgettext_lazy("drink", "non alcoholic")
+
     name = models.CharField(
         max_length=255,
         blank=False,
@@ -68,6 +79,25 @@ class Drink(models.Model):
         verbose_name=pgettext_lazy("drink", "complicated"),
     )
 
+    preparation_description = models.CharField(
+        max_length=1024,
+        blank=False,
+        null=False,
+        verbose_name=pgettext_lazy("drink", "preparation description"),
+    )
+
+    type = models.CharField(
+        max_length=255,
+        choices=Types.choices,
+        blank=False,
+        verbose_name=pgettext_lazy("drink", "type"),
+    )
+    amount = models.PositiveIntegerField(
+        default=1,
+        null=False,
+        blank=False,
+        verbose_name=pgettext_lazy("drink", "amount"),
+    )
     price = models.PositiveIntegerField(
         default=0,
         null=False,
@@ -96,24 +126,52 @@ class Drink(models.Model):
         null=True,
     )
 
-    def make_a_drink(self):
-        """Function subtract ingredient use for making drink"""
-        ingredient_needed = IngredientNeeded.objects.filter(drink=self)
-        for ingredient in ingredient_needed.all():
-            ingredient.subtract_ingredient()
-        self.drink_is_possible_to_make()
 
-    def drink_is_possible_to_make(self):
-        """Function checking if we have enough ingredient in storage to make this drink."""
-        related_ingredient = IngredientNeeded.objects.filter(drink=self)
-        for ingredient in related_ingredient:
-            if not ingredient.is_enough_to_make_drink and self.is_possible_to_make:
+    def check_if_is_possible_to_make_and_update_status(self):
+        """Function with logic changing drink is possible to make status."""
+
+        # Get all ingredient related to drink
+        ingredient_needed = IngredientNeeded.objects.filter(drink=self).select_related(
+            "storage_ingredient"
+        )
+        # Creating list for status if we have enough ingredient to make another drink
+        ingredient_status_list = []
+        for ingredient in ingredient_needed:
+            # Update info about ingredient amount in storage and ingredient needed status
+            ingredient.storage_ingredient.update_amount_ingredients()
+            # Append ingredient needed status to list
+            ingredient_status_list.append(ingredient.is_enough_to_make_drink)
+
+        # Check if one of ingredient status was False (not enough to make drink)
+        if False in ingredient_status_list:
+            # If drink already has status impossible to make we dont need to modify field
+            if self.is_possible_to_make:
                 self.is_possible_to_make = False
                 self.save()
-                break
-            elif ingredient.is_enough_to_make_drink and not self.is_possible_to_make:
+            return False
+        elif False not in ingredient_status_list:
+            # If drink already has status possible to make we dont need to modify field
+            if not self.is_possible_to_make:
                 self.is_possible_to_make = True
                 self.save()
+            return True
+
+    def make_a_drink(self):
+        """Function with logic to subtract ingredient change ingredient amount status"""
+
+        # Get all ingredient related to drink
+        ingredient_needed = IngredientNeeded.objects.filter(drink=self).select_related(
+            "storage_ingredient"
+        )
+        [ing.if_enough_ingredient_in_storage() for ing in ingredient_needed]
+        ingredient_list = [ing.is_enough_to_make_drink for ing in ingredient_needed]
+        if False not in ingredient_list:
+            for ingredient in ingredient_needed:
+                # Subtract ingredient from storage
+                ingredient.subtract_ingredient()
+
+        # Check if we have enough ingredient left to make another drink
+        self.check_if_is_possible_to_make_and_update_status()
 
     class Meta:
         verbose_name = pgettext_lazy("drink", "drink")
@@ -170,11 +228,11 @@ class IngredientStorage(models.Model):
         verbose_name=pgettext_lazy("ingredient_storage", "unit"),
     )
 
-    image = models.FileField(
-        verbose_name=pgettext_lazy("ingredient_storage", "ingredient image"),
-        upload_to=settings.MEDIA_ROOT,
-        null=True,
-    )
+    # image = models.FileField(
+    #     verbose_name=pgettext_lazy("ingredient_storage", "image"),
+    #     upload_to=settings.MEDIA_ROOT,
+    #     null=True,
+    # )
 
     storage_amount = models.DecimalField(
         max_digits=20,
@@ -184,18 +242,16 @@ class IngredientStorage(models.Model):
         verbose_name=pgettext_lazy("ingredient_storage", "amount in storage"),
     )
 
+    def update_amount_ingredients(self):
+        IngredientNeeded.objects.filter(storage_ingredient=self).update(
+            is_enough_to_make_drink=Case(
+                When(amount__lte=self.storage_amount, then=True),
+                When(amount__gt=self.storage_amount, then=False),
+            )
+        )
+
     def save(self, *args, **kwargs):
-        """Modify save logic.
-        When user add amount to storage we check if drink related to ingredient is possible to make."""
-        related_drinks = Drink.objects.filter(
-            ingredient_needed__storage_ingredient=self
-        ).prefetch_related("ingredient_needed")
-
-        for drink in related_drinks:
-            for ingredient in drink.ingredient_needed.all():
-                ingredient.check_if_enough_ingredient()
-            drink.drink_is_possible_to_make()
-
+        self.update_amount_ingredients()
         super().save(*args, **kwargs)
 
     class Meta:
@@ -237,19 +293,21 @@ class IngredientNeeded(models.Model):
 
     is_enough_to_make_drink = models.BooleanField(default=False)
 
-    def subtract_ingredient(self):
-        """Function subtract ingredient amount needed for drink from storage."""
-        self.storage_ingredient.storage_amount = (
-            self.storage_ingredient.storage_amount - self.amount
-        )
-        self.storage_ingredient.save()
+    def if_enough_ingredient_in_storage(self):
+        return self.amount < self.storage_ingredient.storage_amount
 
-    def check_if_enough_ingredient(self):
-        """Function checking if we have enough amount of this ingredient in storage to make drink."""
-        output = True if self.amount < self.storage_ingredient.storage_amount else False
-        self.is_enough_to_make_drink = output
-        self.save()
-        return output
+    def subtract_ingredient(self):
+        """Function for subtract used ingredient"""
+        if self.if_enough_ingredient_in_storage():
+            # Calculate new storage amount
+            self.storage_ingredient.storage_amount -= self.amount
+            self.storage_ingredient.save()
+        return self.if_enough_ingredient_in_storage()
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.is_enough_to_make_drink = self.if_enough_ingredient_in_storage()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = pgettext_lazy("ingredient_needed", "ingredient needed")
@@ -320,7 +378,7 @@ class DrinkQueue(models.Model):
     def set_accepted(self):
         """Set drink in queue status to accepted."""
         self.status = self.DrinkQueueStatus.ACCEPTED
-        self.drink.make_a_drink()
+        # self.drink.make_a_drink()
         self.save()
 
     def set_in_progress(self):
