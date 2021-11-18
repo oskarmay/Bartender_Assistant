@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Case, When
@@ -11,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class User(AbstractUser):
-    """Add field to User model"""
+    """Modify standard User by adding field."""
 
     class Role(models.TextChoices):
         BARTENDER = "bt", ugettext_lazy("bartender")
@@ -125,7 +126,6 @@ class Drink(models.Model):
         upload_to=settings.MEDIA_ROOT,
         null=True,
     )
-
 
     def check_if_is_possible_to_make_and_update_status(self):
         """Function with logic changing drink is possible to make status."""
