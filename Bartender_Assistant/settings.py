@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django_bootstrap5",
     "rules.apps.AutodiscoverRulesConfig",
     "django_filters",
+    "debug_toolbar",
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -52,6 +53,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -144,3 +146,7 @@ MEDIA_ROOT = f"{BASE_DIR}/static/media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "core.User"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
