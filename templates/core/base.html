@@ -50,10 +50,28 @@
     <i class="fas fa-bars fa-xs text-light"></i>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background: rebeccapurple">
-    <ul class="navbar-nav mr-auto">
-      {% block navbar %} {% endblock %}
-    </ul>
+  <div class="collapse navbar-collapse justify-content-en" id="navbarSupportedContent"
+       style="background: rebeccapurple">
+    <div class="justify-content-between">
+      <ul class="navbar-nav">
+        {% if not request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'core:login' %}">Zaloguj <i class="fa fa-sign-out-alt"></i></a>
+          </li>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'core:logout' %}">Wyloguj <i class="fa fa-sign-out-alt"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'core:change_password' %}">Zmień hasło <i class="fa fa-key"></i></a>
+          </li>
+        {% endif %}
+
+        {% block navbar %} {% endblock %}
+      </ul>
+    </div>
+
     <!--- Search form--->
     {#    <form class="form-inline my-2 my-lg-0">#}
     {#      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}

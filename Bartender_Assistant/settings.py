@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rules.apps.AutodiscoverRulesConfig",
     "django_filters",
     "debug_toolbar",
+    "crispy_forms",
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -150,3 +151,6 @@ AUTH_USER_MODEL = "core.User"
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
