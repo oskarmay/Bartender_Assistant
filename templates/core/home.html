@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Strona główna{% endblock %}
+{% block navbar %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'core:home' %}">Strona główna</a>
+  </li>
+{% endblock %}
+
+{% block front_foto %}
+  <div class="page-header page-header-small">
+    <div class="page-header-image" data-parallax="true" style="background-image: URL({% static 'img/bar.jpg' %});">
+    </div>
+    <div class="content-center">
+      <div class="container">
+        <h2 class="title">System Wspomagania Barmana</h2>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <h4>Czym jest System Wspomagania Barmana</h4>
+    <p>
+      Jest to system napisany w ramach pracy dyplomowej 1 stopnia. Ma za zadanie usprawnić proces realizacji zamówień w
+      barach.
+    </p>
+  </div>
+
+{% endblock %}
