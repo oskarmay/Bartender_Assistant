@@ -60,6 +60,9 @@
           </li>
         {% endif %}
         {% if request.user.is_authenticated %}
+          <li class="nav-item m-auto">
+            <a class="nav-item">Aplikacja: {{ request.user.get_role_display }}</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'core:logout' %}">Wyloguj <i class="fa fa-sign-out-alt"></i></a>
           </li>
@@ -86,8 +89,10 @@
 <div class="wrapper">
   {% block front_foto %} {% endblock %}
   <div class="section section-about-us">
-    <div class="container col-11 col-lg-11">
-      {% block content %}{% endblock %}
+    <div class="container">
+      <div class="col-11 col-lg-11">
+        {% block content %}{% endblock %}
+      </div>
     </div>
   </div>
 

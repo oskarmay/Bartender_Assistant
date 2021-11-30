@@ -1,8 +1,8 @@
 from django.urls import path
 
-from bartender.views import HomeView
+from customer.views import HomeView
 
-app_name = "bartender"
+app_name = "customer"
 urlpatterns = [
     path(
         "",
