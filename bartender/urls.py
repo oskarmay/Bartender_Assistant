@@ -1,6 +1,6 @@
 from django.urls import path
 
-from bartender.views import HomeView
+from bartender.views import HomeView, StorageListView
 
 app_name = "bartender"
 urlpatterns = [
@@ -8,5 +8,10 @@ urlpatterns = [
         "",
         HomeView.as_view(),
         name="home",
+    ),
+    path(
+        "storage_list",
+        StorageListView.as_view(),
+        name="storage_list",
     ),
 ]
