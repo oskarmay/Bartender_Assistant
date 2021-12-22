@@ -1,10 +1,10 @@
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView, CreateView, UpdateView
 from rules.contrib.views import PermissionRequiredMixin
 
 from core.models import IngredientStorage
 
-from bartender.forms import IngredientCreateForm
+from bartender.forms import IngredientForm
 
 
 class HomeView(PermissionRequiredMixin, TemplateView):
@@ -26,4 +26,12 @@ class IngredientCreateView(PermissionRequiredMixin, CreateView):
     template_name = "bartender/storage/add_ingredient.html"
     model = IngredientStorage
     success_url = reverse_lazy("bartender:storage_list")
-    form_class = IngredientCreateForm
+    form_class = IngredientForm
+
+
+class IngredientUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "is_in_staff"
+    template_name = "bartender/storage/update_ingredient.html"
+    model = IngredientStorage
+    success_url = reverse_lazy("bartender:storage_list")
+    form_class = IngredientForm

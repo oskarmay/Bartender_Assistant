@@ -3,7 +3,7 @@ from django import forms
 from core.models import IngredientStorage
 
 
-class IngredientCreateForm(forms.ModelForm):
+class IngredientForm(forms.ModelForm):
     """Digital type creation form"""
 
     class Meta:
@@ -25,5 +25,7 @@ class IngredientCreateForm(forms.ModelForm):
                 choices=IngredientStorage.Units.choices, attrs={"class": "form-control"}
             ),
             "storage_amount": forms.NumberInput(attrs={"class": "form-control"}),
-            "image": forms.ClearableFileInput(attrs={"class": "form-control-file"}),
+            "image": forms.ClearableFileInput(
+                attrs={"class": "form-control form-control-sm"}
+            ),
         }
