@@ -1,6 +1,6 @@
 from django.urls import path
 
-from bartender.views import HomeView, StorageListView
+from bartender.views import HomeView, StorageListView, IngredientCreateView
 
 app_name = "bartender"
 urlpatterns = [
@@ -13,5 +13,10 @@ urlpatterns = [
         "storage_list",
         StorageListView.as_view(),
         name="storage_list",
+    ),
+    path(
+        "storage_list/add_ingredient",
+        IngredientCreateView.as_view(),
+        name="add_ingredient",
     ),
 ]
