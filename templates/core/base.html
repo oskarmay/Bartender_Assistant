@@ -63,7 +63,11 @@
         {% endif %}
         {% if request.user.is_authenticated %}
           <li class="nav-item m-auto">
-            <a class="nav-item">Aplikacja: {{ request.user.get_role_display }}</a>
+            <a class="nav-item">
+              <div class="row nav-item">Aplikacja: {{ request.user.get_role_display }}          </div>
+              <div class="row nav-item">Użytkownik: {{ request.user.name }}as
+              </div>
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'core:logout' %}">Wyloguj <i class="fa fa-sign-out-alt"></i></a>

@@ -5,7 +5,9 @@
 
 {% block content %}
   <div class="row">
-  <a class="btn btn-primary" href="{% url 'bartender:add_ingredient' %}">DODAJ</a>
+    <a class="btn btn-primary" href="{% url 'bartender:add_ingredient' %}">DODAJ</a>
+  </div>
+  <div class="row">
     <p>Tutaj jakieś Filtry w planie</p>
   </div>
   <div class="row">
@@ -23,7 +25,8 @@
               {% endif %}
             </div>
             <div class="card-body">
-              <div class="card-text">Liczba: <p>{{ ingredient.storage_amount }} {{ ingredient.get_unit_display }}</p>
+              <div class="card-text">Liczba:
+                <p>{{ ingredient.storage_amount|floatformat:"-3" }} {{ ingredient.get_unit_display }}</p>
               </div>
               <div class="card-text">Nazwa: <p>{{ ingredient.name }}</p></div>
               <div class="card-text">Typ: <p>{{ ingredient.get_type_display }}</p></div>
