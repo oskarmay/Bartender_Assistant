@@ -43,6 +43,10 @@ class User(AbstractUser):
     def is_waiter(self):
         return self.role == self.Role.WAITER
 
+    @property
+    def is_in_staff(self):
+        return self.role == self.Role.BARTENDER or self.role == self.Role.WAITER
+
     def is_customer(self):
         return self.role == self.Role.CUSTOMER
 
@@ -124,6 +128,7 @@ class Drink(models.Model):
         verbose_name=pgettext_lazy("drink", "drink image"),
         upload_to="drinks",
         null=True,
+        blank=True,
     )
 
     def check_if_is_possible_to_make_and_update_status(self):
