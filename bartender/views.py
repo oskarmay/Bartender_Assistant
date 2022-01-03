@@ -1,5 +1,11 @@
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView
+from django.views.generic import (
+    TemplateView,
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 from rules.contrib.views import PermissionRequiredMixin
 
 from core.models import IngredientStorage
@@ -14,7 +20,7 @@ class HomeView(PermissionRequiredMixin, TemplateView):
 
 class StorageListView(PermissionRequiredMixin, ListView):
     permission_required = "is_in_staff"
-    template_name = "bartender/storage/list.html"
+    template_name = "bartender/storage/list_ingredient.html"
     context_object_name = "storage_ingredients"
 
     def get_queryset(self):
@@ -23,7 +29,7 @@ class StorageListView(PermissionRequiredMixin, ListView):
 
 class IngredientCreateView(PermissionRequiredMixin, CreateView):
     permission_required = "is_in_staff"
-    template_name = "bartender/storage/add_ingredient.html"
+    template_name = "bartender/storage/create_ingredient.html"
     model = IngredientStorage
     success_url = reverse_lazy("bartender:storage_list")
     form_class = IngredientForm
@@ -35,3 +41,11 @@ class IngredientUpdateView(PermissionRequiredMixin, UpdateView):
     model = IngredientStorage
     success_url = reverse_lazy("bartender:storage_list")
     form_class = IngredientForm
+
+
+class IngredientDeleteView(PermissionRequiredMixin, DeleteView):
+    model = IngredientStorage
+    context_object_name = "storage_ingredient"
+    permission_required = "is_in_staff"
+    template_name = "bartender/storage/delete_ingredient.html"
+    success_url = reverse_lazy("bartender:storage_list")

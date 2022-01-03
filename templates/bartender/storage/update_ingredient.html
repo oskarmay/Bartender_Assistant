@@ -9,7 +9,7 @@
           {{ formset.management_form }}
           {% csrf_token %}
           {{ form.id }}
-{#          {{ form.image }}#}
+          {#          {{ form.image }}#}
           <div class="row">
             <div class="col text-center">
               {% if form.image.value %}
@@ -23,7 +23,7 @@
           </div>
           {% for field in form %}
             <div class="row">
-              <div class="col-lg-4 col-5 h5 text-right">
+              <div class="col-lg-4 col-5 my-auto h5 text-right">
                 <label class="col-form-labell">
                   {{ field.label }}
                   {% if field.field.required %}
@@ -31,7 +31,7 @@
                   {% endif %}
                 </label>
               </div>
-              <div class="col-lg-8 col-7">
+              <div class="col-lg-8 col-7 my-auto">
                 {{ field }}
                 <small id="{{ field.text }}help" class="form-text text-muted">{{ field.help_text }}</small>
                 {% for error in field.errors %}
@@ -47,11 +47,15 @@
           {% endfor %}
 
           <div class="row">
-            <div class="col-lg-6 col-8">
+            <div class="col-lg-6 col-12 text-center">
               <a class="btn btn-secondary btn-round" href="{% url 'bartender:storage_list' %}">Wróć do stanu
                 magazynu</a>
             </div>
-            <div class="col-lg-6 col-4 text-right">
+            <div class="col-lg-3 col-6 text-center text-right">
+              <a class="btn btn-danger btn-round"
+                 href="{% url 'bartender:delete_ingredient' form.instance.id %}">Usuń</a>
+            </div>
+            <div class="col-lg-3 col-6 text-center text-right">
               <button class="btn btn-outline-success btn-round" type="submit">Zapisz</button>
             </div>
           </div>
