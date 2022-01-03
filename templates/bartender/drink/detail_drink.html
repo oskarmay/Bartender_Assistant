@@ -1,0 +1,49 @@
+{% extends "bartender/base.html" %}
+{% load static %}
+{% block content %}
+
+  <div class="row">
+    <div class="card col-lg-7 col-12 mx-auto">
+      <div class="card-body">
+        <div class="row">
+          <div class="col text-center">
+            {% if drink.image %}
+              <img class="card-img-top" src="{{ drink.image.value.url }}" alt="{{ drink.image.name }}"
+                   style="max-height: 20vw; width: auto">
+            {% else %}
+              <img class="card-img-top" src="{% static 'img/no-image-available.jpg' %}" alt="No image available"
+                   style="max-height: 15vw; width: auto">
+            {% endif %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="card-body">
+            <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
+            <div class="card-text">Typ: <p>{{ drink.get_type_display }}</p></div>
+            <div class="card-text">Ilość: <p>{{ drink.amount }}</p></div>
+            <div class="card-text">Skomplikowanie: <p>{{ drink.get_complicated_display }}</p></div>
+            <div class="card-text">Cena: <p>{{ drink.price }}</p></div>
+            <div class="card-text">Do zrobienia?: <p>{% if drink.is_possible_to_make %} Tak {% else %}
+              Nie {% endif %}</p></div>
+            <div class="card-text">Data utworzenia: <p>{{ drink.date_creation }}</p></div>
+            <div class="card-text">Data modyfikacji: <p>{{ drink.date_modified }}</p></div>
+            <div class="card-text">Opis przygotowania: <p>{{ drink.preparation_description }}</p></div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-lg-6 col-12 text-center">
+            <a class="btn btn-secondary btn-round" href="{% url 'bartender:drink_list' %}">Wróć do listy drinków</a>
+          </div>
+          <div class="col-lg-6 col-12 text-center text-right">
+            <a class="btn btn-outline-success btn-round"
+               href="{% url 'bartender:update_drink' drink.id %}">Edytuj</a>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
