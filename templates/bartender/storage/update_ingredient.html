@@ -1,4 +1,4 @@
-{% extends "core/base.html" %}
+{% extends "bartender/base.html" %}
 {% load static %}
 {% block content %}
   <div class="row">
@@ -9,7 +9,6 @@
           {{ formset.management_form }}
           {% csrf_token %}
           {{ form.id }}
-          {#          {{ form.image }}#}
           <div class="row">
             <div class="col text-center">
               {% if form.image.value %}
@@ -48,7 +47,7 @@
 
           <div class="row">
             <div class="col-lg-6 col-12 text-center">
-              <a class="btn btn-secondary btn-round" href="{% url 'bartender:storage_list' %}">Wróć do stanu
+              <a class="btn btn-secondary btn-round" href="{% url 'bartender:storage_ingredient_list' %}">Wróć do stanu
                 magazynu</a>
             </div>
             <div class="col-lg-3 col-6 text-center text-right">
