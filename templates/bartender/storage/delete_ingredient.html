@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+  <div class="row">
+    <div class="card col-lg-7 col-12 mx-auto">
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row col-lg-8 mx-auto mb-5">
+            <h5>Jesteś pewny, że chcesz usunąć składnik: "{{ storage_ingredient.name }}"?</h5>
+          </div>
+          <div class="row col-lg-10 mx-auto mt-5">
+            <div class="col-lg-7 col-12 text-center">
+              <a class="btn btn-secondary btn-round" href="{% url 'bartender:update_ingredient' object.id %}">Wróć do
+                edycji skłanika</a>
+            </div>
+            <div class="col-lg-5 col-12 text-center my-auto h-100">
+              <button class="btn btn-danger btn-round" type="submit">Usuń</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

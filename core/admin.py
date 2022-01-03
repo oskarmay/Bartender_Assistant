@@ -124,12 +124,7 @@ class DrinkAdmin(admin.ModelAdmin):
 
 @admin.register(IngredientStorage)
 class IngredientStorageAdmin(admin.ModelAdmin):
-    fields = (
-        "name",
-        "type",
-        "unit",
-        "storage_amount",
-    )
+    fields = ("name", "type", "unit", "storage_amount", "image")
     list_display = (
         "name",
         "type",

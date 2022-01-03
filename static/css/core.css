@@ -1,0 +1,14 @@
+.footer-color   {
+    background: whitesmoke;
+}
+.c-body {
+    /*background: #ebebeb; #TODO Naprawić tło core templatki*/
+}
+
+.navbar-color {
+    background: rebeccapurple;
+}
+
+.required {
+    font-size:2.5vmin ;
+}

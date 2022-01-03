@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+  <div class="row">
+    <div class="card col-lg-7 col-12 mx-auto">
+      <div class="card-body">
+
+        <form method="post" class="form-horizontal" id="userCreationForm" enctype="multipart/form-data">
+          {{ formset.management_form }}
+          {% csrf_token %}
+          {{ form.id }}
+          {#          {{ form.image }}#}
+          <div class="row">
+            <div class="col text-center">
+              {% if form.image.value %}
+                <img class="card-img-top" src="{{ form.image.value.url }}" alt="{{ form.image.name }}"
+                     style="max-height: 20vw; width: auto">
+              {% else %}
+                <img class="card-img-top" src="{% static 'img/no-image-available.jpg' %}" alt="No image available"
+                     style="max-height: 15vw; width: auto">
+              {% endif %}
+            </div>
+          </div>
+          {% for field in form %}
+            <div class="row">
+              <div class="col-lg-4 col-5 my-auto h5 text-right">
+                <label class="col-form-labell">
+                  {{ field.label }}
+                  {% if field.field.required %}
+                    <span class="required">*</span>
+                  {% endif %}
+                </label>
+              </div>
+              <div class="col-lg-8 col-7 my-auto">
+                {{ field }}
+                <small id="{{ field.text }}help" class="form-text text-muted">{{ field.help_text }}</small>
+                {% for error in field.errors %}
+                  <div class="alert alert-warning alert-dismissible fade show mt-1 mb-1" role="alert">
+                    {{ error }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endfor %}
+
+          <div class="row">
+            <div class="col-lg-6 col-12 text-center">
+              <a class="btn btn-secondary btn-round" href="{% url 'bartender:storage_list' %}">Wróć do stanu
+                magazynu</a>
+            </div>
+            <div class="col-lg-3 col-6 text-center text-right">
+              <a class="btn btn-danger btn-round"
+                 href="{% url 'bartender:delete_ingredient' form.instance.id %}">Usuń</a>
+            </div>
+            <div class="col-lg-3 col-6 text-center text-right">
+              <button class="btn btn-outline-success btn-round" type="submit">Zapisz</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}

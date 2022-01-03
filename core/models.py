@@ -1,6 +1,5 @@
 from decimal import Decimal
 
-from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Case, When
@@ -123,7 +122,7 @@ class Drink(models.Model):
 
     image = models.FileField(
         verbose_name=pgettext_lazy("drink", "drink image"),
-        upload_to=settings.MEDIA_ROOT,
+        upload_to="drinks",
         null=True,
     )
 
@@ -228,11 +227,12 @@ class IngredientStorage(models.Model):
         verbose_name=pgettext_lazy("ingredient_storage", "unit"),
     )
 
-    # image = models.FileField(
-    #     verbose_name=pgettext_lazy("ingredient_storage", "image"),
-    #     upload_to=settings.MEDIA_ROOT,
-    #     null=True,
-    # )
+    image = models.FileField(
+        verbose_name=pgettext_lazy("ingredient_storage", "image"),
+        upload_to="ingredients",
+        null=True,
+        blank=True,
+    )
 
     storage_amount = models.DecimalField(
         max_digits=20,
