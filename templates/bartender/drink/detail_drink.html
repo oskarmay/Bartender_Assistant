@@ -18,19 +18,26 @@
         </div>
         <div class="row">
           <div class="card-body">
-            <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
-            <div class="card-text">Typ: <p>{{ drink.get_type_display }}</p></div>
-            <div class="card-text">Ilość: <p>{{ drink.amount }}</p></div>
-            <div class="card-text">Skomplikowanie: <p>{{ drink.get_complicated_display }}</p></div>
-            <div class="card-text">Cena: <p>{{ drink.price }}</p></div>
-            <div class="card-text">Do zrobienia?: <p>{% if drink.is_possible_to_make %} Tak {% else %}
-              Nie {% endif %}</p></div>
-            <div class="card-text">Data utworzenia: <p>{{ drink.date_creation }}</p></div>
-            <div class="card-text">Data modyfikacji: <p>{{ drink.date_modified }}</p></div>
-            <div class="card-text">Opis przygotowania: <p>{{ drink.preparation_description }}</p></div>
+            <div class="row">
+              <div class="col-lg-6 col-6">
+                <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
+                <div class="card-text">Typ: <p>{{ drink.get_type_display }}</p></div>
+                <div class="card-text">Ilość: <p>{{ drink.amount }}</p></div>
+                <div class="card-text">Skomplikowanie: <p>{{ drink.get_complicated_display }}</p></div>
+              </div>
+              <div class="col-lg-6 col-6">
+                <div class="card-text">Cena: <p>{{ drink.price }}</p></div>
+                <div class="card-text">Do zrobienia?: <p>{% if drink.is_possible_to_make %} Tak {% else %}
+                  Nie {% endif %}</p></div>
+                <div class="card-text">Data utworzenia: <p>{{ drink.date_creation }}</p></div>
+                <div class="card-text">Data modyfikacji: <p>{{ drink.date_modified }}</p></div>
+              </div>
+              <div class="col-lg-12 col-12">
+                <div class="card-text">Opis przygotowania: <p>{{ drink.preparation_description }}</p></div>
+              </div>
+            </div>
           </div>
         </div>
-
 
         <div class="row">
           <div class="col-lg-6 col-12 text-center">
