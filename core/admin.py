@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.contrib.admin import display
-from django.utils.translation import pgettext_lazy
 from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import pgettext_lazy
 
 from core.models import (
-    User,
     Drink,
     DrinkQueue,
+    Earnings,
     IngredientNeeded,
     IngredientStorage,
-    Earnings,
+    User,
 )
 
 

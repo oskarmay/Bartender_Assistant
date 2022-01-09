@@ -1,8 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import TemplateView
-from django.contrib.auth import views as auth_views
 
 from core.forms import CustomChangePasswordForm
 

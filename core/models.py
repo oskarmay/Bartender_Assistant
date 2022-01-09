@@ -1,11 +1,11 @@
+import logging
 from decimal import Decimal
 
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Case, When
 from django.utils.translation import pgettext_lazy, ugettext_lazy
-from django.contrib.auth.models import AbstractUser
-import logging
 
 logger = logging.getLogger(__name__)
 
