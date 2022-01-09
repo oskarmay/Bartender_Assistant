@@ -31,6 +31,8 @@ class CustomLoginView(auth_views.LoginView):
         )
         if has_role:
             redirect_to = f"../../{user_app[has_role]}/"
+            if has_role == "ct" and not self.request.user.customer_table:
+                redirect_to += "set_table"
         else:
             redirect_to = ""
 
@@ -47,6 +49,16 @@ class ChangePasswordView(auth_views.PasswordChangeView):
     template_name = "core/change_password.html"
     form_class = CustomChangePasswordForm
     success_url = reverse_lazy("core:change_password")
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data()
+        ctx["base"] = "core/base.html"
+        if self.request.user.is_customer:
+            ctx["base"] = "customer/base.html"
+        elif self.request.user.is_bartender:
+            ctx["base"] = "bartender/base.html"
+
+        return ctx
 
     def form_valid(self, form):
         form.save()

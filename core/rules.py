@@ -3,17 +3,17 @@ import rules
 
 @rules.predicate
 def is_bartender(user):
-    return user.is_bartender()
+    return user.is_bartender
 
 
 @rules.predicate
 def is_waiter(user):
-    return user.is_waiter()
+    return user.is_waiter
 
 
 @rules.predicate
 def is_customer(user):
-    return user.is_customer()
+    return user.is_customer
 
 
 is_in_staff = is_bartender | is_waiter

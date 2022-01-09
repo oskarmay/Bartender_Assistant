@@ -55,18 +55,17 @@
     <div class="collapse navbar-collapse justify-content-en" id="navbarSupportedContent"
          style="background: rebeccapurple">
       <div class="justify-content-between">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav align-items-center">
           {% if not request.user.is_authenticated %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'core:login' %}">Zaloguj <i class="fa fa-sign-out-alt"></i></a>
             </li>
-          {% endif %}
-          {% if request.user.is_authenticated %}
+          {% else %}
             <li class="nav-item m-auto">
-              <a class="nav-item">
-                <div class="row nav-item">Aplikacja: {{ request.user.get_role_display }}          </div>
-                <div class="row nav-item">Użytkownik: {{ request.user.name }}as
-                </div>
+              <a class="nav-item">Aplikacja: {{ request.user.get_role_display }}<br>Użytkownik: {{ request.user.username }}
+                {% if request.user.is_customer %}
+                  <br>Stolik: {{ request.user.customer_table }}
+                {% endif %}
               </a>
             </li>
             <li class="nav-item">
@@ -94,7 +93,7 @@
 
 
 <!-- Block Content -->
-<div class="container-fluid pt-4">
+<div class="container-fluid pt-5">
   <div class="row">
     <div class="col-12 col-lg-11 mx-auto c-body px-5 py-3">
       {% block content %}{% endblock %}

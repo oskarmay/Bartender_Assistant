@@ -1,6 +1,12 @@
 {% extends "core/base.html" %}
 {% block navbar %}
   <li class="nav-item">
+    <a class="nav-link" href="{% url 'customer:set_table' %}">Zmien stolik<i class="fab fa-acquisitions-incorporated"></i></a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link" href="{% url 'customer:home' %}">Strona główna</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'customer:drink_list' %}">Drinki</a>
   </li>
 {% endblock %}
