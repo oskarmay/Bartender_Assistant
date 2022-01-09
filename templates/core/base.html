@@ -21,7 +21,7 @@
 
 <head>
   <meta charset="utf-8"/>
-  <link href="{% static 'img/favicon_2.ico' %}" rel="shortcut icon" type="image/x-icon" />
+  <link href="{% static 'img/favicon_2.ico' %}" rel="shortcut icon" type="image/x-icon"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <title>
     {% block title %} Blank {% endblock %}
@@ -44,55 +44,57 @@
 <body class="landing-page sidebar-collapse">
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-default navbar-color">
-  {#  <a class="navbar-brand" href="#">Navbar</a>#}
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fas fa-bars fa-xs text-light"></i>
-  </button>
+<div class="pb-5">
+  <nav class="navbar navbar-expand-lg navbar-default navbar-color fixed-top">
+    {#  <a class="navbar-brand" href="#">Navbar</a>#}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars fa-xs text-light"></i>
+    </button>
 
-  <div class="collapse navbar-collapse justify-content-en" id="navbarSupportedContent"
-       style="background: rebeccapurple">
-    <div class="justify-content-between">
-      <ul class="navbar-nav">
-        {% if not request.user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'core:login' %}">Zaloguj <i class="fa fa-sign-out-alt"></i></a>
-          </li>
-        {% endif %}
-        {% if request.user.is_authenticated %}
-          <li class="nav-item m-auto">
-            <a class="nav-item">
-              <div class="row nav-item">Aplikacja: {{ request.user.get_role_display }}          </div>
-              <div class="row nav-item">Użytkownik: {{ request.user.name }}as
-              </div>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'core:logout' %}">Wyloguj <i class="fa fa-sign-out-alt"></i></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'core:change_password' %}">Zmień hasło <i class="fa fa-key"></i></a>
-          </li>
-        {% endif %}
+    <div class="collapse navbar-collapse justify-content-en" id="navbarSupportedContent"
+         style="background: rebeccapurple">
+      <div class="justify-content-between">
+        <ul class="navbar-nav">
+          {% if not request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:login' %}">Zaloguj <i class="fa fa-sign-out-alt"></i></a>
+            </li>
+          {% endif %}
+          {% if request.user.is_authenticated %}
+            <li class="nav-item m-auto">
+              <a class="nav-item">
+                <div class="row nav-item">Aplikacja: {{ request.user.get_role_display }}          </div>
+                <div class="row nav-item">Użytkownik: {{ request.user.name }}as
+                </div>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:logout' %}">Wyloguj <i class="fa fa-sign-out-alt"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'core:change_password' %}">Zmień hasło <i class="fa fa-key"></i></a>
+            </li>
+          {% endif %}
 
-        {% block navbar %} {% endblock %}
-      </ul>
+          {% block navbar %} {% endblock %}
+        </ul>
+      </div>
+
+      <!--- Search form--->
+      {#    <form class="form-inline my-2 my-lg-0">#}
+      {#      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
+      {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
+      {#    </form>#}
+      <!--- End Search form--->
     </div>
-
-    <!--- Search form--->
-    {#    <form class="form-inline my-2 my-lg-0">#}
-    {#      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
-    {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
-    {#    </form>#}
-    <!--- End Search form--->
-  </div>
-</nav>
+  </nav>
+</div>
 <!-- End Navbar -->
 
 
 <!-- Block Content -->
-<div class="container-fluid">
+<div class="container-fluid pt-4">
   <div class="row">
     <div class="col-12 col-lg-11 mx-auto c-body px-5 py-3">
       {% block content %}{% endblock %}
