@@ -37,9 +37,18 @@ class User(AbstractUser):
         blank=True,
     )
 
+    customer_table = models.CharField(
+        pgettext_lazy("user", "customer table"),
+        max_length=10,
+        null=True,
+        blank=True,
+    )
+
+    @property
     def is_bartender(self):
         return self.role == self.Role.BARTENDER
 
+    @property
     def is_waiter(self):
         return self.role == self.Role.WAITER
 
@@ -47,6 +56,7 @@ class User(AbstractUser):
     def is_in_staff(self):
         return self.role == self.Role.BARTENDER or self.role == self.Role.WAITER
 
+    @property
     def is_customer(self):
         return self.role == self.Role.CUSTOMER
 
