@@ -1,6 +1,6 @@
 from django import forms
 
-from core.models import IngredientStorage, Drink
+from core.models import Drink, IngredientNeeded, IngredientStorage
 
 
 class IngredientStorageForm(forms.ModelForm):
@@ -32,7 +32,7 @@ class IngredientStorageForm(forms.ModelForm):
 
 
 class DrinkForm(forms.ModelForm):
-    """Digital type creation form"""
+    """Drink creation form"""
 
     class Meta:
         model = Drink
@@ -75,4 +75,27 @@ class DrinkForm(forms.ModelForm):
                     "max-length": 2048,
                 }
             ),
+        }
+
+
+class IngredientNeededForm(forms.ModelForm):
+    """Ingredient Needed for drink creation form"""
+
+    class Meta:
+        model = IngredientNeeded
+
+        fields = [
+            "drink",
+            "storage_ingredient",
+            "amount",
+        ]
+        label = {
+            "drink": ("Drink"),
+            "storage_ingredient": ("Składnik z magazynu"),
+            "amount": ("Ilość"),
+        }
+        widgets = {
+            "drink": forms.Select(attrs={"class": "form-control"}),
+            "storage_ingredient": forms.Select(attrs={"class": "form-control"}),
+            "amount": forms.NumberInput(attrs={"class": "form-control"}),
         }
