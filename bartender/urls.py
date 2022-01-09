@@ -1,16 +1,19 @@
 from django.urls import path
 
 from bartender.views import (
-    HomeView,
-    StorageIngredientListView,
-    StorageIngredientCreateView,
-    StorageIngredientUpdateView,
-    StorageIngredientDeleteView,
-    DrinkListView,
     DrinkCreateView,
-    DrinkUpdateView,
     DrinkDeleteView,
     DrinkDetailView,
+    DrinkListView,
+    DrinkUpdateView,
+    HomeView,
+    IngredientNeededCreateView,
+    IngredientNeededDeleteView,
+    IngredientNeededUpdateView,
+    StorageIngredientCreateView,
+    StorageIngredientDeleteView,
+    StorageIngredientListView,
+    StorageIngredientUpdateView,
 )
 
 app_name = "bartender"
@@ -64,5 +67,20 @@ urlpatterns = [
         "drink_list/<int:pk>/delete_drink",
         DrinkDeleteView.as_view(),
         name="delete_drink",
+    ),
+    path(
+        "ingredient_needed/create_ingredient_needed",
+        IngredientNeededCreateView.as_view(),
+        name="create_ingredient_needed",
+    ),
+    path(
+        "ingredient_needed/<int:pk>/update_ingredient_needed",
+        IngredientNeededUpdateView.as_view(),
+        name="update_ingredient_needed",
+    ),
+    path(
+        "ingredient_needed/<int:pk>/delete_ingredient_needed",
+        IngredientNeededDeleteView.as_view(),
+        name="delete_ingredient_needed",
     ),
 ]
