@@ -3,7 +3,6 @@
   <div class="row">
     <div class="card col-lg-7 col-12 mx-auto">
       <div class="card-body">
-
         <form method="post" class="form-horizontal" id="userCreationForm" enctype="multipart/form-data">
           {{ formset.management_form }}
           {% csrf_token %}
@@ -20,7 +19,13 @@
                 </label>
               </div>
               <div class="col-lg-8 col-7">
-                {{ field }}
+                {% if field.name == "drink" %}
+                  <input type="hidden" id="id_drink" name="drink" value="{{ drink.id }}">
+                  <p class="form-control">{{ drink }}</p>
+                {% else %}
+                  {{ field }}
+                {% endif %}
+
                 <small id="{{ field.text }}help" class="form-text text-muted">{{ field.help_text }}</small>
                 {% for error in field.errors %}
                   <div class="alert alert-warning alert-dismissible fade show mt-1 mb-1" role="alert">
@@ -35,11 +40,14 @@
           {% endfor %}
 
           <div class="row">
-            <div class="col-lg-6 col-8">
-              <a class="btn btn-secondary btn-round" href="{% url 'bartender:storage_ingredient_list' %}">Wróć do stanu
-                magazynu</a>
+            <div class="col-lg-6 col-12">
+              <a class="btn btn-secondary btn-round" href="{% url 'bartender:detail_drink' drink.id %}">Wróć do
+                szczegółów</a>
             </div>
-            <div class="col-lg-6 col-4 text-right">
+            <div class="col-lg-3 col-12 text-right">
+              <a class="btn btn-outline-danger btn-round" href="{% url 'bartender:delete_ingredient_needed' object.id %}">Usuń</a>
+            </div>
+            <div class="col-lg-3 col-12 text-right">
               <button class="btn btn-outline-success btn-round" type="submit">Zapisz</button>
             </div>
           </div>

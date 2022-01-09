@@ -4,6 +4,18 @@
     <a class="nav-link" href="{% url 'bartender:home' %}">Strona główna</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'bartender:storage_list' %}">Magazyn</a>
+    <a class="nav-link" href="{% url 'bartender:storage_ingredient_list' %}">Magazyn</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'bartender:drink_list' %}">Drinki</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Kolejka zamówień</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Propozycje drinków</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Statystyki</a>
   </li>
 {% endblock %}

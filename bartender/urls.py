@@ -1,11 +1,19 @@
 from django.urls import path
 
 from bartender.views import (
+    DrinkCreateView,
+    DrinkDeleteView,
+    DrinkDetailView,
+    DrinkListView,
+    DrinkUpdateView,
     HomeView,
-    StorageListView,
-    IngredientCreateView,
-    IngredientUpdateView,
-    IngredientDeleteView,
+    IngredientNeededCreateView,
+    IngredientNeededDeleteView,
+    IngredientNeededUpdateView,
+    StorageIngredientCreateView,
+    StorageIngredientDeleteView,
+    StorageIngredientListView,
+    StorageIngredientUpdateView,
 )
 
 app_name = "bartender"
@@ -16,23 +24,63 @@ urlpatterns = [
         name="home",
     ),
     path(
-        "storage_list",
-        StorageListView.as_view(),
-        name="storage_list",
+        "storage_ingredient_list",
+        StorageIngredientListView.as_view(),
+        name="storage_ingredient_list",
     ),
     path(
-        "storage_list/add_ingredient",
-        IngredientCreateView.as_view(),
-        name="add_ingredient",
+        "storage_ingredient_list/create_ingredient",
+        StorageIngredientCreateView.as_view(),
+        name="create_ingredient",
     ),
     path(
-        "storage_list/<int:pk>/update_ingredient",
-        IngredientUpdateView.as_view(),
+        "storage_ingredient_list/<int:pk>/update_ingredient",
+        StorageIngredientUpdateView.as_view(),
         name="update_ingredient",
     ),
     path(
-        "storage_list/<int:pk>/delete_ingredient",
-        IngredientDeleteView.as_view(),
+        "storage_ingredient_list/<int:pk>/delete_ingredient",
+        StorageIngredientDeleteView.as_view(),
         name="delete_ingredient",
+    ),
+    path(
+        "drink_list",
+        DrinkListView.as_view(),
+        name="drink_list",
+    ),
+    path(
+        "drink_list/create_drink",
+        DrinkCreateView.as_view(),
+        name="create_drink",
+    ),
+    path(
+        "drink_list/<int:pk>/update_drink",
+        DrinkUpdateView.as_view(),
+        name="update_drink",
+    ),
+    path(
+        "drink_list/<int:pk>/detail_drink",
+        DrinkDetailView.as_view(),
+        name="detail_drink",
+    ),
+    path(
+        "drink_list/<int:pk>/delete_drink",
+        DrinkDeleteView.as_view(),
+        name="delete_drink",
+    ),
+    path(
+        "ingredient_needed/create_ingredient_needed",
+        IngredientNeededCreateView.as_view(),
+        name="create_ingredient_needed",
+    ),
+    path(
+        "ingredient_needed/<int:pk>/update_ingredient_needed",
+        IngredientNeededUpdateView.as_view(),
+        name="update_ingredient_needed",
+    ),
+    path(
+        "ingredient_needed/<int:pk>/delete_ingredient_needed",
+        IngredientNeededDeleteView.as_view(),
+        name="delete_ingredient_needed",
     ),
 ]
