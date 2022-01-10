@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "bartender",
     "customer",
     # Third party
+    "rest_framework",
     "django_bootstrap5",
     "rules.apps.AutodiscoverRulesConfig",
     "django_filters",

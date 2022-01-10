@@ -22,13 +22,9 @@
           </div>
           <div class="card-body">
             <div class="card-text text-center">
-              <a class="btn btn-success" href="#">Zamów</a></div>
+              <button type="submit" onclick="orderDrink({{ drink.id }})" class="btn btn-success">Zamów</button>
+            </div>
             <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
-            <div class="card-text">Typ: <p>{{ drink.get_type_display }}</p></div>
-            <div class="card-text">Cena: <p>{{ drink.price }}</p></div>
-            <div class="card-text">Do zrobienia?: <p>{% if drink.is_possible_to_make %} Tak {% else %}
-              Nie {% endif %}</p></div>
-            <div class="card-text">Data utworzenia: <p>{{ drink.date_creation }}</p></div>
             <div class="card-text">Składniki:
               {% for ingredeint in drink.ingredient_needed.all %}
                 <p>{{ ingredeint.storage_ingredient.name }}</p>
@@ -36,10 +32,20 @@
                 <p>Nie przypisano składników</p>
               {% endfor %}
             </div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Typ: <p>{{ drink.get_type_display }}</p></div>
+                <div class="col-6">Cena: <p>{{ drink.price }}</p></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     {% endfor %}
   </div>
 
+{% endblock %}
+{% block js %}
+  <script src="{% static 'js/plugins/sweetalert2.all.min.js' %}"></script>
+  <script src="{% static 'js/customer/api_method.js' %}" type="text/javascript"></script>
 {% endblock %}
