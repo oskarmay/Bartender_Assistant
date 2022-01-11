@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from rules.contrib.views import PermissionRequiredMixin
 
-from core.models import Drink, DrinkQueue, User
+from core.models import Drink, Orders, User
 
 
 class HomeView(PermissionRequiredMixin, TemplateView):
@@ -60,28 +60,43 @@ class OrdersListView(PermissionRequiredMixin, ListView):
 
         user = self.request.user
         return (
-            DrinkQueue.objects.filter(
+            Orders.objects.filter(
                 user=user,
                 status__in=[
-                    DrinkQueue.DrinkQueueStatus.CREATED,
-                    DrinkQueue.DrinkQueueStatus.ACCEPTED,
-                    DrinkQueue.DrinkQueueStatus.IN_PROGRESS,
+                    Orders.OrdersStatus.CREATED,
+                    Orders.OrdersStatus.ACCEPTED,
+                    Orders.OrdersStatus.IN_PROGRESS,
                 ],
+                drink__isnull=False,
+                storage_order__isnull=True,
             )
             .select_related("drink")
             .prefetch_related(
                 "drink__ingredient_needed",
                 "drink__ingredient_needed__storage_ingredient",
             )
+            .order_by("-order_date")
         )
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """TODO"""
+        """Add qs of order other than drink to ctx."""
 
+        user = self.request.user
         ctx = super().get_context_data()
-        ctx[
-            "other_orders"
-        ] = ""  # TODO Utworzyć model do zamawiania przekasek i tutaj wstawic qs do tego;
+        ctx["other_orders"] = (
+            Orders.objects.filter(
+                user=user,
+                status__in=[
+                    Orders.OrdersStatus.CREATED,
+                    Orders.OrdersStatus.ACCEPTED,
+                    Orders.OrdersStatus.IN_PROGRESS,
+                ],
+                drink__isnull=True,
+                storage_order__isnull=False,
+            )
+            .select_related("storage_order")
+            .order_by("-order_date")
+        )
 
         return ctx
 
@@ -99,27 +114,42 @@ class HistoryOrdersListView(PermissionRequiredMixin, ListView):
 
         user = self.request.user
         return (
-            DrinkQueue.objects.filter(
+            Orders.objects.filter(
                 user=user,
                 status__in=[
-                    DrinkQueue.DrinkQueueStatus.REJECTED,
-                    DrinkQueue.DrinkQueueStatus.COMPLETED,
-                    DrinkQueue.DrinkQueueStatus.CANCELED,
+                    Orders.OrdersStatus.REJECTED,
+                    Orders.OrdersStatus.COMPLETED,
+                    Orders.OrdersStatus.CANCELED,
                 ],
+                drink__isnull=False,
+                storage_order__isnull=True,
             )
             .select_related("drink")
             .prefetch_related(
                 "drink__ingredient_needed",
                 "drink__ingredient_needed__storage_ingredient",
             )
+            .order_by("-order_date")
         )
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        """TODO"""
+        """Add qs of order other than drink to ctx."""
 
+        user = self.request.user
         ctx = super().get_context_data()
-        ctx[
-            "other_orders"
-        ] = ""  # TODO Utworzyć model do zamawiania przekasek i tutaj wstawic qs do tego;
+        ctx["other_orders"] = (
+            Orders.objects.filter(
+                user=user,
+                status__in=[
+                    Orders.OrdersStatus.CREATED,
+                    Orders.OrdersStatus.ACCEPTED,
+                    Orders.OrdersStatus.IN_PROGRESS,
+                ],
+                drink__isnull=True,
+                storage_order__isnull=False,
+            )
+            .select_related("storage_order")
+            .order_by("-order_date")
+        )
 
         return ctx

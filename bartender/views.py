@@ -10,7 +10,7 @@ from django.views.generic import (
 from rules.contrib.views import PermissionRequiredMixin
 
 from bartender.forms import DrinkForm, IngredientNeededForm, IngredientStorageForm
-from core.models import Drink, IngredientNeeded, IngredientStorage
+from core.models import Drink, Orders, IngredientNeeded, IngredientStorage
 
 
 class HomeView(PermissionRequiredMixin, TemplateView):
@@ -182,3 +182,101 @@ class IngredientNeededDeleteView(PermissionRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("bartender:detail_drink", args=(self.object.drink.id,))
+
+
+class OrdersListView(PermissionRequiredMixin, ListView):
+    """View of orders list."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/orders/list_queue.html"
+    context_object_name = "drinks"
+
+    def get_queryset(self):
+        """Qs with currently pending drink orders."""
+
+        return (
+            Orders.objects.filter(
+                status__in=[
+                    Orders.OrdersStatus.CREATED,
+                    Orders.OrdersStatus.ACCEPTED,
+                    Orders.OrdersStatus.IN_PROGRESS,
+                ],
+                drink__isnull=False,
+                storage_order__isnull=True,
+            )
+            .select_related("drink")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("-order_date")
+        )
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """Add qs of order other than drink to ctx."""
+
+        ctx = super().get_context_data()
+        ctx["other_orders"] = (
+            Orders.objects.filter(
+                status__in=[
+                    Orders.OrdersStatus.CREATED,
+                    Orders.OrdersStatus.ACCEPTED,
+                    Orders.OrdersStatus.IN_PROGRESS,
+                ],
+                drink__isnull=True,
+                storage_order__isnull=False,
+            )
+            .select_related("storage_order")
+            .order_by("-order_date")
+        )
+
+        return ctx
+
+
+class HistoryOrdersListView(PermissionRequiredMixin, ListView):
+    """View of history orders list."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/orders/list_history_queue.html"
+    context_object_name = "drinks"
+
+    def get_queryset(self):
+        """Qs with currently pending drink orders."""
+
+        return (
+            Orders.objects.filter(
+                status__in=[
+                    Orders.OrdersStatus.CANCELED,
+                    Orders.OrdersStatus.REJECTED,
+                    Orders.OrdersStatus.COMPLETED,
+                ],
+                drink__isnull=False,
+                storage_order__isnull=True,
+            )
+            .select_related("drink")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("-order_date")
+        )
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """Add qs of order other than drink to ctx."""
+
+        ctx = super().get_context_data()
+        ctx["other_orders"] = (
+            Orders.objects.filter(
+                status__in=[
+                    Orders.OrdersStatus.CANCELED,
+                    Orders.OrdersStatus.REJECTED,
+                    Orders.OrdersStatus.COMPLETED,
+                ],
+                drink__isnull=True,
+                storage_order__isnull=False,
+            )
+            .select_related("storage_order")
+            .order_by("-order_date")
+        )
+
+        return ctx

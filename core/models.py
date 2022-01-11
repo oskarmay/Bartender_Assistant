@@ -210,6 +210,7 @@ class IngredientStorage(models.Model):
         """Store types of Ingredient."""
 
         LIQUID = "LIQUID", pgettext_lazy("ingredient_storage", "liquid")
+        BEER = "BEER", pgettext_lazy("ingredient_storage", "beer")
         FRUIT = "FRUIT", pgettext_lazy("ingredient_storage", "fruit")
         VEGETABLE = "VEGETABLE", pgettext_lazy("ingredient_storage", "vegetable")
         SNACK = "SNACK", pgettext_lazy("ingredient_storage", "snack")
@@ -220,6 +221,7 @@ class IngredientStorage(models.Model):
 
         MILLILITER = "MILLILITER", pgettext_lazy("ingredient_storage", "milliliter")
         PIECE = "PIECE", pgettext_lazy("ingredient_storage", "piece")
+        PACK = "PACK", pgettext_lazy("ingredient_storage", "pack")
 
     name = models.CharField(
         max_length=255,
@@ -255,6 +257,25 @@ class IngredientStorage(models.Model):
         blank=False,
         validators=[MinValueValidator(Decimal("0"))],
         verbose_name=pgettext_lazy("ingredient_storage", "amount in storage"),
+    )
+
+    price = models.PositiveIntegerField(
+        default=0,
+        null=False,
+        blank=True,
+        verbose_name=pgettext_lazy("ingredient_storage", "price"),
+    )
+
+    has_alcohol = models.BooleanField(
+        blank=False,
+        null=False,
+        verbose_name=pgettext_lazy("ingredient_storage", "has alcohol"),
+    )
+
+    can_be_ordered = models.BooleanField(
+        blank=False,
+        null=False,
+        verbose_name=pgettext_lazy("ingredient_storage", "can be ordered"),
     )
 
     def update_amount_ingredients(self):
@@ -336,10 +357,10 @@ class IngredientNeeded(models.Model):
         )
 
 
-class DrinkQueue(models.Model):
+class Orders(models.Model):
     """Drinking queue for client drink orders."""
 
-    class DrinkQueueStatus(models.TextChoices):
+    class OrdersStatus(models.TextChoices):
         """Available status for order."""
 
         CREATED = "CREATED", pgettext_lazy("drink_queue", "created")
@@ -353,6 +374,7 @@ class DrinkQueue(models.Model):
         User,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name="drink_queue",
         verbose_name=pgettext_lazy("drink_queue", "user"),
     )
@@ -361,18 +383,28 @@ class DrinkQueue(models.Model):
         Drink,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
+        related_name="drink_queue",
+        verbose_name=pgettext_lazy("drink_queue", "order"),
+    )
+
+    storage_order = models.ForeignKey(
+        IngredientStorage,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name="drink_queue",
         verbose_name=pgettext_lazy("drink_queue", "order"),
     )
 
     status = models.CharField(
         max_length=255,
-        choices=DrinkQueueStatus.choices,
+        choices=OrdersStatus.choices,
         blank=False,
         verbose_name=pgettext_lazy("drink_queue", "complicated"),
     )
 
-    order_date = models.DateField(
+    order_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name=pgettext_lazy("drink_queue", "order date"),
     )
@@ -388,57 +420,57 @@ class DrinkQueue(models.Model):
 
     @property
     def is_created(self):
-        return self.status == DrinkQueue.DrinkQueueStatus.CREATED
+        return self.status == Orders.OrdersStatus.CREATED
 
     @property
     def is_accepted(self):
-        return self.status == DrinkQueue.DrinkQueueStatus.ACCEPTED
+        return self.status == Orders.OrdersStatus.ACCEPTED
 
     @property
     def is_in_progress(self):
-        return self.status == DrinkQueue.DrinkQueueStatus.IN_PROGRESS
+        return self.status == Orders.OrdersStatus.IN_PROGRESS
 
     @property
     def is_completed(self):
-        return self.status == DrinkQueue.DrinkQueueStatus.COMPLETED
+        return self.status == Orders.OrdersStatus.COMPLETED
 
     @property
     def is_rejected(self):
-        return self.status == DrinkQueue.DrinkQueueStatus.REJECTED
+        return self.status == Orders.OrdersStatus.REJECTED
 
     @property
     def is_canceled(self):
-        return self.status == DrinkQueue.DrinkQueueStatus.CANCELED
+        return self.status == Orders.OrdersStatus.CANCELED
 
     def set_created(self):
         """Set drink in queue status to created."""
-        self.status = self.DrinkQueueStatus.CREATED
+        self.status = self.OrdersStatus.CREATED
         self.save()
 
     def set_accepted(self):
         """Set drink in queue status to accepted."""
-        self.status = self.DrinkQueueStatus.ACCEPTED
+        self.status = self.OrdersStatus.ACCEPTED
         # self.drink.make_a_drink()
         self.save()
 
     def set_in_progress(self):
         """Set drink in queue status to in progress."""
-        self.status = self.DrinkQueueStatus.IN_PROGRESS
+        self.status = self.OrdersStatus.IN_PROGRESS
         self.save()
 
     def set_completed(self):
         """Set drink in queue status to completed."""
-        self.status = self.DrinkQueueStatus.COMPLETED
+        self.status = self.OrdersStatus.COMPLETED
         self.save()
 
     def set_rejected(self):
         """Set drink in queue status to rejected."""
-        self.status = self.DrinkQueueStatus.REJECTED
+        self.status = self.OrdersStatus.REJECTED
         self.save()
 
     def set_canceled(self):
         """Set drink in queue status to rejected."""
-        self.status = self.DrinkQueueStatus.CANCELED
+        self.status = self.OrdersStatus.CANCELED
         self.save()
 
 

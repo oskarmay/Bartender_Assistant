@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rules.contrib.views import PermissionRequiredMixin
 
-from core.models import Drink, DrinkQueue
+from core.models import Drink, Orders
 
 
 class OrderDrinkApiView(PermissionRequiredMixin, APIView):
@@ -16,16 +16,16 @@ class OrderDrinkApiView(PermissionRequiredMixin, APIView):
         drink_id = request.data["drink_id"]
         user = request.user
         drink = Drink.objects.get(pk=drink_id)
-        user_drink_orders = DrinkQueue.objects.filter(
+        user_drink_orders = Orders.objects.filter(
             status__in=[
-                DrinkQueue.DrinkQueueStatus.CREATED,
-                DrinkQueue.DrinkQueueStatus.ACCEPTED,
-                DrinkQueue.DrinkQueueStatus.IN_PROGRESS,
+                Orders.OrdersStatus.CREATED,
+                Orders.OrdersStatus.ACCEPTED,
+                Orders.OrdersStatus.IN_PROGRESS,
             ]
         )
         if user_drink_orders.count() < 4:
-            DrinkQueue.objects.create(
-                user=user, drink=drink, status=DrinkQueue.DrinkQueueStatus.CREATED
+            Orders.objects.create(
+                user=user, drink=drink, status=Orders.OrdersStatus.CREATED
             )
             response_data = {"status": "order_created"}
         else:
@@ -44,14 +44,14 @@ class CancelOrderedDrinkApiView(PermissionRequiredMixin, APIView):
         drink_id = request.data["ordered_drink_id"]
         user = request.user
         try:
-            ordered_drink = DrinkQueue.objects.get(id=drink_id, user=user)
+            ordered_drink = Orders.objects.get(id=drink_id, user=user)
             if ordered_drink.is_created:
                 ordered_drink.set_canceled()
                 ordered_drink.save()
                 response_data = {"status": "order_canceled"}
             else:
                 response_data = {"status": "too_late_to_cancel_order"}
-        except DrinkQueue.DoesNotExist:
+        except Orders.DoesNotExist:
             response_data = {"status": "does_not_exist"}
 
         return JsonResponse(response_data)

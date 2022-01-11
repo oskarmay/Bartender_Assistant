@@ -16,7 +16,8 @@
             {% if drink.drink.image %}
               <img class="card-img-top core_image_sizes" src="{{ drink.drink.image.url }}" alt="{{ drink.drink.name }}">
             {% else %}
-              <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}" alt="No image available">
+              <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                   alt="No image available">
             {% endif %}
           </div>
           <div class="card-body">
@@ -26,8 +27,9 @@
                 </button>
               </div>
             {% endif %}
+            <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
             <div class="row">
-              <div class="col-6">Nazwa: <p>{{ drink.drink.name }}</p></div>
+              <div class="col-6">Data zamówienia: <p>{{ drink.order_date }}</p></div>
               <div class="col-6">Status: <p>{{ drink.get_status_display }}</p></div>
             </div>
             <div class="card-text">Składniki:
@@ -62,7 +64,8 @@
             {% if drink.drink.image %}
               <img class="card-img-top core_image_sizes" src="{{ drink.drink.image.url }}" alt="{{ drink.drink.name }}">
             {% else %}
-              <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}" alt="No image available">
+              <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                   alt="No image available">
             {% endif %}
           </div>
           <div class="card-body">

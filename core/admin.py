@@ -5,7 +5,7 @@ from django.utils.translation import pgettext_lazy
 
 from core.models import (
     Drink,
-    DrinkQueue,
+    Orders,
     Earnings,
     IngredientNeeded,
     IngredientStorage,
@@ -188,7 +188,7 @@ class IngredientNeededStorageAdmin(admin.ModelAdmin):
         return obj.drink.get_complicated_display()
 
 
-@admin.register(DrinkQueue)
+@admin.register(Orders)
 class DrinkQueueAdmin(admin.ModelAdmin):
     fields = (
         "user",
