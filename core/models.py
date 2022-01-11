@@ -347,6 +347,7 @@ class DrinkQueue(models.Model):
         IN_PROGRESS = "IN_PROGRESS", pgettext_lazy("drink_queue", "in progress")
         COMPLETED = "COMPLETED", pgettext_lazy("drink_queue", "completed")
         REJECTED = "REJECTED", pgettext_lazy("drink_queue", "rejected")
+        CANCELED = "CANCELED", pgettext_lazy("drink_queue", "canceled")
 
     user = models.ForeignKey(
         User,
@@ -385,6 +386,30 @@ class DrinkQueue(models.Model):
             "User: {username}, Order: {order}, Status: {status}"
         ).format(username=self.user.username, order=self.drink, status=self.status)
 
+    @property
+    def is_created(self):
+        return self.status == DrinkQueue.DrinkQueueStatus.CREATED
+
+    @property
+    def is_accepted(self):
+        return self.status == DrinkQueue.DrinkQueueStatus.ACCEPTED
+
+    @property
+    def is_in_progress(self):
+        return self.status == DrinkQueue.DrinkQueueStatus.IN_PROGRESS
+
+    @property
+    def is_completed(self):
+        return self.status == DrinkQueue.DrinkQueueStatus.COMPLETED
+
+    @property
+    def is_rejected(self):
+        return self.status == DrinkQueue.DrinkQueueStatus.REJECTED
+
+    @property
+    def is_canceled(self):
+        return self.status == DrinkQueue.DrinkQueueStatus.CANCELED
+
     def set_created(self):
         """Set drink in queue status to created."""
         self.status = self.DrinkQueueStatus.CREATED
@@ -409,6 +434,11 @@ class DrinkQueue(models.Model):
     def set_rejected(self):
         """Set drink in queue status to rejected."""
         self.status = self.DrinkQueueStatus.REJECTED
+        self.save()
+
+    def set_canceled(self):
+        """Set drink in queue status to rejected."""
+        self.status = self.DrinkQueueStatus.CANCELED
         self.save()
 
 
