@@ -1,7 +1,7 @@
 from django.urls import path
 
-from customer.api_views import OrderDrinkApiView, CancelOrderedDrinkApiView
-from customer.views import HomeView, DrinkListView, SetTable, OrdersListView
+from customer.api_views import CancelOrderedDrinkApiView, OrderDrinkApiView
+from customer.views import DrinkListView, HomeView, OrdersListView, SetTable
 
 app_name = "customer"
 urlpatterns = [
