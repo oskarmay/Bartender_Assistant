@@ -1,7 +1,7 @@
 from django.urls import path
 
-from customer.api_views import OrderDrinkApiView
-from customer.views import HomeView, DrinkListView, SetTable
+from customer.api_views import OrderDrinkApiView, CancelOrderedDrinkApiView
+from customer.views import HomeView, DrinkListView, SetTable, OrdersListView
 
 app_name = "customer"
 urlpatterns = [
@@ -16,6 +16,11 @@ urlpatterns = [
         name="api_customer_order_drink",
     ),
     path(
+        "api/cancel_order_drink",
+        CancelOrderedDrinkApiView.as_view(),
+        name="api_customer_cancel_ordered_drink",
+    ),
+    path(
         "set_table",
         SetTable.as_view(),
         name="set_table",
@@ -24,5 +29,10 @@ urlpatterns = [
         "drink_list",
         DrinkListView.as_view(),
         name="drink_list",
+    ),
+    path(
+        "orders_list",
+        OrdersListView.as_view(),
+        name="orders_list",
     ),
 ]

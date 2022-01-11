@@ -11,7 +11,7 @@
     {% for drink in drinks %}
       <div class="col-12 col-lg-4 d-flex align-items-stretch">
         <div class="card rounded" style="font-size:2vmin">
-          <div class="text-center">
+          <div class="card-body text-center">
             {% if drink.image %}
               <img class="card-img-top" src="{{ drink.image.url }}" alt="{{ drink.name }}"
                    style="max-height: 15vw; width: auto">
@@ -27,7 +27,7 @@
             <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
             <div class="card-text">Składniki:
               {% for ingredeint in drink.ingredient_needed.all %}
-                <p>{{ ingredeint.storage_ingredient.name }}</p>
+                <p>- {{ ingredeint.storage_ingredient.name }}</p>
               {% empty %}
                 <p>Nie przypisano składników</p>
               {% endfor %}

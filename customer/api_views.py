@@ -11,7 +11,7 @@ class OrderDrinkApiView(PermissionRequiredMixin, APIView):
     permission_required = "customer"
 
     def post(self, request):
-        """Create drink order and return status success."""
+        """Create drink order and return result status.."""
 
         drink_id = request.data["drink_id"]
         user = request.user
@@ -30,4 +30,28 @@ class OrderDrinkApiView(PermissionRequiredMixin, APIView):
             response_data = {"status": "order_created"}
         else:
             response_data = {"status": "too_many_orders"}
+        return JsonResponse(response_data)
+
+
+class CancelOrderedDrinkApiView(PermissionRequiredMixin, APIView):
+    """Api endpoint for customer cancel drink ordered."""
+
+    permission_required = "customer"
+
+    def post(self, request):
+        """Cancel ordered drink and return result status."""
+
+        drink_id = request.data["ordered_drink_id"]
+        user = request.user
+        try:
+            ordered_drink = DrinkQueue.objects.get(id=drink_id, user=user)
+            if ordered_drink.is_created:
+                ordered_drink.set_canceled()
+                ordered_drink.save()
+                response_data = {"status": "order_canceled"}
+            else:
+                response_data = {"status": "too_late_to_cancel_order"}
+        except DrinkQueue.DoesNotExist:
+            response_data = {"status": "does_not_exist"}
+
         return JsonResponse(response_data)

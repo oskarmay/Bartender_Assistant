@@ -14,7 +14,7 @@
       <div class="col-6 col-lg-3 d-flex align-items-stretch">
         <div class="card rounded" style="font-size:2vmin">
           <a href="{% url 'bartender:update_ingredient' ingredient.pk %}" style="text-decoration: none; color:inherit">
-            <div class="text-center">
+            <div class="card-body text-center">
               {% if ingredient.image %}
                 <img class="card-img-top" src="{{ ingredient.image.url }}" alt="{{ ingredient.name }}"
                      style="max-height: 15vw; width: auto">

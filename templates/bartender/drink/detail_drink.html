@@ -7,10 +7,10 @@
   <div class="row">
     <div class="card col-lg-7 col-11 mx-auto">
       <div class="card-body">
-        <div class="row">
+        <div class="row pb-3">
           <div class="col text-center">
             {% if drink.image %}
-              <img class="card-img-top" src="{{ drink.image.value.url }}" alt="{{ drink.image.name }}"
+              <img class="card-img-top" src="{{ drink.image.url }}" alt="{{ drink.image.name }}"
                    style="max-height: 20vw; width: auto">
             {% else %}
               <img class="card-img-top" src="{% static 'img/no-image-available.jpg' %}" alt="No image available"

@@ -11,7 +11,7 @@
           {{ formset.management_form }}
           {% csrf_token %}
           {{ form.id }}
-          <div class="row">
+          <div class="row pb-3">
             <div class="col text-center">
               {% if form.image.value %}
                 <img class="card-img-top" src="{{ form.image.value.url }}" alt="{{ form.image.name }}"
