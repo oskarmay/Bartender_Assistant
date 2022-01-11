@@ -48,14 +48,15 @@ class DrinkListView(PermissionRequiredMixin, ListView):
 
 
 class OrdersListView(PermissionRequiredMixin, ListView):
-    """View of ordered drink list."""
+    """View of orders list."""
 
     permission_required = "customer"
     template_name = "customer/drink/list_drink_ordered.html"
     context_object_name = "drinks"
 
     def get_queryset(self):
-        """Prefetch related field of drink object (reduced sql)."""
+        """Getting only ordered drink with status created, accepted and in progress.
+        Prefetch related field of drinkqueue object (reduced sql)."""
 
         user = self.request.user
         return (
@@ -65,6 +66,45 @@ class OrdersListView(PermissionRequiredMixin, ListView):
                     DrinkQueue.DrinkQueueStatus.CREATED,
                     DrinkQueue.DrinkQueueStatus.ACCEPTED,
                     DrinkQueue.DrinkQueueStatus.IN_PROGRESS,
+                ],
+            )
+            .select_related("drink")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+        )
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """TODO"""
+
+        ctx = super().get_context_data()
+        ctx[
+            "other_orders"
+        ] = ""  # TODO Utworzyć model do zamawiania przekasek i tutaj wstawic qs do tego;
+
+        return ctx
+
+
+class HistoryOrdersListView(PermissionRequiredMixin, ListView):
+    """View of history orderes list."""
+
+    permission_required = "customer"
+    template_name = "customer/drink/history_list_drink_ordered.html"
+    context_object_name = "drinks"
+
+    def get_queryset(self):
+        """Getting only ordered drink with status created, accepted and in progress.
+        Prefetch related field of drinkqueue object (reduced sql)."""
+
+        user = self.request.user
+        return (
+            DrinkQueue.objects.filter(
+                user=user,
+                status__in=[
+                    DrinkQueue.DrinkQueueStatus.REJECTED,
+                    DrinkQueue.DrinkQueueStatus.COMPLETED,
+                    DrinkQueue.DrinkQueueStatus.CANCELED,
                 ],
             )
             .select_related("drink")

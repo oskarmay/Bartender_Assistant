@@ -1,7 +1,13 @@
 from django.urls import path
 
 from customer.api_views import CancelOrderedDrinkApiView, OrderDrinkApiView
-from customer.views import DrinkListView, HomeView, OrdersListView, SetTable
+from customer.views import (
+    DrinkListView,
+    HistoryOrdersListView,
+    HomeView,
+    OrdersListView,
+    SetTable,
+)
 
 app_name = "customer"
 urlpatterns = [
@@ -31,8 +37,13 @@ urlpatterns = [
         name="drink_list",
     ),
     path(
-        "orders_list",
+        "orders_list/current",
         OrdersListView.as_view(),
         name="orders_list",
+    ),
+    path(
+        "orders_list/history",
+        HistoryOrdersListView.as_view(),
+        name="history_orders_list",
     ),
 ]

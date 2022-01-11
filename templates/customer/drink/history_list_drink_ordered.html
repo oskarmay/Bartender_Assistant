@@ -1,6 +1,6 @@
 {% extends "customer/base.html" %}
 {% load static %}
-{% block title %}Zamówienia{% endblock %}
+{% block title %}Historia zamówień{% endblock %}
 
 
 {% block content %}
@@ -10,7 +10,7 @@
   <div class="row justify-content-center"><h3>Drinki</h3></div>
   <div class="row">
     {% for drink in drinks %}
-      <div class="col-12 col-lg-6 d-flex align-items-stretch">
+      <div class="col-12 col-lg-4 d-flex align-items-stretch">
         <div class="card rounded" style="font-size:2vmin">
           <div class="card-body text-center core_image_frame">
             {% if drink.drink.image %}
@@ -20,12 +20,6 @@
             {% endif %}
           </div>
           <div class="card-body">
-            {% if drink.is_created %}
-              <div class="card-text text-center">
-                <button type="submit" onclick="PromptCancelOrderedDrink({{ drink.id }})" class="btn btn-warning">Anuluj
-                </button>
-              </div>
-            {% endif %}
             <div class="row">
               <div class="col-6">Nazwa: <p>{{ drink.drink.name }}</p></div>
               <div class="col-6">Status: <p>{{ drink.get_status_display }}</p></div>
@@ -66,12 +60,6 @@
             {% endif %}
           </div>
           <div class="card-body">
-            {% if drink.is_created %}
-              <div class="card-text text-center">
-                <button type="submit" onclick="PromptCancelOrderedDrink({{ drink.id }})" class="btn btn-warning">Anuluj
-                </button>
-              </div>
-            {% endif %}
             {#            <div class="row">#}
             {#              <div class="col-6">Nazwa: <p>{{ drink.drink.name }}</p></div>#}
             {#              <div class="col-6">Status: <p>{{ drink.get_status_display }}</p></div>#}
@@ -98,8 +86,4 @@
       </div>
     {% endfor %}
   </div>
-{% endblock %}
-{% block js %}
-  <script src="{% static 'js/plugins/sweetalert2.all.min.js' %}"></script>
-  <script src="{% static 'js/customer/api_method.js' %}" type="text/javascript"></script>
 {% endblock %}

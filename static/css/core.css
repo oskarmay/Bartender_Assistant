@@ -1,6 +1,7 @@
-.footer-color   {
+.footer-color {
     background: whitesmoke;
 }
+
 .c-body {
     /*background: #ebebeb; #TODO Naprawić tło core templatki*/
 }
@@ -10,5 +11,14 @@
 }
 
 .required {
-    font-size:2.5vmin ;
+    font-size: 2.5vmin;
+}
+
+.core_image_frame {
+    height: 24vmax;
+}
+
+.core_image_sizes {
+    height: 20vmax;
+    width: auto;
 }

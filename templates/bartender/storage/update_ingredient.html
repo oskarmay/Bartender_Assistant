@@ -1,6 +1,6 @@
 {% extends "bartender/base.html" %}
 {% load static %}
-{% block title %}Magazyn{% endblock %}
+{% block title %}Magazyn - Aktualizuj składnik{% endblock %}
 
 {% block content %}
   <div class="row">
@@ -12,13 +12,11 @@
           {% csrf_token %}
           {{ form.id }}
           <div class="row pb-3">
-            <div class="col text-center">
+            <div class="col text-center core_image_frame">
               {% if form.image.value %}
-                <img class="card-img-top" src="{{ form.image.value.url }}" alt="{{ form.image.name }}"
-                     style="max-height: 20vw; width: auto">
+                <img class="card-img-top core_image_sizes" src="{{ form.image.value.url }}" alt="{{ form.image.name }}">
               {% else %}
-                <img class="card-img-top" src="{% static 'img/no-image-available.jpg' %}" alt="No image available"
-                     style="max-height: 15vw; width: auto">
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}" alt="No image available">
               {% endif %}
             </div>
           </div>

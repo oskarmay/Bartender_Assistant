@@ -1,6 +1,6 @@
 {% extends "customer/base.html" %}
 {% load static %}
-{% block title %}Drink{% endblock %}
+{% block title %}Lista Drinków{% endblock %}
 
 
 {% block content %}
@@ -11,18 +11,16 @@
     {% for drink in drinks %}
       <div class="col-12 col-lg-4 d-flex align-items-stretch">
         <div class="card rounded" style="font-size:2vmin">
-          <div class="card-body text-center">
+          <div class="card-body text-center core_image_frame">
             {% if drink.image %}
-              <img class="card-img-top" src="{{ drink.image.url }}" alt="{{ drink.name }}"
-                   style="max-height: 15vw; width: auto">
+              <img class="card-img-top core_image_sizes" src="{{ drink.image.url }}" alt="{{ drink.name }}">
             {% else %}
-              <img class="card-img-top" src="{% static 'img/no-image-available.jpg' %}" alt="No image available"
-                   style="max-height: 15vw; width: auto">
+              <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}" alt="No image available">
             {% endif %}
           </div>
           <div class="card-body">
             <div class="card-text text-center">
-              <button type="submit" onclick="orderDrink({{ drink.id }})" class="btn btn-success">Zamów</button>
+              <button type="submit" onclick="orderDrink({{ drink.id }})" class="btn btn-success btn-lg">Zamów</button>
             </div>
             <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
             <div class="card-text">Składniki:
