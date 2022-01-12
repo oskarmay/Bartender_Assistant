@@ -1,10 +1,10 @@
 from django.urls import path
 
-from customer.api_views import CancelOrderedDrinkApiView, OrderDrinkApiView
+from customer.api_views import CancelOrderApiView, CreateOrderApiView
 from customer.views import (
-    DrinkListView,
     HistoryOrdersListView,
     HomeView,
+    MenuListView,
     OrdersListView,
     SetTable,
 )
@@ -17,14 +17,14 @@ urlpatterns = [
         name="home",
     ),
     path(
-        "api/order_drink",
-        OrderDrinkApiView.as_view(),
-        name="api_customer_order_drink",
+        "api/create_order",
+        CreateOrderApiView.as_view(),
+        name="api_customer_create_order",
     ),
     path(
-        "api/cancel_order_drink",
-        CancelOrderedDrinkApiView.as_view(),
-        name="api_customer_cancel_ordered_drink",
+        "api/cancel_order",
+        CancelOrderApiView.as_view(),
+        name="api_customer_cancel_order",
     ),
     path(
         "set_table",
@@ -32,9 +32,9 @@ urlpatterns = [
         name="set_table",
     ),
     path(
-        "drink_list",
-        DrinkListView.as_view(),
-        name="drink_list",
+        "menu",
+        MenuListView.as_view(),
+        name="menu",
     ),
     path(
         "orders_list/current",

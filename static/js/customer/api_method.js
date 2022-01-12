@@ -1,7 +1,24 @@
 const csrftoken = getCookie('csrftoken');
 
-function orderDrink(drink_id) {
-    fetch('api/order_drink', {
+function PromptCancelOrder(ordered_id) {
+    Swal.fire({
+        title: 'Anulowanie zamówienia?',
+        text: "Czy na pewno chcesz anulować zamówienie?",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonText: "Nie",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Tak, anuluj!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            CancelOrder(ordered_id)
+        }
+    })
+}
+
+function createOrder(order_id, is_drink) {
+    fetch('/customer/api/create_order', {
         method: 'POST',
         mode: 'same-origin',
         headers: {
@@ -10,7 +27,8 @@ function orderDrink(drink_id) {
             'X-CSRFToken': csrftoken
         },
         body: JSON.stringify({
-            "drink_id": drink_id,
+            "order_id": order_id,
+            "is_drink": is_drink,
         }),
     })
         .then(response => response)
@@ -28,7 +46,7 @@ function orderDrink(drink_id) {
                                 icon: 'warning',
                                 title: 'Ktoś chce szybko skończyć wieczór',
                                 text: 'Mamy limit aktualnie obsługiwanych zamówień (4 na klienta). ' +
-                                    'Poczekaj na swoje zamówienia lub anuluj jedno ze statusem utorzono.',
+                                    'Poczekaj na swoje zamówienia lub anuluj jedno ze statusem utworzono.',
                             })
                         }
 
@@ -43,26 +61,9 @@ function orderDrink(drink_id) {
             }
         })
 }
-temp = " (\" + ordered_drink_name + \")\""
-function PromptCancelOrderedDrink(ordered_drink_id) {
-    Swal.fire({
-        title: 'Anulowanie zamówienia?',
-        text: "Czy na pewno chcesz anulować zamówienie?",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: "Nie",
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Tak, anuluj!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            CancelOrderedDrink(ordered_drink_id)
-        }
-    })
-}
 
-function CancelOrderedDrink(ordered_drink_id) {
-    fetch('api/cancel_order_drink', {
+function CancelOrder(ordered_id) {
+    fetch('/customer/api/cancel_order', {
         method: 'POST',
         mode: 'same-origin',
         headers: {
@@ -71,7 +72,7 @@ function CancelOrderedDrink(ordered_drink_id) {
             'X-CSRFToken': csrftoken
         },
         body: JSON.stringify({
-            "ordered_drink_id": ordered_drink_id,
+            "ordered_id": ordered_id,
         }),
     })
         .then(response => response)
@@ -83,7 +84,9 @@ function CancelOrderedDrink(ordered_drink_id) {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Anulowano zamówienie',
-                            }).then(ref => {window.location.reload()})
+                            }).then(ref => {
+                                window.location.reload()
+                            })
                         } else if (data.status === "too_late_to_cancel_order") {
                             Swal.fire({
                                 icon: 'warning',

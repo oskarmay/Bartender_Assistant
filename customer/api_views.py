@@ -5,49 +5,57 @@ from rules.contrib.views import PermissionRequiredMixin
 from core.models import Drink, Orders
 
 
-class OrderDrinkApiView(PermissionRequiredMixin, APIView):
-    """Api endpoint for customer drink order."""
+class CreateOrderApiView(PermissionRequiredMixin, APIView):
+    """Api endpoint for customer orders order."""
 
     permission_required = "customer"
 
     def post(self, request):
-        """Create drink order and return result status.."""
+        """Create orders order and return result status.."""
 
-        drink_id = request.data["drink_id"]
+        order_id = request.data["order_id"]
+        is_drink = request.data["is_drink"]
         user = request.user
-        drink = Drink.objects.get(pk=drink_id)
-        user_drink_orders = Orders.objects.filter(
+        user_orders = Orders.objects.filter(
             status__in=[
                 Orders.OrdersStatus.CREATED,
                 Orders.OrdersStatus.ACCEPTED,
                 Orders.OrdersStatus.IN_PROGRESS,
-            ]
+            ],
+            user=user,
         )
-        if user_drink_orders.count() < 4:
-            Orders.objects.create(
-                user=user, drink=drink, status=Orders.OrdersStatus.CREATED
-            )
+
+        if user_orders.count() < 5:
+            if is_drink:
+                Orders.objects.create(
+                    user=user, drink_id=order_id, status=Orders.OrdersStatus.CREATED
+                )
+            else:
+                Orders.objects.create(
+                    user=user,
+                    storage_order_id=order_id,
+                    status=Orders.OrdersStatus.CREATED,
+                )
             response_data = {"status": "order_created"}
         else:
             response_data = {"status": "too_many_orders"}
         return JsonResponse(response_data)
 
 
-class CancelOrderedDrinkApiView(PermissionRequiredMixin, APIView):
-    """Api endpoint for customer cancel drink ordered."""
+class CancelOrderApiView(PermissionRequiredMixin, APIView):
+    """Api endpoint for customer cancel orders ordered."""
 
     permission_required = "customer"
 
     def post(self, request):
-        """Cancel ordered drink and return result status."""
+        """Cancel ordered orders and return result status."""
 
-        drink_id = request.data["ordered_drink_id"]
+        ordered_id = request.data["ordered_id"]
         user = request.user
         try:
-            ordered_drink = Orders.objects.get(id=drink_id, user=user)
+            ordered_drink = Orders.objects.get(id=ordered_id, user=user)
             if ordered_drink.is_created:
                 ordered_drink.set_canceled()
-                ordered_drink.save()
                 response_data = {"status": "order_canceled"}
             else:
                 response_data = {"status": "too_late_to_cancel_order"}

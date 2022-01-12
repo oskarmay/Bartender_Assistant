@@ -450,7 +450,7 @@ class Orders(models.Model):
     def set_accepted(self):
         """Set drink in queue status to accepted."""
         self.status = self.OrdersStatus.ACCEPTED
-        # self.drink.make_a_drink()
+        # self.drink.make_a_drink()  # TODO Sprawdzic czemu to jest zakomentowane
         self.save()
 
     def set_in_progress(self):

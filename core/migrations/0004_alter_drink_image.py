@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0003_alter_ingredientstorage_image'),
+        ("core", "0003_alter_ingredientstorage_image"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='drink',
-            name='image',
-            field=models.FileField(blank=True, null=True, upload_to='drinks', verbose_name='drink image'),
+            model_name="orders",
+            name="image",
+            field=models.FileField(
+                blank=True, null=True, upload_to="drinks", verbose_name="orders image"
+            ),
         ),
     ]
