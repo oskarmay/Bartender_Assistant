@@ -1,0 +1,179 @@
+{% extends "bartender/base.html" %}
+{% load static %}
+{% block title %}Kolejka Zamówień{% endblock %}
+
+
+{% block content %}
+  <div class="row justify-content-center"><h3>Aktualne Zamówienia</h3></div>
+
+  {# orders with status in progress #}
+  <div class="row"><h4>W trakcie przygotowania</h4></div>
+  <div class="row">
+    {% for order in orders_in_progress %}
+      <div class="col-12 col-lg-4 d-flex align-items-stretch">
+        <div class="card rounded" style="font-size:2vmin">
+          <div class="card-body">
+            <div class="card-text text-center">
+              <button type="submit" onclick="completesOrder({{ order.id }})" class="btn btn-success btn-block">
+                Ukończ
+              </button>
+            </div>
+            <div class="card-text">Nazwa:
+              <p>
+                {% if order.drink %}{{ order.drink.name }}{% elif order.storage_order.name %}
+                  {{ order.storage_order.name }}{% endif %}
+              </p>
+            </div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Data zamówienia: <p>{{ order.order_date }}</p></div>
+                <div class="col-6">Status: <p>{{ order.get_status_display }}</p></div>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Typ: <p>{{ order.drink.get_type_display }}</p></div>
+                <div class="col-6">Cena: <p>{{ order.drink.price }}</p></div>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Użytkownik: <p>{{ order.user.username }}</p></div>
+                <div class="col-6">Stolik: <p>{{ order.user.customer_table }}</p></div>
+              </div>
+            </div>
+            {% if order.drink %}
+              <div class="card-text">Składniki:
+                {% for ingredeint in order.drink.ingredient_needed.all %}
+                  <p>- {{ ingredeint.storage_ingredient.name }}</p>
+                {% empty %}
+                  <p>Nie przypisano składników</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col text-center">
+        <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
+      </div>
+    {% endfor %}
+  </div>
+  {# END of in progress orders #}
+
+  {# orders with status accepted #}
+  <div class="row"><h4>Zaakceptowane</h4></div>
+  <div class="row">
+    {% for order in orders_accepted %}
+      <div class="col-12 col-lg-4 d-flex align-items-stretch">
+        <div class="card rounded" style="font-size:2vmin">
+          <div class="card-body">
+            <div class="card-text text-center">
+              <button type="submit" onclick="inProgressOrder({{ order.id }})" class="btn btn-success btn-block">
+                Rozpocznij
+              </button>
+            </div>
+            <div class="card-text">Nazwa: <p>
+              {% if order.drink %}{{ order.drink.name }}{% elif order.storage_order.name %}
+                {{ order.storage_order.name }}{% endif %}</p></div>
+            <div class="card-text">
+
+              <div class="row">
+                <div class="col-6">Data zamówienia: <p>{{ order.order_date }}</p></div>
+                <div class="col-6">Status: <p>{{ order.get_status_display }}</p></div>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Typ: <p>{{ order.drink.get_type_display }}</p></div>
+                <div class="col-6">Cena: <p>{{ order.drink.price }}</p></div>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Użytkownik: <p>{{ order.user.username }}</p></div>
+                <div class="col-6">Stolik: <p>{{ order.user.customer_table }}</p></div>
+              </div>
+            </div>
+            {% if order.drink %}
+              <div class="card-text">Składniki:
+                {% for ingredeint in order.drink.ingredient_needed.all %}
+                  <p>- {{ ingredeint.storage_ingredient.name }}</p>
+                {% empty %}
+                  <p>Nie przypisano składników</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col text-center">
+        <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
+      </div>
+    {% endfor %}
+  </div>
+  {# END of accepted orders #}
+
+  {# orders with status created #}
+  <div class="row"><h4>Utworzone</h4></div>
+  <div class="row">
+    {% for order in orders_created %}
+      <div class="col-12 col-lg-4 d-flex align-items-stretch">
+        <div class="card rounded" style="font-size:2vmin">
+          <div class="card-body">
+            <div class="card-text text-center">
+              <button type="submit" onclick="promptRejectOrder({{ order.id }})" class="btn btn-warning btn-block">
+                Odrzuć
+              </button>
+              <button type="submit" onclick="acceptOrder({{ order.id }})" class="btn btn-success btn-block">
+                Zaakceptuj
+              </button>
+            </div>
+            <div class="card-text">Nazwa: <p>
+              {% if order.drink %}{{ order.drink.name }}{% elif order.storage_order.name %}
+                {{ order.storage_order.name }}{% endif %}</p></div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Data zamówienia: <p>{{ order.order_date }}</p></div>
+                <div class="col-6">Status: <p>{{ order.get_status_display }}</p></div>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Typ: <p>{{ order.drink.get_type_display }}</p></div>
+                <div class="col-6">Cena: <p>{{ order.drink.price }}</p></div>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="row">
+                <div class="col-6">Użytkownik: <p>{{ order.user.username }}</p></div>
+                <div class="col-6">Stolik: <p>{{ order.user.customer_table }}</p></div>
+              </div>
+            </div>
+            {% if order.drink %}
+              <div class="card-text">Składniki:
+                {% for ingredeint in order.drink.ingredient_needed.all %}
+                  <p>- {{ ingredeint.storage_ingredient.name }}</p>
+                {% empty %}
+                  <p>Nie przypisano składników</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col text-center">
+        <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
+      </div>
+    {% endfor %}
+  </div>
+  {# END of created orders #}
+
+{% endblock %}
+{% block js %}
+  <script src="{% static 'js/plugins/sweetalert2.all.min.js' %}"></script>
+  <script src="{% static 'js/bartender/api_method.js' %}" type="text/javascript"></script>
+{% endblock %}

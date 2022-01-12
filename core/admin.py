@@ -195,8 +195,8 @@ class OrdersAdmin(admin.ModelAdmin):
         "drink",
         "storage_order",
         "status",
-        "order_date",
     )
+    readonly_fields = ("order_date",)
     list_display = (
         "user",
         "drink",

@@ -8,13 +8,25 @@ class IngredientStorageForm(forms.ModelForm):
 
     class Meta:
         model = IngredientStorage
-        fields = ["name", "type", "unit", "storage_amount", "image"]
+        fields = [
+            "name",
+            "type",
+            "unit",
+            "storage_amount",
+            "price",
+            "has_alcohol",
+            "can_be_ordered",
+            "image",
+        ]
         label = {
             "name": ("Nazwa"),
             "type": ("Typ"),
             "unit": ("Jednostka"),
             "image": ("Zdjęcie"),
             "storage_amount": ("Liczba w magazynie"),
+            "price": ("Cena"),
+            "has_alcohol": ("Posiada alkohol?"),
+            "can_be_ordered": ("Do zamówienia?"),
         }
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control"}),
@@ -25,6 +37,9 @@ class IngredientStorageForm(forms.ModelForm):
                 choices=IngredientStorage.Units.choices, attrs={"class": "form-control"}
             ),
             "storage_amount": forms.NumberInput(attrs={"class": "form-control"}),
+            "price": forms.NumberInput(attrs={"class": "form-control"}),
+            "has_alcohol": forms.CheckboxInput(attrs={"class": "form-control"}),
+            "can_be_ordered": forms.CheckboxInput(attrs={"class": "form-control"}),
             "image": forms.ClearableFileInput(
                 attrs={"class": "form-control form-control-sm"}
             ),

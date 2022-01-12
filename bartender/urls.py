@@ -1,5 +1,11 @@
 from django.urls import path
 
+from bartender.api_views import (
+    AcceptOrderApiView,
+    CompleteOrderApiView,
+    RejectOrderApiView,
+    SetInProgressOrderApiView,
+)
 from bartender.views import (
     DrinkCreateView,
     DrinkDeleteView,
@@ -10,6 +16,7 @@ from bartender.views import (
     IngredientNeededCreateView,
     IngredientNeededDeleteView,
     IngredientNeededUpdateView,
+    OrdersListView,
     StorageIngredientCreateView,
     StorageIngredientDeleteView,
     StorageIngredientListView,
@@ -22,6 +29,26 @@ urlpatterns = [
         "",
         HomeView.as_view(),
         name="home",
+    ),
+    path(
+        "api/reject_order",
+        RejectOrderApiView.as_view(),
+        name="api_reject_order",
+    ),
+    path(
+        "api/accept_order",
+        AcceptOrderApiView.as_view(),
+        name="api_accept_order",
+    ),
+    path(
+        "api/in_progress_order",
+        SetInProgressOrderApiView.as_view(),
+        name="api_in_progress_order",
+    ),
+    path(
+        "api/complete_order",
+        CompleteOrderApiView.as_view(),
+        name="api_complete_order",
     ),
     path(
         "storage_ingredient_list",
@@ -82,5 +109,10 @@ urlpatterns = [
         "ingredient_needed/<int:pk>/delete_ingredient_needed",
         IngredientNeededDeleteView.as_view(),
         name="delete_ingredient_needed",
+    ),
+    path(
+        "orders_list",
+        OrdersListView.as_view(),
+        name="orders_list",
     ),
 ]
