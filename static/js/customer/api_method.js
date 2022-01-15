@@ -40,6 +40,8 @@ function createOrder(order_id, is_drink) {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Złożono zamówienie',
+                            }).then(ref => {
+                                window.location.reload()
                             })
                         } else if (data.status === "too_many_orders") {
                             Swal.fire({

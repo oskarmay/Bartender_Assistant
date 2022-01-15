@@ -21,7 +21,7 @@
                 </label>
               </div>
               <div class="col-lg-8 col-7">
-                {% if field.name == "orders" and drink %}
+                {% if field.name == "drink" and drink %}
                   <input type="hidden" id="id_drink" name="drink" value="{{ drink.id }}">
                   <p class="form-control">{{ drink }}</p>
                 {% else %}
