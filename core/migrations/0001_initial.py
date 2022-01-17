@@ -187,7 +187,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "verbose_name": "orders",
+                "verbose_name": "drink",
                 "verbose_name_plural": "drinks",
             },
         ),
@@ -273,12 +273,12 @@ class Migration(migrations.Migration):
                 ),
                 ("is_enough_to_make_drink", models.BooleanField(default=False)),
                 (
-                    "orders",
+                    "drink",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name="ingredient_needed",
-                        to="core.orders",
-                        verbose_name="orders",
+                        to="core.drink",
+                        verbose_name="drink",
                     ),
                 ),
                 (
@@ -323,12 +323,12 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "orders",
+                    "drink",
                     models.ForeignKey(
                         null=True,
                         on_delete=django.db.models.deletion.SET_NULL,
                         related_name="drink_queue",
-                        to="core.orders",
+                        to="core.drink",
                         verbose_name="order",
                     ),
                 ),

@@ -34,19 +34,19 @@ class Migration(migrations.Migration):
             name="is_customer",
         ),
         migrations.AddField(
-            model_name="orders",
+            model_name="drink",
             name="amount",
             field=models.PositiveIntegerField(default=1, verbose_name="amount"),
         ),
         migrations.AddField(
-            model_name="orders",
+            model_name="drink",
             name="image",
             field=models.FileField(
-                null=True, upload_to="drinks", verbose_name="orders image"
+                null=True, upload_to="drinks", verbose_name="drink image"
             ),
         ),
         migrations.AddField(
-            model_name="orders",
+            model_name="drink",
             name="preparation_description",
             field=models.CharField(
                 default=None, max_length=1024, verbose_name="preparation description"
@@ -54,12 +54,12 @@ class Migration(migrations.Migration):
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name="orders",
+            model_name="drink",
             name="price",
             field=models.PositiveIntegerField(default=0, verbose_name="price"),
         ),
         migrations.AddField(
-            model_name="orders",
+            model_name="drink",
             name="type",
             field=models.CharField(
                 choices=[
@@ -94,12 +94,12 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AlterField(
-            model_name="orders",
+            model_name="drink",
             name="date_creation",
             field=models.DateField(auto_now_add=True, verbose_name="date created"),
         ),
         migrations.AlterField(
-            model_name="orders",
+            model_name="drink",
             name="date_modified",
             field=models.DateField(auto_now=True, verbose_name="date modified"),
         ),

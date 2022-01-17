@@ -45,13 +45,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name="drinkqueue",
-            name="orders",
+            name="drink",
             field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
                 related_name="drink_queue",
-                to="core.orders",
+                to="core.drink",
                 verbose_name="order",
             ),
         ),

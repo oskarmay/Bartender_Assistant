@@ -11,10 +11,10 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name="orders",
+            model_name="drink",
             name="image",
             field=models.FileField(
-                blank=True, null=True, upload_to="drinks", verbose_name="orders image"
+                blank=True, null=True, upload_to="drinks", verbose_name="drink image"
             ),
         ),
     ]
