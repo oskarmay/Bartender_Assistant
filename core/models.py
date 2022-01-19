@@ -156,7 +156,7 @@ class Drink(models.Model):
             # Append ingredient needed status to list
             ingredient_status_list.append(ingredient.is_enough_to_make_drink)
 
-        # Check if one of ingredient status was False (not enough to make drink)
+        # Check if one of ingredient status was False (not enough to make drink) # TODO Możliwe że mogę użyć annotate
         if False in ingredient_status_list:
             # If drink already has status impossible to make we dont need to modify field
             if self.is_possible_to_make:
@@ -170,19 +170,18 @@ class Drink(models.Model):
                 self.save()
             return True
 
-    def make_a_drink(self):
-        """Function with logic to subtract ingredient change ingredient amount status"""
-
+    def make_or_abort_a_drink(self, make: bool = True):
+        """Function with logic to subtract ingredients amount"""
         # Get all ingredient related to drink
         ingredient_needed = IngredientNeeded.objects.filter(drink=self).select_related(
             "storage_ingredient"
         )
         [ing.if_enough_ingredient_in_storage() for ing in ingredient_needed]
         ingredient_list = [ing.is_enough_to_make_drink for ing in ingredient_needed]
-        if False not in ingredient_list:
-            for ingredient in ingredient_needed:
-                # Subtract ingredient from storage
-                ingredient.subtract_ingredient()
+        if False not in ingredient_list and make:
+            [ing.subtract_ingredient() for ing in ingredient_needed]
+        else:
+            [ing.return_ingredient_amount_to_storage() for ing in ingredient_needed]
 
         # Check if we have enough ingredient left to make another drink
         self.check_if_is_possible_to_make_and_update_status()
@@ -251,12 +250,17 @@ class IngredientStorage(models.Model):
         blank=True,
     )
 
-    storage_amount = models.DecimalField(
-        max_digits=20,
-        decimal_places=3,
+    storage_amount = models.PositiveIntegerField(
         blank=False,
-        validators=[MinValueValidator(Decimal("0"))],
         verbose_name=pgettext_lazy("ingredient_storage", "amount in storage"),
+    )
+
+    storage_amount_calculation_margin = models.PositiveIntegerField(
+        blank=True,
+        default=0,
+        verbose_name=pgettext_lazy(
+            "ingredient_storage", "calculation margin of amount in storage"
+        ),
     )
 
     price = models.PositiveIntegerField(
@@ -278,16 +282,40 @@ class IngredientStorage(models.Model):
         verbose_name=pgettext_lazy("ingredient_storage", "can be ordered"),
     )
 
+    @property
+    def amount_of_ingredient_in_storage(self):
+        """Return storage ingredient amount minus margin"""
+        return self.storage_amount - self.storage_amount_calculation_margin
+
     def update_amount_ingredients(self):
         IngredientNeeded.objects.filter(storage_ingredient=self).update(
             is_enough_to_make_drink=Case(
-                When(amount__lte=self.storage_amount, then=True),
-                When(amount__gt=self.storage_amount, then=False),
+                When(amount__lte=self.amount_of_ingredient_in_storage, then=True),
+                When(amount__gt=self.amount_of_ingredient_in_storage, then=False),
             )
         )
 
+    def update_drink_possibility_to_make(self):
+        """Update drink field of is possible to make."""
+
+        [
+            drink.check_if_is_possible_to_make_and_update_status()
+            for drink in Drink.objects.filter(
+                ingredient_needed__storage_ingredient=self
+            )
+        ]
+
+    def change_amount(self, add=True):
+        """For orders other than drink."""
+
+        if add:
+            self.storage_amount += 1
+        else:
+            self.storage_amount -= 1
+
     def save(self, *args, **kwargs):
         self.update_amount_ingredients()
+        self.update_drink_possibility_to_make()
         super().save(*args, **kwargs)
 
     class Meta:
@@ -298,7 +326,9 @@ class IngredientStorage(models.Model):
 
     def __str__(self):
         return ugettext_lazy("{name}: {amount} ({unit})").format(
-            name=self.name, amount=self.storage_amount, unit=self.get_unit_display()
+            name=self.name,
+            amount=self.amount_of_ingredient_in_storage,
+            unit=self.get_unit_display(),
         )
 
 
@@ -330,19 +360,30 @@ class IngredientNeeded(models.Model):
     is_enough_to_make_drink = models.BooleanField(default=False)
 
     def if_enough_ingredient_in_storage(self):
-        return self.amount < self.storage_ingredient.storage_amount
+        return self.amount <= self.storage_ingredient.amount_of_ingredient_in_storage
 
     def subtract_ingredient(self):
         """Function for subtract used ingredient"""
+
         if self.if_enough_ingredient_in_storage():
             # Calculate new storage amount
             self.storage_ingredient.storage_amount -= self.amount
             self.storage_ingredient.save()
         return self.if_enough_ingredient_in_storage()
 
+    def return_ingredient_amount_to_storage(self):
+        """Function for add not used ingredient"""
+
+        # Calculate new storage amount
+        self.storage_ingredient.storage_amount += self.amount
+        self.storage_ingredient.save()
+
+        return self.if_enough_ingredient_in_storage()
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.is_enough_to_make_drink = self.if_enough_ingredient_in_storage()
+            self.drink.check_if_is_possible_to_make_and_update_status()
         super().save(*args, **kwargs)
 
     class Meta:
@@ -444,13 +485,19 @@ class Orders(models.Model):
 
     def set_created(self):
         """Set drink in queue status to created."""
+
+        if self.drink:
+            self.drink.make_or_abort_a_drink()
+
+        if self.storage_order:
+            self.storage_order.change_amount(add=False)
+
         self.status = self.OrdersStatus.CREATED
         self.save()
 
     def set_accepted(self):
         """Set drink in queue status to accepted."""
         self.status = self.OrdersStatus.ACCEPTED
-        # self.drink.make_a_drink()  # TODO Sprawdzic czemu to jest zakomentowane
         self.save()
 
     def set_in_progress(self):
@@ -465,11 +512,25 @@ class Orders(models.Model):
 
     def set_rejected(self):
         """Set drink in queue status to rejected."""
+
+        if self.drink:
+            self.drink.make_or_abort_a_drink(make=False)
+
+        if self.storage_order:
+            self.storage_order.change_amount(add=True)
+
         self.status = self.OrdersStatus.REJECTED
         self.save()
 
     def set_canceled(self):
         """Set drink in queue status to rejected."""
+
+        if self.drink:
+            self.drink.make_or_abort_a_drink(make=False)
+
+        if self.storage_order:
+            self.storage_order.change_amount(add=True)
+
         self.status = self.OrdersStatus.CANCELED
         self.save()
 
