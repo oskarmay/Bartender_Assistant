@@ -88,7 +88,7 @@ function acceptOrder(order_id) {
             if (res.status === 200) {
                 return res.json()
                     .then(data => {
-                        console.log(data)
+                        console.log(data)  // TODO debug only
                         if (data.status === "order_accepted") {
                             Swal.fire({
                                 icon: 'success',

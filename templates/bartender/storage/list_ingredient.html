@@ -18,12 +18,14 @@
               {% if ingredient.image %}
                 <img class="card-img-top core_image_sizes" src="{{ ingredient.image.url }}" alt="{{ ingredient.name }}">
               {% else %}
-                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}" alt="No image available">
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
               {% endif %}
             </div>
             <div class="card-body">
               <div class="card-text">Liczba:
-                <p>{{ ingredient.storage_amount|floatformat:"-3" }} {{ ingredient.get_unit_display }}</p>
+                <p>{{ ingredient.storage_amount }}
+                  +/- {{ ingredient.storage_amount_calculation_margin }} {{ ingredient.get_unit_display }}</p>
               </div>
               <div class="card-text">Nazwa: <p>{{ ingredient.name }}</p></div>
               <div class="card-text">Typ: <p>{{ ingredient.get_type_display }}</p></div>

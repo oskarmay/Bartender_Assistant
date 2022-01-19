@@ -50,6 +50,22 @@ function createOrder(order_id, is_drink) {
                                 text: 'Mamy limit aktualnie obsługiwanych zamówień (4 na klienta). ' +
                                     'Poczekaj na swoje zamówienia lub anuluj jedno ze statusem utworzono.',
                             })
+                        } else if (data.status === "not_enough_storage_amount") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Brak towaru',
+                                text: 'Wygląda na to że wszystko wyszło i nie wróci. Odświeżymy stronę by zobaczyć czy coś jeszcze nie znikneło.',
+                            }).then(ref => {
+                                window.location.reload()
+                            })
+                        } else if (data.status === "not_enough_ingredient") {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Brak składników',
+                                text: 'Wygląda na to że nie mamy już składników na tego drinka. Odświeżymy stronę by zobaczyć czy coś jeszcze nie znikneło.',
+                            }).then(ref => {
+                                window.location.reload()
+                            })
                         }
 
                     })
