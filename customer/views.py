@@ -45,7 +45,7 @@ class MenuListView(PermissionRequiredMixin, ListView):
                 "ingredient_needed", "ingredient_needed__storage_ingredient"
             )
             .order_by("name")
-            # .filter(is_possible_to_make=True)  # TODO uncomment after creating small db
+            .filter(is_possible_to_make=True)
         )
 
     def get_context_data(self, *, object_list=None, **kwargs):

@@ -38,6 +38,7 @@ class AcceptOrderApiView(PermissionRequiredMixin, APIView):
         order_id = request.data["order_id"]
         try:
             ordered_drink = Orders.objects.get(id=order_id)
+
             if ordered_drink.is_created:
                 ordered_drink.set_accepted()
                 response_data = {"status": "order_accepted"}

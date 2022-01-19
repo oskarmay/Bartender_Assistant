@@ -13,6 +13,7 @@ class IngredientStorageForm(forms.ModelForm):
             "type",
             "unit",
             "storage_amount",
+            "storage_amount_calculation_margin",
             "price",
             "has_alcohol",
             "can_be_ordered",
@@ -24,6 +25,7 @@ class IngredientStorageForm(forms.ModelForm):
             "unit": ("Jednostka"),
             "image": ("Zdjęcie"),
             "storage_amount": ("Liczba w magazynie"),
+            "storage_amount_calculation_margin": ("Margines błędu"),
             "price": ("Cena"),
             "has_alcohol": ("Posiada alkohol?"),
             "can_be_ordered": ("Do zamówienia?"),
@@ -37,6 +39,9 @@ class IngredientStorageForm(forms.ModelForm):
                 choices=IngredientStorage.Units.choices, attrs={"class": "form-control"}
             ),
             "storage_amount": forms.NumberInput(attrs={"class": "form-control"}),
+            "storage_amount_calculation_margin": forms.NumberInput(
+                attrs={"class": "form-control"}
+            ),
             "price": forms.NumberInput(attrs={"class": "form-control"}),
             "has_alcohol": forms.CheckboxInput(attrs={"class": "form-control"}),
             "can_be_ordered": forms.CheckboxInput(attrs={"class": "form-control"}),
