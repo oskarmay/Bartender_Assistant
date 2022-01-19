@@ -14,7 +14,7 @@
         <div class="col-12 col-lg-6 d-flex align-items-stretch">
           <div class="card rounded" style="font-size:2vmin">
             <div class="card-body text-center core_image_frame">
-              {% if drink.drink.image %}
+              {% if order_drink.drink.image %}
                 <img class="card-img-top core_image_sizes" src="{{ order_drink.drink.image.url }}"
                      alt="{{ order_drink.drink.name }}">
               {% else %}
@@ -65,9 +65,9 @@
         <div class="col-12 col-lg-6 d-flex align-items-stretch">
           <div class="card rounded" style="font-size:2vmin">
             <div class="card-body text-center core_image_frame">
-              {% if drink.drink.image %}
+              {% if order_other.storage_order.image %}
                 <img class="card-img-top core_image_sizes" src="{{ order_other.storage_order.image.url }}"
-                     alt="{{ drink.drink.name }}">
+                     alt="{{ order_other.storage_order.name }}">
               {% else %}
                 <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
                      alt="No image available">
