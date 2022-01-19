@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rules.contrib.views import PermissionRequiredMixin
 
-from core.models import Drink, Orders
+from core.models import Drink, Orders, IngredientStorage
 
 
 class CreateOrderApiView(PermissionRequiredMixin, APIView):
@@ -27,16 +27,31 @@ class CreateOrderApiView(PermissionRequiredMixin, APIView):
 
         if user_orders.count() < 5:
             if is_drink:
-                Orders.objects.create(
-                    user=user, drink_id=order_id, status=Orders.OrdersStatus.CREATED
-                )
+                is_possible_to_make = Drink.objects.get(id=order_id).is_possible_to_make
+                if is_possible_to_make:
+                    drink = Orders.objects.create(
+                        user=user, drink_id=order_id, status=Orders.OrdersStatus.CREATED
+                    )
+                    drink.set_created()
+                    response_data = {"status": "order_created"}
+
+                else:
+                    response_data = {"status": "not_enough_ingredient"}
+
             else:
-                Orders.objects.create(
-                    user=user,
-                    storage_order_id=order_id,
-                    status=Orders.OrdersStatus.CREATED,
-                )
-            response_data = {"status": "order_created"}
+                storage_order_amount = IngredientStorage.objects.get(
+                    id=order_id
+                ).amount_of_ingredient_in_storage
+                if storage_order_amount > 0:
+                    Orders.objects.create(
+                        user=user,
+                        storage_order_id=order_id,
+                        status=Orders.OrdersStatus.CREATED,
+                    )
+                    response_data = {"status": "order_created"}
+                else:
+                    response_data = {"status": "not_enough_storage_amount"}
+
         else:
             response_data = {"status": "too_many_orders"}
         return JsonResponse(response_data)
