@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.generic import TemplateView
@@ -9,6 +10,18 @@ from core.forms import CustomChangePasswordForm
 
 class HomeView(TemplateView):
     template_name = "core/home.html"
+
+
+def error_404(request, exception):
+    return render(request, "core/404.html")
+
+
+def error_403(request, exception):
+    return render(request, "core/404.html")
+
+
+def error_500(request):
+    return render(request, "core/500.html")
 
 
 class CustomLoginView(auth_views.LoginView):
