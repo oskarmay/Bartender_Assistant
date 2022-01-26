@@ -1,5 +1,9 @@
 const csrftoken = getCookie('csrftoken');
 
+function reloadWindowAndInitValue() {
+    window.location.reload()
+}
+
 function promptRejectOrder(order_id) {
     Swal.fire({
         title: 'Odrzucanie zamówienia?',
@@ -41,7 +45,7 @@ function rejectOrder(order_id) {
                                 icon: 'success',
                                 title: 'Odrzucono zamówienie.',
                             }).then(ref => {
-                                window.location.reload()
+                                reloadWindowAndInitValue()
                             })
                         } else if (data.status === "does_not_exist") {
                             Swal.fire({
@@ -94,7 +98,7 @@ function acceptOrder(order_id) {
                                 icon: 'success',
                                 title: 'Zaakceptowano zamówienie.',
                             }).then(ref => {
-                                window.location.reload()
+                                reloadWindowAndInitValue()
                             })
                         } else if (data.status === "bad_order_status_for_this_action") {
                             Swal.fire({
@@ -146,7 +150,7 @@ function inProgressOrder(order_id) {
                                 icon: 'success',
                                 title: 'Przygotowanie zamówienia.',
                             }).then(ref => {
-                                window.location.reload()
+                                reloadWindowAndInitValue()
                             })
                         } else if (data.status === "bad_order_status_for_this_action") {
                             Swal.fire({
@@ -198,7 +202,7 @@ function completesOrder(order_id) {
                                 icon: 'success',
                                 title: 'Ukońćzono przygotowanie zamówienia.',
                             }).then(ref => {
-                                window.location.reload()
+                                reloadWindowAndInitValue()
                             })
                         } else if (data.status === "bad_order_status_for_this_action") {
                             Swal.fire({
