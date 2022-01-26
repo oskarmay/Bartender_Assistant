@@ -13,15 +13,39 @@ class HomeView(TemplateView):
 
 
 def error_404(request, exception):
-    return render(request, "core/404.html")
+    if request.user.is_customer:
+        base = "customer/base.html"
+    elif request.user.is_bartender:
+        base = "bartender/base.html"
+    else:
+        base = "core/base.html"
+
+    context = {"base_template": base}
+    return render(request, "core/404.html", context)
 
 
 def error_403(request, exception):
-    return render(request, "core/404.html")
+    if request.user.is_customer:
+        base = "customer/base.html"
+    elif request.user.is_bartender:
+        base = "bartender/base.html"
+    else:
+        base = "core/base.html"
+
+    context = {"base_template": base}
+    return render(request, "core/404.html", context)
 
 
 def error_500(request):
-    return render(request, "core/500.html")
+    if request.user.is_customer:
+        base = "customer/base.html"
+    elif request.user.is_bartender:
+        base = "bartender/base.html"
+    else:
+        base = "core/base.html"
+
+    context = {"base_template": base}
+    return render(request, "core/500.html", context)
 
 
 class CustomLoginView(auth_views.LoginView):
