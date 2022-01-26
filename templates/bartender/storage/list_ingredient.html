@@ -4,7 +4,9 @@
 
 {% block content %}
   <div class="row">
-    <a class="btn btn-primary" href="{% url 'bartender:create_ingredient' %}">DODAJ</a>
+    <div class="col-4">
+      <a class="btn btn-primary" href="{% url 'bartender:create_ingredient' %}">DODAJ</a>
+    </div>
   </div>
   <div class="row">
     <p>Tutaj jakieś Filtry w planie</p>

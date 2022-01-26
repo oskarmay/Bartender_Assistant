@@ -21,6 +21,7 @@ from bartender.views import (
     StorageIngredientDeleteView,
     StorageIngredientListView,
     StorageIngredientUpdateView,
+    HistoryOrdersListView,
 )
 
 app_name = "bartender"
@@ -114,5 +115,10 @@ urlpatterns = [
         "orders_list",
         OrdersListView.as_view(),
         name="orders_list",
+    ),
+    path(
+        "history_orders_list",
+        HistoryOrdersListView.as_view(),
+        name="history_orders_list",
     ),
 ]

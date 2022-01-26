@@ -4,7 +4,9 @@
 
 {% block content %}
   <div class="row">
-    <a class="btn btn-primary" href="{% url 'bartender:create_drink' %}">DODAJ</a>
+    <div class="col-4">
+      <a class="btn btn-primary" href="{% url 'bartender:create_drink' %}">DODAJ</a>
+    </div>
   </div>
   <div class="row">
     <p>Tutaj jakieś Filtry w planie</p>
@@ -18,7 +20,8 @@
               {% if drink.image %}
                 <img class="card-img-top core_image_sizes" src="{{ drink.image.url }}" alt="{{ drink.name }}">
               {% else %}
-                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}" alt="No image available">
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
               {% endif %}
             </div>
             <div class="card-body">

@@ -247,42 +247,48 @@ class HistoryOrdersListView(PermissionRequiredMixin, ListView):
     context_object_name = "drinks"
 
     def get_queryset(self):
-        """Qs with currently pending orders orders."""
+        """Empty QS. Everything is in ctx."""
 
-        return (
+        return None
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """Add qs over status to ctx."""
+
+        ctx = super().get_context_data()
+
+        ctx["orders_completed"] = (
             Orders.objects.filter(
-                status__in=[
-                    Orders.OrdersStatus.CANCELED,
-                    Orders.OrdersStatus.REJECTED,
-                    Orders.OrdersStatus.COMPLETED,
-                ],
-                drink__isnull=False,
-                storage_order__isnull=True,
+                status=Orders.OrdersStatus.COMPLETED,
             )
-            .select_related("drink")
+            .select_related("drink", "storage_order", "user")
             .prefetch_related(
                 "drink__ingredient_needed",
                 "drink__ingredient_needed__storage_ingredient",
             )
-            .order_by("-order_date")
+            .order_by("order_date")
         )
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        """Add qs of order other than orders to ctx."""
-
-        ctx = super().get_context_data()
-        ctx["other_orders"] = (
+        ctx["orders_rejected"] = (
             Orders.objects.filter(
-                status__in=[
-                    Orders.OrdersStatus.CANCELED,
-                    Orders.OrdersStatus.REJECTED,
-                    Orders.OrdersStatus.COMPLETED,
-                ],
-                drink__isnull=True,
-                storage_order__isnull=False,
+                status=Orders.OrdersStatus.REJECTED,
             )
-            .select_related("storage_order")
-            .order_by("-order_date")
+            .select_related("drink", "storage_order", "user")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("order_date")
+        )
+        ctx["orders_in_progress"] = (
+            Orders.objects.filter(
+                status=Orders.OrdersStatus.IN_PROGRESS,
+            )
+            .select_related("drink", "storage_order", "user")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("order_date")
         )
 
         return ctx
