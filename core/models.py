@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Case, When
+from django.utils import timezone
 from django.utils.translation import pgettext_lazy, ugettext_lazy
 
 logger = logging.getLogger(__name__)
@@ -59,6 +60,19 @@ class User(AbstractUser):
     @property
     def is_customer(self):
         return self.role == self.Role.CUSTOMER
+
+    @property
+    def is_expired(self):
+        """Check if user account is expired."""
+        if self.expire_date is None:
+            return False
+        this_time = timezone.now()
+        result = this_time > self.expire_date
+        if result:
+            self.username = f"{self.username}&del_{this_time.strftime('%D_%M_%Y')}"  # TODO poprawić zapisy del_
+            self.is_active = False
+            self.save()
+        return result
 
 
 class Drink(models.Model):

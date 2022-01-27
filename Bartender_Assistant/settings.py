@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django_filters",
     "debug_toolbar",
     "crispy_forms",
+    "qr_code",
 ]
 
 AUTHENTICATION_BACKENDS = (

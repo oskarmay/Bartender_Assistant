@@ -3,13 +3,13 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
-from core.views import ChangePasswordView, CustomLoginView, HomeView
+from core.views import ChangePasswordView, CustomLoginView, HomeTemplateView
 
 app_name = "core"
 urlpatterns = [
     path(
         "",
-        HomeView.as_view(),
+        HomeTemplateView.as_view(),
         name="home",
     ),
     path(
