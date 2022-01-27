@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rules.contrib.views import PermissionRequiredMixin
 
-from core.models import Drink, Orders, IngredientStorage
+from core.models import Drink, IngredientStorage, Orders
 
 
 class CreateOrderApiView(PermissionRequiredMixin, APIView):

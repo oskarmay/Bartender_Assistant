@@ -1,7 +1,7 @@
 document.querySelectorAll(".collapseButton").forEach(item => {
     item.addEventListener('click', event => {
         let element_id = item.getAttribute('data-bs-target').replace("#", "")
-        let storage_item = JSON.parse(localStorage.getItem("collapse_list"))
+        let storage_item = JSON.parse(sessionStorage.getItem("collapse_list"))
         if (storage_item === null) {
             storage_item = []
         }
@@ -13,12 +13,12 @@ document.querySelectorAll(".collapseButton").forEach(item => {
         } else {
             storage_item.push(element_id)
         }
-        localStorage.setItem("collapse_list", JSON.stringify(storage_item))
+        sessionStorage.setItem("collapse_list", JSON.stringify(storage_item))
     })
 })
 
 function setCollapseElementShow() {
-    let elements = JSON.parse(localStorage.getItem("collapse_list"))
+    let elements = JSON.parse(sessionStorage.getItem("collapse_list"))
     for (const element of elements) {
         document.getElementById(element).classList.add("show")
     }

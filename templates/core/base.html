@@ -13,7 +13,7 @@
         name='viewport'/>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet"/>
-        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link href="{% static 'css/fontawesome_all.min.css' %}" rel="stylesheet"/>
   <!-- CSS Files -->
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
@@ -43,8 +43,8 @@
               <a class="nav-link" href="{% url 'core:login' %}">Zaloguj <i class="fa fa-sign-out-alt"></i></a>
             </li>
           {% else %}
-            <li class="nav-item m-auto">
-              <a class="nav-item">Aplikacja: {{ request.user.get_role_display }}<br>Użytkownik: {{ request.user.username }}
+            <li class="nav-item ms-2">
+              <a class="nav-item" style="text-decoration: none">Aplikacja: {{ request.user.get_role_display }}<br>Użytkownik: {{ request.user.username }}
                 {% if request.user.is_customer %}
                   <br>Stolik: {{ request.user.customer_table }}
                 {% endif %}
