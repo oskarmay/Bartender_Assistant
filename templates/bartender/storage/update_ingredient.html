@@ -16,7 +16,8 @@
               {% if form.image.value %}
                 <img class="card-img-top core_image_sizes" src="{{ form.image.value.url }}" alt="{{ form.image.name }}">
               {% else %}
-                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}" alt="No image available">
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
               {% endif %}
             </div>
           </div>
@@ -36,9 +37,7 @@
                 {% for error in field.errors %}
                   <div class="alert alert-warning alert-dismissible fade show mt-1 mb-1" role="alert">
                     {{ error }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
                 {% endfor %}
               </div>

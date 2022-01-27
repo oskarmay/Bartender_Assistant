@@ -1,16 +1,24 @@
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
+    FormView,
     ListView,
     TemplateView,
     UpdateView,
 )
 from rules.contrib.views import PermissionRequiredMixin
 
-from bartender.forms import DrinkForm, IngredientNeededForm, IngredientStorageForm
-from core.models import Drink, IngredientNeeded, IngredientStorage, Orders
+from bartender.forms import (
+    CreateCustomerAccountForm,
+    DrinkForm,
+    IngredientNeededForm,
+    IngredientStorageForm,
+)
+from core.models import Drink, IngredientNeeded, IngredientStorage, Orders, User
+from core.utilis import generate_user_with_password
 
 
 class HomeView(PermissionRequiredMixin, TemplateView):
@@ -290,5 +298,53 @@ class HistoryOrdersListView(PermissionRequiredMixin, ListView):
             )
             .order_by("order_date")
         )
+
+        return ctx
+
+
+class CreateCustomerAccountFormView(PermissionRequiredMixin, FormView):
+    """View of history orders list."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/users/create_customer_account.html"
+    form_class = CreateCustomerAccountForm
+
+    def form_valid(self, form):
+        """Generating username and password and creating new customer user.
+        Then redirect to user detail view with user information and login qr code."""
+
+        additional_data = form.cleaned_data["additional_info"]
+        user_data_dict = generate_user_with_password(additional_data)
+        new_account = User.objects.create_user(
+            username=user_data_dict["login"],
+            password=user_data_dict["password"],
+            one_use_account_password=user_data_dict["password"],
+            expire_date=timezone.now() + timezone.timedelta(hours=13),
+            role=User.Role.CUSTOMER,
+        )
+
+        self.success_url = reverse_lazy(
+            "bartender:customer_user_detail", kwargs={"pk": new_account.pk}
+        )
+
+        return super().form_valid(form)
+
+
+class CustomerUserDetailView(PermissionRequiredMixin, DetailView):
+    """View of customer user details plus qr code to direct login."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/users/customer_detail.html"
+    model = User
+    context_object_name = "user"
+
+    def get_context_data(self, **kwargs):
+        """Add to ctx link to direct user login as qr code."""
+
+        ctx = super().get_context_data()
+        host_url = self.request.META["HTTP_HOST"]
+        login_url = reverse_lazy("core:login")
+        query_param = f"?login={self.object.username}&password={self.object.one_use_account_password}"
+        ctx["qr"] = f"{host_url}{login_url}{query_param}"
 
         return ctx

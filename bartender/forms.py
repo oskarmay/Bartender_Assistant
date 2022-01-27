@@ -119,3 +119,18 @@ class IngredientNeededForm(forms.ModelForm):
             "storage_ingredient": forms.Select(attrs={"class": "form-control"}),
             "amount": forms.NumberInput(attrs={"class": "form-control"}),
         }
+
+
+class CreateCustomerAccountForm(forms.Form):
+    """Form for additional information on client username."""
+
+    additional_info = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Imie, Nazwisko, Ksywka etc.",
+            }
+        ),
+        label="Dodatkowe informacje",
+        required=False,
+    )

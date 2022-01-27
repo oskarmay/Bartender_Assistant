@@ -7,11 +7,14 @@ from bartender.api_views import (
     SetInProgressOrderApiView,
 )
 from bartender.views import (
+    CreateCustomerAccountFormView,
+    CustomerUserDetailView,
     DrinkCreateView,
     DrinkDeleteView,
     DrinkDetailView,
     DrinkListView,
     DrinkUpdateView,
+    HistoryOrdersListView,
     HomeView,
     IngredientNeededCreateView,
     IngredientNeededDeleteView,
@@ -21,7 +24,6 @@ from bartender.views import (
     StorageIngredientDeleteView,
     StorageIngredientListView,
     StorageIngredientUpdateView,
-    HistoryOrdersListView,
 )
 
 app_name = "bartender"
@@ -120,5 +122,15 @@ urlpatterns = [
         "history_orders_list",
         HistoryOrdersListView.as_view(),
         name="history_orders_list",
+    ),
+    path(
+        "create_customer_account",
+        CreateCustomerAccountFormView.as_view(),
+        name="create_customer_account",
+    ),
+    path(
+        "create_customer_account/<int:pk>/user_qr",
+        CustomerUserDetailView.as_view(),
+        name="customer_user_detail",
     ),
 ]
