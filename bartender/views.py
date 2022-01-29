@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import (
@@ -17,6 +19,7 @@ from bartender.forms import (
     IngredientNeededForm,
     IngredientStorageForm,
 )
+from core.exceptions import TooManyTry
 from core.models import Drink, IngredientNeeded, IngredientStorage, Orders, User
 from core.utilis import generate_user_with_password
 
@@ -314,7 +317,15 @@ class CreateCustomerAccountFormView(PermissionRequiredMixin, FormView):
         Then redirect to user detail view with user information and login qr code."""
 
         additional_data = form.cleaned_data["additional_info"]
-        user_data_dict = generate_user_with_password(additional_data)
+        try:
+            user_data_dict = generate_user_with_password(additional_data)
+        except TooManyTry:
+            messages.error(
+                self.request,
+                "Generowanie unikalnego loginu zajeło zbyt długo. Spróbuj jeszcze raz lub rozszerz wariację tworzenia loginu.",
+            )
+            return redirect(reverse_lazy("bartender:create_customer_account"))
+
         new_account = User.objects.create_user(
             username=user_data_dict["login"],
             password=user_data_dict["password"],

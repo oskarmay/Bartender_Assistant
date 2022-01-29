@@ -7,6 +7,14 @@
     <div class="col-12 col-lg-6 mx-auto">
       <div class="card">
         <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-warning alert-dismissible fade show mt-1 mb-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
           <div class="card-title">Tworzenie konta klienckiego konta użytkownika</div>
           <div class="card-text py-2">
             <blockquote class="blockquote-footer justify-content-center">Tutaj możesz podać imię, nazwisko lub ksywkę,
