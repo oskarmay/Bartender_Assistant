@@ -326,6 +326,7 @@ class IngredientStorage(models.Model):
             self.storage_amount += 1
         else:
             self.storage_amount -= 1
+        self.save()
 
     def save(self, *args, **kwargs):
         self.update_amount_ingredients()

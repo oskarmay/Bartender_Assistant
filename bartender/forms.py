@@ -43,8 +43,8 @@ class IngredientStorageForm(forms.ModelForm):
                 attrs={"class": "form-control"}
             ),
             "price": forms.NumberInput(attrs={"class": "form-control"}),
-            "has_alcohol": forms.CheckboxInput(attrs={"class": "form-control"}),
-            "can_be_ordered": forms.CheckboxInput(attrs={"class": "form-control"}),
+            "has_alcohol": forms.CheckboxInput(),
+            "can_be_ordered": forms.CheckboxInput(),
             "image": forms.ClearableFileInput(
                 attrs={"class": "form-control form-control-sm"}
             ),
@@ -89,7 +89,7 @@ class DrinkForm(forms.ModelForm):
             ),
             "preparation_description": forms.Textarea(
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control bg-light",
                     "rows": 4,
                     "cols": 1000,
                     "max-length": 2048,

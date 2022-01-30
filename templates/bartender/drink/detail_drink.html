@@ -5,78 +5,83 @@
 {% block content %}
 
   <div class="row">
-    <div class="card col-lg-7 col-11 mx-auto">
-      <div class="card-body">
-        <div class="row pb-3">
-          <div class="col text-center core_image_frame">
-            {% if drink.image %}
-              <img class="card-img-top core_image_sizes" src="{{ drink.image.url }}" alt="{{ drink.image.name }}">
-            {% else %}
-              <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}" alt="No image available">
-            {% endif %}
-          </div>
-        </div>
-
-
-        <div class="row">
-          <div class="col-lg-6 col-6">
-            <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
-            <div class="card-text">Typ: <p>{{ drink.get_type_display }}</p></div>
-            <div class="card-text">Ilość: <p>{{ drink.amount }}</p></div>
-            <div class="card-text">Skomplikowanie: <p>{{ drink.get_complicated_display }}</p></div>
-          </div>
-          <div class="col-lg-6 col-6">
-            <div class="card-text">Cena: <p>{{ drink.price }}</p></div>
-            <div class="card-text">Do zrobienia?: <p>{% if drink.is_possible_to_make %} Tak {% else %}
-              Nie {% endif %}</p></div>
-            <div class="card-text">Data utworzenia: <p>{{ drink.date_creation }}</p></div>
-            <div class="card-text">Data modyfikacji: <p>{{ drink.date_modified }}</p></div>
-          </div>
-          <div class="col-lg-12 col-12">
-            <div class="card-text">Składniki:<br>
-              {% for ingredient in ingredient_needed %}
-                <div class="row" style="font-size:1.8vmin">
-                  <div class="col-lg-6 col-4">
-                    <p>{{ ingredient.storage_ingredient.name }}</p>
-                  </div>
-                  <div class="col-lg-2 col-3">
-                    <p>{{ ingredient.amount|floatformat:"0" }}</p>
-                  </div>
-                  <div class="col-lg-2 col-3">
-                    <p>{{ ingredient.storage_ingredient.get_unit_display }}</p>
-                  </div>
-                  <div class="col-lg-2 col-2">
-                    <a class="badge badge-warning badge-round"
-                       href="{% url 'bartender:update_ingredient_needed' ingredient.id %}"><i class="far fa-edit fa-sm"></i></a>
-                  </div>
-                </div>
-              {% empty %}
-                <p>Brak składników.</p>
-              {% endfor %}
+    <div class="col-lg-7 col-11 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <div class="row pb-3">
+            <div class="col text-center core_image_frame">
+              {% if drink.image %}
+                <img class="card-img-top core_image_sizes" src="{{ drink.image.url }}" alt="{{ drink.image.name }}">
+              {% else %}
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
+              {% endif %}
             </div>
+          </div>
 
-          </div>
-          <div class="col-lg-12 col-12">
-            <div class="card-text">Opis przygotowania: <p>{{ drink.preparation_description }}</p></div>
-          </div>
-        </div>
 
-        <div class="row">
-          <div class="col-lg-6 col-12 text-center">
-            <a class="btn btn-secondary btn-round" href="{% url 'bartender:drink_list' %}">Wróć do listy drinków</a>
+          <div class="row">
+            <div class="col-lg-6 col-6">
+              <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
+              <div class="card-text">Typ: <p>{{ drink.get_type_display }}</p></div>
+              <div class="card-text">Ilość: <p>{{ drink.amount }}</p></div>
+              <div class="card-text">Skomplikowanie: <p>{{ drink.get_complicated_display }}</p></div>
+            </div>
+            <div class="col-lg-6 col-6">
+              <div class="card-text">Cena: <p>{{ drink.price }}</p></div>
+              <div class="card-text">Do zrobienia?: <p>{% if drink.is_possible_to_make %} Tak {% else %}
+                Nie {% endif %}</p></div>
+              <div class="card-text">Data utworzenia: <p>{{ drink.date_creation }}</p></div>
+              <div class="card-text">Data modyfikacji: <p>{{ drink.date_modified }}</p></div>
+            </div>
+            <div class="col-lg-12 col-12">
+              <div class="card-text">Składniki:<br>
+                {% for ingredient in ingredient_needed %}
+                  <div class="row" style="font-size:1.8vmin">
+                    <div class="col-lg-6 col-4">
+                      <p>{{ ingredient.storage_ingredient.name }}</p>
+                    </div>
+                    <div class="col-lg-2 col-3">
+                      <p>{{ ingredient.amount|floatformat:"0" }}</p>
+                    </div>
+                    <div class="col-lg-2 col-3">
+                      <p>{{ ingredient.storage_ingredient.get_unit_display }}</p>
+                    </div>
+                    <div class="col-lg-2 col-2">
+                      <a class="badge badge-warning badge-round"
+                         href="{% url 'bartender:update_ingredient_needed' ingredient.id %}"><i
+                          class="far fa-edit fa-sm"></i></a>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p>Brak składników.</p>
+                {% endfor %}
+              </div>
+
+            </div>
+            <div class="col-lg-12 col-12">
+              <div class="card-text">Opis przygotowania: <p>{{ drink.preparation_description }}</p></div>
+            </div>
           </div>
-          <div class="col-lg-3 col-12 text-center text-right">
-            <a class="btn btn-outline-success btn-round"
-               href="{% url 'bartender:create_ingredient_needed' %}?drink={{ drink.id }}">Dodaj składnik</a>
+
+          <div class="row">
+            <div class="col-lg-6 col-12 text-center">
+              <a class="btn btn-secondary btn-round" href="{% url 'bartender:drink_list' %}">Wróć do listy drinków</a>
+            </div>
+            <div class="col-lg-3 col-12 text-center text-right">
+              <a class="btn btn-outline-success btn-round"
+                 href="{% url 'bartender:create_ingredient_needed' %}?drink={{ drink.id }}">Dodaj składnik</a>
+            </div>
+            <div class="col-lg-3 col-12 text-center text-right">
+              <a class="btn btn-outline-warning btn-round"
+                 href="{% url 'bartender:update_drink' drink.id %}">Edytuj</a>
+            </div>
           </div>
-          <div class="col-lg-3 col-12 text-center text-right">
-            <a class="btn btn-outline-warning btn-round"
-               href="{% url 'bartender:update_drink' drink.id %}">Edytuj</a>
-          </div>
+          </form>
         </div>
-        </form>
       </div>
     </div>
   </div>
+
 
 {% endblock %}

@@ -348,7 +348,6 @@ class CreateCustomerAccountFormView(PermissionRequiredMixin, FormView):
             expire_date=timezone.now() + timezone.timedelta(hours=13),
             role=User.Role.CUSTOMER,
         )
-        print(new_account.date_joined)
 
         self.success_url = reverse_lazy(
             "bartender:customer_user_detail", kwargs={"pk": new_account.pk}

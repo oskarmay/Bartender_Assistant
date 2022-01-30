@@ -43,11 +43,12 @@ class CreateOrderApiView(PermissionRequiredMixin, APIView):
                     id=order_id
                 ).amount_of_ingredient_in_storage
                 if storage_order_amount > 0:
-                    Orders.objects.create(
+                    order = Orders.objects.create(
                         user=user,
                         storage_order_id=order_id,
                         status=Orders.OrdersStatus.CREATED,
                     )
+                    order.set_created()
                     response_data = {"status": "order_created"}
                 else:
                     response_data = {"status": "not_enough_storage_amount"}
