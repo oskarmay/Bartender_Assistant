@@ -8,7 +8,8 @@ from bartender.api_views import (
 )
 from bartender.views import (
     CreateCustomerAccountFormView,
-    CustomerUserDetailView,
+    CustomerAccountDetailView,
+    CustomerAccountListView,
     DrinkCreateView,
     DrinkDeleteView,
     DrinkDetailView,
@@ -124,13 +125,18 @@ urlpatterns = [
         name="history_orders_list",
     ),
     path(
-        "create_customer_account",
+        "customer/list",
+        CustomerAccountListView.as_view(),
+        name="customer_list",
+    ),
+    path(
+        "customer/create_account",
         CreateCustomerAccountFormView.as_view(),
         name="create_customer_account",
     ),
     path(
-        "create_customer_account/<int:pk>/user_qr",
-        CustomerUserDetailView.as_view(),
+        "customer/<int:pk>/user_detail",
+        CustomerAccountDetailView.as_view(),
         name="customer_user_detail",
     ),
 ]

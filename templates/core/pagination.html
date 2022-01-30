@@ -1,0 +1,95 @@
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+
+    <!--Start and previous button-->
+    <li class="page-item">
+      <a class="page-link btn" href="?page=1">
+        <i class="fas fa-angle-double-left"></i>
+      </a>
+    </li>
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link btn" href="?page={{ page_obj.previous_page_number }}">
+          <i class="fas fa-angle-left"></i>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item">
+        <a class="page-link btn disabled" href="#"><i class="fas fa-angle-left"></i></a>
+      </li>
+    {% endif %}
+    <!--END of Start and previous button-->
+
+
+    <!--Center page button-->
+    {% if page_obj.has_previous %}
+      {% if page_obj.previous_page_number|add:"-2" >= 1 %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number|add:"-2" }}">
+          {{ page_obj.previous_page_number|add:"-2" }}
+        </a></li>
+      {% endif %}
+      {% if page_obj.previous_page_number|add:"-1" >= 1 %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number|add:"-1" }}">
+          {{ page_obj.previous_page_number|add:"-1" }}
+        </a></li>
+      {% endif %}
+      {% if page_obj.previous_page_number >= 1 %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+          {{ page_obj.previous_page_number }}
+        </a></li>
+      {% endif %}
+    {% endif %}
+
+    <!--Current Page-->
+    <li class="page-item active">
+      <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+    </li>
+    <!--END Current Page-->
+
+    {% if page_obj.has_next %}
+      {% if page_obj.next_page_number <= page_obj.paginator.num_pages %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">
+          {{ page_obj.next_page_number }}
+        </a></li>
+      {% endif %}
+      {% if page_obj.next_page_number|add:"1" <= page_obj.paginator.num_pages %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number|add:"1" }}">
+          {{ page_obj.next_page_number|add:"1" }}
+        </a></li>
+      {% endif %}
+      {% if page_obj.next_page_number|add:"2" <= page_obj.paginator.num_pages %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number|add:"2" }}">
+          {{ page_obj.next_page_number|add:"2" }}
+        </a></li>
+      {% endif %}
+    {% endif %}
+    <!--END center page button-->
+
+
+    <!--Next and end button-->
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link btn" href="?page={{ page_obj.next_page_number }}">
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </li>
+    {% else %}
+      <li class="page-item">
+        <a class="page-link btn disabled" href="#"><i class="fas fa-angle-right"></i></a>
+      </li>
+    {% endif %}
+    <li class="page-item">
+      <a class="page-link btn" href="?page={{ page_obj.paginator.num_pages }}">
+        <i class="fas fa-angle-double-right"></i>
+      </a>
+    </li>
+    <!--END of Next and end button-->
+
+  </ul>
+  <ul class="pagination justify-content-center">
+    <li class="blockquote-footer">
+      (Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}, ilość na
+      stronie {{ page_obj.paginator.per_page }})
+    </li>
+  </ul>
+</nav>

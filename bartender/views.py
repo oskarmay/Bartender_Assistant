@@ -305,6 +305,21 @@ class HistoryOrdersListView(PermissionRequiredMixin, ListView):
         return ctx
 
 
+class CustomerAccountListView(PermissionRequiredMixin, ListView):
+    """View of customer account list."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/users/customer_list.html"
+    context_object_name = "users"
+    paginate_by = 16
+
+    def get_queryset(self):
+        """Queryset of customer accounts."""
+
+        qs = User.objects.filter(role=User.Role.CUSTOMER).order_by("-date_joined")
+        return qs
+
+
 class CreateCustomerAccountFormView(PermissionRequiredMixin, FormView):
     """View of history orders list."""
 
@@ -333,6 +348,7 @@ class CreateCustomerAccountFormView(PermissionRequiredMixin, FormView):
             expire_date=timezone.now() + timezone.timedelta(hours=13),
             role=User.Role.CUSTOMER,
         )
+        print(new_account.date_joined)
 
         self.success_url = reverse_lazy(
             "bartender:customer_user_detail", kwargs={"pk": new_account.pk}
@@ -341,7 +357,7 @@ class CreateCustomerAccountFormView(PermissionRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-class CustomerUserDetailView(PermissionRequiredMixin, DetailView):
+class CustomerAccountDetailView(PermissionRequiredMixin, DetailView):
     """View of customer user details plus qr code to direct login."""
 
     permission_required = "is_in_staff"

@@ -12,7 +12,6 @@
       <button class="btn btn-default collapseButton" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseInProgress"
               aria-expanded="false" aria-controls="collapseInProgress">
-        {# onclick="saveWhichCollapsedItemIsShown('collapseInProgress')"#}
         Pokaż/Ukryj
       </button>
     </h4>
@@ -24,6 +23,9 @@
           <div class="card rounded" style="font-size:2vmin">
             <div class="card-body">
               <div class="card-text text-center">
+                <button type="submit" onclick="promptRejectOrder({{ order.id }})" class="btn btn-warning btn-block">
+                  Odrzuć
+                </button>
                 <button type="submit" onclick="completesOrder({{ order.id }})" class="btn btn-success btn-block">
                   Ukończ
                 </button>
@@ -95,7 +97,6 @@
       <button class="btn btn-default collapseButton" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseAccepted"
               aria-expanded="false" aria-controls="collapseAccepted">
-        {#  onclick="saveWhichCollapsedItemIsShown('collapseAccepted')" #}
         Pokaż/Ukryj
       </button>
     </h4>
@@ -107,6 +108,9 @@
           <div class="card rounded" style="font-size:2vmin">
             <div class="card-body">
               <div class="card-text text-center">
+                <button type="submit" onclick="promptRejectOrder({{ order.id }})" class="btn btn-warning btn-block">
+                  Odrzuć
+                </button>
                 <button type="submit" onclick="inProgressOrder({{ order.id }})" class="btn btn-success btn-block">
                   Rozpocznij
                 </button>
@@ -173,7 +177,6 @@
       <button class="btn btn-default collapseButton" type="button" data-bs-toggle="collapse"
               data-bs-target="#collapseCreated"
               aria-expanded="false" aria-controls="collapseCreated">
-        {#  onclick="saveWhichCollapsedItemIsShown('collapseCreated')" #}
         Pokaż/Ukryj
       </button>
     </h4>

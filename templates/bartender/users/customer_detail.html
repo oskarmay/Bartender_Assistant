@@ -11,6 +11,7 @@
         <div class="card-body">
           <div class="card-text">Nazwa użytkownika: <strong>{{ user.username }}</strong></div>
           <div class="card-text">
+            Data dołączenia: {{ user.date_joined }} <br>
             Data wygaśnięcia: {{ user.expire_date }} <br>
             Rola: {{ user.get_role_display }} <br>
             Stolik: {{ user.customer_table }} <br>
