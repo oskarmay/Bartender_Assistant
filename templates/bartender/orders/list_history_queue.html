@@ -19,61 +19,7 @@
   <div class="collapse collapseItem" id="collapseCompleted">
     <div class="row">
       {% for order in orders_completed %}
-        <div class="col-12 col-lg-4 d-flex align-items-stretch">
-          <div class="card rounded" style="font-size:2vmin">
-            <div class="card-body">
-              <div class="card-text">Nazwa:
-                <p>
-                  {% if order.drink %}
-                    {{ order.drink.name }}
-                  {% elif order.storage_order %}
-                    {{ order.storage_order.name }}
-                  {% endif %}
-                </p>
-              </div>
-              <div class="card-text">
-                <div class="row">
-                  <div class="col-6">Data zamówienia: <p>{{ order.order_date }}</p></div>
-                  <div class="col-6">Status: <p>{{ order.get_status_display }}</p></div>
-                </div>
-              </div>
-              <div class="card-text">
-                <div class="row">
-                  <div class="col-6">Typ:
-                    <p>{% if order.drink %}
-                      {{ order.drink.get_type_display }}
-                    {% elif order.storage_order %}
-                      {{ order.storage_order.get_type_display }}
-                    {% endif %}
-                    </p>
-                  </div>
-                  <div class="col-6">Cena:
-                    <p>{% if order.drink %}
-                      {{ order.drink.price }}
-                    {% elif order.storage_order %}
-                      {{ order.storage_order.price }}
-                    {% endif %}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="card-text">
-                <div class="row">
-                  <div class="col-6">Użytkownik: <p>{{ order.user.username }}</p></div>
-                  <div class="col-6">Stolik: <p>{{ order.user.customer_table }}</p></div>
-                </div>
-              </div>
-              {% if order.drink %}
-                <div class="card-text">Składniki:
-                  {% for ingredeint in order.drink.ingredient_needed.all %}
-                    <p>- {{ ingredeint.storage_ingredient.name }}</p>
-                  {% empty %}
-                    <p>Nie przypisano składników</p>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
+        {% include "bartender/orders/list_history_queue_ingredient_detail.html" %}
       {% empty %}
         <div class="col text-center">
           <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
@@ -96,56 +42,7 @@
   <div class="collapse collapseItem" id="collapseRejected">
     <div class="row">
       {% for order in orders_rejected %}
-        <div class="col-12 col-lg-4 d-flex align-items-stretch">
-          <div class="card rounded" style="font-size:2vmin">
-            <div class="card-body">
-              <div class="card-text">Nazwa: <p>
-                {% if order.drink %}{{ order.drink.name }}{% elif order.storage_order %}
-                  {{ order.storage_order.name }}{% endif %}</p></div>
-              <div class="card-text">
-
-                <div class="row">
-                  <div class="col-6">Data zamówienia: <p>{{ order.order_date }}</p></div>
-                  <div class="col-6">Status: <p>{{ order.get_status_display }}</p></div>
-                </div>
-              </div>
-              <div class="card-text">
-                <div class="row">
-                  <div class="col-6">Typ:
-                    <p>{% if order.drink %}
-                      {{ order.drink.get_type_display }}
-                    {% elif order.storage_order %}
-                      {{ order.storage_order.get_type_display }}
-                    {% endif %}
-                    </p>
-                  </div>
-                  <div class="col-6">Cena:
-                    <p>{% if order.drink %}
-                      {{ order.drink.price }}
-                    {% elif order.storage_order %}
-                      {{ order.storage_order.price }}
-                    {% endif %}</p>
-                  </div>
-                </div>
-              </div>
-              <div class="card-text">
-                <div class="row">
-                  <div class="col-6">Użytkownik: <p>{{ order.user.username }}</p></div>
-                  <div class="col-6">Stolik: <p>{{ order.user.customer_table }}</p></div>
-                </div>
-              </div>
-              {% if order.drink %}
-                <div class="card-text">Składniki:
-                  {% for ingredeint in order.drink.ingredient_needed.all %}
-                    <p>- {{ ingredeint.storage_ingredient.name }}</p>
-                  {% empty %}
-                    <p>Nie przypisano składników</p>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-          </div>
-        </div>
+        {% include "bartender/orders/list_history_queue_ingredient_detail.html" %}
       {% empty %}
         <div class="col text-center">
           <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>

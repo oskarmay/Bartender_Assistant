@@ -1,0 +1,69 @@
+<div class="col-12 col-lg-4 d-flex align-items-stretch">
+  <div class="card rounded" style="font-size:2vmin">
+    <div class="card-body">
+      <div class="card-text text-center">
+        <button type="submit" onclick="promptRejectOrder({{ order.id }})" class="btn btn-warning btn-block">
+          Odrzuć
+        </button>
+        <button type="submit" onclick="completesOrder({{ order.id }})" class="btn btn-success btn-block">
+          Ukończ
+        </button>
+      </div>
+      <div class="card-text">Nazwa:
+        <p>
+          {% if order.drink %}
+            {{ order.drink.name }}
+          {% elif order.storage_order %}
+            {{ order.storage_order.name }}
+          {% endif %}
+        </p>
+      </div>
+      <div class="card-text">
+        <div class="row">
+          <div class="col-3">Id: <p>{{ order.id }}</p></div>
+          <div class="col-5">Użytkownik: <p>{{ order.user.username }}</p></div>
+          <div class="col-4">Stolik: <p>{{ order.user.customer_table }}</p></div>
+        </div>
+      </div>
+      <div class="card-text">
+        <div class="row">
+          <div class="col-6">Typ:
+            <p>{% if order.drink %}
+              {{ order.drink.get_type_display }}
+            {% elif order.storage_order %}
+              {{ order.storage_order.get_type_display }}
+            {% endif %}
+            </p>
+          </div>
+          <div class="col-6">Cena:
+            <p>{% if order.drink %}
+              {{ order.drink.price }}
+            {% elif order.storage_order %}
+              {{ order.storage_order.price }}
+            {% endif %}</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-text">
+        <div class="row">
+          <div class="col-6">Data zamówienia: <p>{{ order.order_date|date:"d/m/y H:i" }}</p></div>
+          <div class="col-6">Status: <p>{{ order.get_status_display }}</p></div>
+        </div>
+      </div>
+      {% if order.drink %}
+        <div class="card-text">Składniki:
+          {% for ingredeint in order.drink.ingredient_needed.all %}
+            <p>- {{ ingredeint.storage_ingredient.name }}</p>
+          {% empty %}
+            <p>Nie przypisano składników</p>
+          {% endfor %}
+        </div>
+        {% if order.is_in_progress %}
+          <div class="card-text">Opis:
+            <p>{{ order.drink.preparation_description }}</p>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
