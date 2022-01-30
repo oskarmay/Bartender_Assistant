@@ -1,0 +1,37 @@
+{% extends "bartender/base.html" %}
+{% load static qr_code %}
+{% block title %}Tworzenie użytkownika{% endblock %}
+
+
+{% block content %}
+
+  <div class="row">
+    <div class="col-12 col-lg-6 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-text">Nazwa użytkownika: <strong>{{ user.username }}</strong></div>
+          <div class="card-text">
+            Data wygaśnięcia: {{ user.expire_date }} <br>
+            Rola: {{ user.get_role_display }} <br>
+            Stolik: {{ user.customer_table }} <br>
+            Czy aktywne konto: {% if user.is_active %} Tak {% else %} Nie {% endif %} <br>
+          </div>
+          {% if user.one_use_account_password %}
+            <div class="card-text">
+              Początkowe hasło <a data-bs-toggle="collapse" href="#collapsePassword" role="button" aria-expanded="false"
+                                  aria-controls="collapsePassword">(pokaż/ukryj)</a>
+              <div class="collapse text-center" id="collapsePassword"><strong>{{ user.one_use_account_password }}</strong></div>
+            </div>
+
+            <div class="card-text text-center">
+{#              {% qr_from_text qr size="S" %}#}
+              {% qr_from_text qr size="S" %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}

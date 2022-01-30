@@ -95,7 +95,7 @@ class DrinkModelTest(TestCase):
         coconut_milk = IngredientStorage.objects.get(name="Mleko Kokosowe")
         coconut_milk.storage_amount = 120
         coconut_milk.save()
-        malibu.make_a_drink()
+        malibu.make_or_abort_a_drink()
         self.assertTrue(malibu.is_possible_to_make)
 
     def test_make_a_drink2(self):
@@ -103,7 +103,7 @@ class DrinkModelTest(TestCase):
         coconut_milk = IngredientStorage.objects.get(name="Mleko Kokosowe")
         coconut_milk.storage_amount = 1000
         coconut_milk.save()
-        malibu.make_a_drink()
+        malibu.make_or_abort_a_drink()
         self.assertTrue(malibu.is_possible_to_make)
 
     def test_make_a_drink3(self):
@@ -111,5 +111,5 @@ class DrinkModelTest(TestCase):
         coconut_milk = IngredientStorage.objects.get(name="Mleko Kokosowe")
         coconut_milk.storage_amount = 119
         coconut_milk.save()
-        malibu.make_a_drink()
+        malibu.make_or_abort_a_drink()
         self.assertFalse(malibu.is_possible_to_make)

@@ -5,10 +5,10 @@ from django.utils.translation import pgettext_lazy
 
 from core.models import (
     Drink,
-    DrinkQueue,
     Earnings,
     IngredientNeeded,
     IngredientStorage,
+    Orders,
     User,
 )
 
@@ -188,22 +188,28 @@ class IngredientNeededStorageAdmin(admin.ModelAdmin):
         return obj.drink.get_complicated_display()
 
 
-@admin.register(DrinkQueue)
-class DrinkQueueAdmin(admin.ModelAdmin):
+@admin.register(Orders)
+class OrdersAdmin(admin.ModelAdmin):
     fields = (
         "user",
         "drink",
+        "storage_order",
         "status",
     )
+    readonly_fields = ("order_date",)
     list_display = (
         "user",
         "drink",
+        "storage_order",
         "status",
+        "order_date",
     )
     list_filter = (
         "user",
         "drink",
+        "storage_order",
         "status",
+        "order_date",
     )
 
     # @display(ordering="drink__name")

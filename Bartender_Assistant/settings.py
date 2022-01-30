@@ -42,11 +42,13 @@ INSTALLED_APPS = [
     "bartender",
     "customer",
     # Third party
+    "rest_framework",
     "django_bootstrap5",
     "rules.apps.AutodiscoverRulesConfig",
     "django_filters",
     "debug_toolbar",
     "crispy_forms",
+    "qr_code",
 ]
 
 AUTHENTICATION_BACKENDS = (

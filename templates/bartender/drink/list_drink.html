@@ -1,11 +1,12 @@
 {% extends "bartender/base.html" %}
 {% load static %}
-{% block title %}Magazyn {% endblock %}
-
+{% block title %}Drink - lista{% endblock %}
 
 {% block content %}
   <div class="row">
-    <a class="btn btn-primary" href="{% url 'bartender:create_drink' %}">DODAJ</a>
+    <div class="col-4">
+      <a class="btn btn-primary" href="{% url 'bartender:create_drink' %}">DODAJ</a>
+    </div>
   </div>
   <div class="row">
     <p>Tutaj jakieś Filtry w planie</p>
@@ -15,13 +16,12 @@
       <div class="col-12 col-lg-4 d-flex align-items-stretch">
         <div class="card rounded" style="font-size:2vmin">
           <a href="{% url 'bartender:detail_drink' drink.pk %}" style="text-decoration: none; color:inherit">
-            <div class="text-center">
+            <div class="card-body text-center core_image_frame">
               {% if drink.image %}
-                <img class="card-img-top" src="{{ drink.image.url }}" alt="{{ drink.name }}"
-                     style="max-height: 15vw; width: auto">
+                <img class="card-img-top core_image_sizes" src="{{ drink.image.url }}" alt="{{ drink.name }}">
               {% else %}
-                <img class="card-img-top" src="{% static 'img/no-image-available.jpg' %}" alt="No image available"
-                     style="max-height: 15vw; width: auto">
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
               {% endif %}
             </div>
             <div class="card-body">

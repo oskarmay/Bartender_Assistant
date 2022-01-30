@@ -1,5 +1,7 @@
 {% extends "bartender/base.html" %}
 {% load static %}
+{% block title %}Drink - edytuj{% endblock %}
+
 {% block content %}
   <div class="row">
     <div class="card col-lg-7 col-12 mx-auto">
@@ -9,14 +11,13 @@
           {{ formset.management_form }}
           {% csrf_token %}
           {{ form.id }}
-          <div class="row">
-            <div class="col text-center">
+          <div class="row pb-3">
+            <div class="col text-center core_image_frame">
               {% if form.image.value %}
-                <img class="card-img-top" src="{{ form.image.value.url }}" alt="{{ form.image.name }}"
-                     style="max-height: 20vw; width: auto">
+                <img class="card-img-top core_image_sizes" src="{{ form.image.value.url }}" alt="{{ form.image.name }}">
               {% else %}
-                <img class="card-img-top" src="{% static 'img/no-image-available.jpg' %}" alt="No image available"
-                     style="max-height: 15vw; width: auto">
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
               {% endif %}
             </div>
           </div>
@@ -36,9 +37,7 @@
                 {% for error in field.errors %}
                   <div class="alert alert-warning alert-dismissible fade show mt-1 mb-1" role="alert">
                     {{ error }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
                 {% endfor %}
               </div>
@@ -51,7 +50,7 @@
                 szczegółów</a>
             </div>
             <div class="col-lg-3 col-6 text-center text-right">
-              <a class="btn btn-danger btn-round"
+              <a class="btn btn-outline-danger btn-round"
                  href="{% url 'bartender:delete_drink' form.instance.id %}">Usuń</a>
             </div>
             <div class="col-lg-3 col-6 text-center text-right">

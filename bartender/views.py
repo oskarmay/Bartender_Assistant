@@ -1,16 +1,27 @@
+from django.contrib import messages
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
+    FormView,
     ListView,
     TemplateView,
     UpdateView,
 )
 from rules.contrib.views import PermissionRequiredMixin
 
-from bartender.forms import DrinkForm, IngredientNeededForm, IngredientStorageForm
-from core.models import Drink, IngredientNeeded, IngredientStorage
+from bartender.forms import (
+    CreateCustomerAccountForm,
+    DrinkForm,
+    IngredientNeededForm,
+    IngredientStorageForm,
+)
+from core.exceptions import TooManyTry
+from core.models import Drink, IngredientNeeded, IngredientStorage, Orders, User
+from core.utilis import generate_user_with_password
 
 
 class HomeView(PermissionRequiredMixin, TemplateView):
@@ -182,3 +193,169 @@ class IngredientNeededDeleteView(PermissionRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("bartender:detail_drink", args=(self.object.drink.id,))
+
+
+class OrdersListView(PermissionRequiredMixin, ListView):
+    """View of orders list."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/orders/list_queue.html"
+    context_object_name = "drinks"
+
+    def get_queryset(self):
+        """Empty QS. Everything is in ctx."""
+
+        return None
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """Add qs over status to ctx."""
+
+        ctx = super().get_context_data()
+
+        ctx["orders_created"] = (
+            Orders.objects.filter(
+                status=Orders.OrdersStatus.CREATED,
+            )
+            .select_related("drink", "storage_order", "user")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("order_date")
+        )
+
+        ctx["orders_accepted"] = (
+            Orders.objects.filter(
+                status=Orders.OrdersStatus.ACCEPTED,
+            )
+            .select_related("drink", "storage_order", "user")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("order_date")
+        )
+        ctx["orders_in_progress"] = (
+            Orders.objects.filter(
+                status=Orders.OrdersStatus.IN_PROGRESS,
+            )
+            .select_related("drink", "storage_order", "user")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("order_date")
+        )
+
+        return ctx
+
+
+class HistoryOrdersListView(PermissionRequiredMixin, ListView):
+    """View of history orders list."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/orders/list_history_queue.html"
+    context_object_name = "drinks"
+
+    def get_queryset(self):
+        """Empty QS. Everything is in ctx."""
+
+        return None
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """Add qs over status to ctx."""
+
+        ctx = super().get_context_data()
+
+        ctx["orders_completed"] = (
+            Orders.objects.filter(
+                status=Orders.OrdersStatus.COMPLETED,
+            )
+            .select_related("drink", "storage_order", "user")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("order_date")
+        )
+
+        ctx["orders_rejected"] = (
+            Orders.objects.filter(
+                status=Orders.OrdersStatus.REJECTED,
+            )
+            .select_related("drink", "storage_order", "user")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("order_date")
+        )
+        ctx["orders_in_progress"] = (
+            Orders.objects.filter(
+                status=Orders.OrdersStatus.IN_PROGRESS,
+            )
+            .select_related("drink", "storage_order", "user")
+            .prefetch_related(
+                "drink__ingredient_needed",
+                "drink__ingredient_needed__storage_ingredient",
+            )
+            .order_by("order_date")
+        )
+
+        return ctx
+
+
+class CreateCustomerAccountFormView(PermissionRequiredMixin, FormView):
+    """View of history orders list."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/users/create_customer_account.html"
+    form_class = CreateCustomerAccountForm
+
+    def form_valid(self, form):
+        """Generating username and password and creating new customer user.
+        Then redirect to user detail view with user information and login qr code."""
+
+        additional_data = form.cleaned_data["additional_info"]
+        try:
+            user_data_dict = generate_user_with_password(additional_data)
+        except TooManyTry:
+            messages.error(
+                self.request,
+                "Generowanie unikalnego loginu zajeło zbyt długo. Spróbuj jeszcze raz lub rozszerz wariację tworzenia loginu.",
+            )
+            return redirect(reverse_lazy("bartender:create_customer_account"))
+
+        new_account = User.objects.create_user(
+            username=user_data_dict["login"],
+            password=user_data_dict["password"],
+            one_use_account_password=user_data_dict["password"],
+            expire_date=timezone.now() + timezone.timedelta(hours=13),
+            role=User.Role.CUSTOMER,
+        )
+
+        self.success_url = reverse_lazy(
+            "bartender:customer_user_detail", kwargs={"pk": new_account.pk}
+        )
+
+        return super().form_valid(form)
+
+
+class CustomerUserDetailView(PermissionRequiredMixin, DetailView):
+    """View of customer user details plus qr code to direct login."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/users/customer_detail.html"
+    model = User
+    context_object_name = "user"
+
+    def get_context_data(self, **kwargs):
+        """Add to ctx link to direct user login as qr code."""
+
+        ctx = super().get_context_data()
+        host_url = self.request.META["HTTP_HOST"]
+        login_url = reverse_lazy("core:login")
+        query_param = f"?login={self.object.username}&password={self.object.one_use_account_password}"
+        ctx["qr"] = f"{host_url}{login_url}{query_param}"
+
+        return ctx
