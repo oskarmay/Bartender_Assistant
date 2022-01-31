@@ -16,11 +16,8 @@ class RejectOrderApiView(PermissionRequiredMixin, APIView):
         order_id = request.data["order_id"]
         try:
             ordered_drink = Orders.objects.get(id=order_id)
-            if ordered_drink.is_created:
-                ordered_drink.set_rejected()
-                response_data = {"status": "order_rejected"}
-            else:
-                response_data = {"status": "too_late_to_cancel_order"}
+            ordered_drink.set_rejected()
+            response_data = {"status": "order_rejected"}
         except Orders.DoesNotExist:
             response_data = {"status": "does_not_exist"}
 

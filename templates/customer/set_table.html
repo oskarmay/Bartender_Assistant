@@ -10,7 +10,7 @@
           <form method="post" id="table_form">
             {% csrf_token %}
             <div class="row">
-              <div class="col-11 col-lg-5 mx-auto">
+              <div class="col-11 col-lg-10 mx-auto">
                 <h5 class="text-center">Proszę wybrać stolik</h5>
                 {% if not request.user.customer_table %}
                   <p>
@@ -18,6 +18,7 @@
                     proszę poniżej wpisać numer stolika do którego barman
                     lub kelnerka będą przynosić twoje zamówienia.
                   </p>
+                  <blockquote class="blockquote-footer">Znajduje się na stoliku</blockquote>
                 {% else %}
                   <p>Chyba się przesiadłeś, jeżeli nie to otworzyłeś tą stronę przypadkowo :)</p>
                 {% endif %}
@@ -27,7 +28,7 @@
               <div class="col-lg-10 col-11 mx-auto">
                 <label for="table">Stolik</label>
                 <input id="table" name="table" type="text" class="form-control"
-                       placeholder="Aktualny: {{ request.user.customer_table }}">
+                       placeholder="Aktualny: {{ request.user.customer_table|default:'Brak' }}">
               </div>
             </div>
             <div class="row">

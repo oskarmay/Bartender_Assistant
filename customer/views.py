@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import ListView, TemplateView
 from rules.contrib.views import PermissionRequiredMixin
 
 from core.models import Drink, IngredientStorage, Orders, User

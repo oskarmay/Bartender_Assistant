@@ -1,0 +1,40 @@
+{% extends "bartender/base.html" %}
+{% load static %}
+{% block title %}Propozycje drinków{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <h4 class="text-center">Propozycje Drinków</h4>
+  </div>
+  <div class="row pt-4">
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100 d-flex justify-content-center align-items-center">
+        <a href="{% url 'bartender:drink_suggestions_random' %}" class="dashboard_text stretched-link">
+          <div class="card-body">
+            <div class="card-title d-flex flex-column">Losowy Drink</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100 d-flex justify-content-center align-items-center">
+        <a href="#" class="dashboard_text stretched-link">
+          <div class="card-body ">
+            <div class="card-title text-center">Utwórz konto klienta</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    {#    <div class="col-lg-4 col-12 my-2">#}
+    {#      <div class="card h-100 d-flex justify-content-center align-items-center">#}
+    {#        <a href="#" class="dashboard_text stretched-link">#}
+    {#          <div class="card-body">#}
+    {#            <div class="card-title text-center">Magazyn</div>#}
+    {#          </div>#}
+    {#        </a>#}
+    {#      </div>#}
+    {#    </div>#}
+  </div>
+
+{% endblock %}

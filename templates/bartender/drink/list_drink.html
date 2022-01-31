@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="row">
-    <p>Tutaj jakieś Filtry w planie</p>
+    <p>Tutaj jakieś Filtry w planiea</p>
   </div>
   <div class="row">
     {% for drink in drinks %}
@@ -26,12 +26,20 @@
             </div>
             <div class="card-body">
               <div class="card-text">Nazwa: <p>{{ drink.name }}</p></div>
-              <div class="card-text">Typ: <p>{{ drink.get_type_display }}</p></div>
-              <div class="card-text">Skomplikowanie: <p>{{ drink.get_complicated_display }}</p></div>
-              <div class="card-text">Cena: <p>{{ drink.price }}</p></div>
-              <div class="card-text">Do zrobienia?: <p>{% if drink.is_possible_to_make %} Tak {% else %}
-                Nie {% endif %}</p></div>
-              <div class="card-text">Data utworzenia: <p>{{ drink.date_creation }}</p></div>
+              <div class="card-text">
+                <div class="row">
+                  <div class="col-6">Typ: <p>{{ drink.get_type_display }}</p></div>
+                  <div class="col-6">Skomplikowanie: <p>{{ drink.get_complicated_display }}</p></div>
+                </div>
+              </div>
+              <div class="card-text">
+                <div class="row">
+                  <div class="col-6">Cena: <p>{{ drink.price }}</p></div>
+                  <div class="col-6">Do zrobienia?: <p>{% if drink.is_possible_to_make %} Tak {% else %}
+                    Nie {% endif %}</p></div>
+                </div>
+              </div>
+              <div class="card-text">Data utworzenia: <p>{{ drink.date_creation|date:"d/m/y" }}</p></div>
               <div class="card-text">Składniki:
                 {% for ingredeint in drink.ingredient_needed.all %}
                   <p>{{ ingredeint.storage_ingredient.name }}</p>

@@ -1,9 +1,6 @@
 {% extends "core/base.html" %}
 {% block navbar %}
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'customer:set_table' %}">Zmien stolik<img src="https://img.icons8.com/material-outlined/24/ffffff/table.png" alt="table-icon"/></a>
-  </li>
-  <li class="nav-item">
     <a class="nav-link" href="{% url 'customer:home' %}">Strona główna</a>
   </li>
   <li class="nav-item">
@@ -14,5 +11,11 @@
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'customer:history_orders_list' %}">Historia Zamówień</a>
+  </li>
+{% endblock %}
+{% block navbar_set %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'customer:set_table' %}">Zmien stolik<img
+        src="https://img.icons8.com/material-outlined/24/ffffff/table.png" alt="table-icon"/></a>
   </li>
 {% endblock %}

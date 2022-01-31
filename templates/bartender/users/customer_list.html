@@ -1,0 +1,37 @@
+{% extends "bartender/base.html" %}
+{% block title %}Lista użytkowników{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-4 title">Nazwa użytkownika</div>
+    <div class="col-lg-2 title">Data utworzenia</div>
+    <div class="col-lg-2 title">Data wygaśnięcia</div>
+    <div class="col-lg-3"></div>
+  </div>
+  <hr>
+  {% for user in users %}
+    <a href="{% url 'bartender:customer_user_detail' user.id %}" class="dashboard_text">
+      <div class="row py-1 border-bottom">
+        <div class="col-lg-4">
+          {% if user.is_active %}
+            <i class="fas fa-check-circle text-success"></i>
+          {% else %}
+            <i class="fas fa-times-circle text-danger"></i>
+          {% endif %}
+          {{ user.username }}
+        </div>
+        <div class="col-lg-2">
+          {{ user.date_joined|date:"d/m/y H:i" }}
+        </div>
+        <div class="col-lg-2">
+          {{ user.expire_date|date:"d/m/y H:i" }}
+        </div>
+        <div class="col-lg-3"></div>
+      </div>
+    </a>
+
+  {% endfor %}
+  <div class="row py-3">
+  {% include "core/pagination.html" %}
+  </div>
+{% endblock %}

@@ -8,7 +8,8 @@ from bartender.api_views import (
 )
 from bartender.views import (
     CreateCustomerAccountFormView,
-    CustomerUserDetailView,
+    CustomerAccountDetailView,
+    CustomerAccountListView,
     DrinkCreateView,
     DrinkDeleteView,
     DrinkDetailView,
@@ -24,6 +25,8 @@ from bartender.views import (
     StorageIngredientDeleteView,
     StorageIngredientListView,
     StorageIngredientUpdateView,
+    DrinkSuggestionsDashboardTemplateView,
+    DrinkSuggestionsRandomTemplateView,
 )
 
 app_name = "bartender"
@@ -124,13 +127,28 @@ urlpatterns = [
         name="history_orders_list",
     ),
     path(
-        "create_customer_account",
+        "customer/list",
+        CustomerAccountListView.as_view(),
+        name="customer_list",
+    ),
+    path(
+        "customer/create_account",
         CreateCustomerAccountFormView.as_view(),
         name="create_customer_account",
     ),
     path(
-        "create_customer_account/<int:pk>/user_qr",
-        CustomerUserDetailView.as_view(),
+        "customer/<int:pk>/user_detail",
+        CustomerAccountDetailView.as_view(),
         name="customer_user_detail",
+    ),
+    path(
+        "drink_suggestions/",
+        DrinkSuggestionsDashboardTemplateView.as_view(),
+        name="drink_suggestions_dashboard",
+    ),
+    path(
+        "drink_suggestions/random",
+        DrinkSuggestionsRandomTemplateView.as_view(),
+        name="drink_suggestions_random",
     ),
 ]

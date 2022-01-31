@@ -2,6 +2,16 @@
     background: whitesmoke;
 }
 
+.dashboard_text {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.dashboard_text:hover {
+    color: purple;
+}
+
 .c-body {
     /*background: #ebebeb; #TODO Naprawić tło core templatki*/
 }
