@@ -4,14 +4,13 @@
 
 
 {% block content %}
-  {% include "core/baner.html" %}
   <div class="row">
     <h4 class="text-center">Dashboard</h4>
   </div>
-  <div class="row pt-4 justify-content-center">
+  <div class="row pt-1 justify-content-center">
     <div class="col-lg-4 col-12 my-2">
       <div class="card h-100">
-        <a href="{% url 'bartender:customer_list' %}" class="dashboard_text">
+        <a href="{% url 'bartender:customer_list' %}" class="dashboard_text stretched-link">
           <div class="card-body ">
             <div class="card-title text-center">Lista klientów</div>
             <div class="card-text text-center">
@@ -25,7 +24,7 @@
     </div>
     <div class="col-lg-4 col-12 my-2">
       <div class="card h-100">
-        <a href="{% url 'bartender:create_customer_account' %}" class="dashboard_text">
+        <a href="{% url 'bartender:create_customer_account' %}" class="dashboard_text stretched-link">
           <div class="card-body ">
             <div class="card-title text-center">Utwórz konto klienta</div>
             <div class="card-text text-center">
@@ -39,7 +38,7 @@
     </div>
     <div class="col-lg-4 col-12 my-2">
       <div class="card h-100">
-        <a href="{% url 'bartender:storage_ingredient_list' %}" class="dashboard_text">
+        <a href="{% url 'bartender:storage_ingredient_list' %}" class="dashboard_text stretched-link">
           <div class="card-body">
             <div class="card-title text-center">Magazyn</div>
             <div class="card-text text-center">
@@ -54,7 +53,7 @@
     </div>
     <div class="col-lg-4 col-12 my-2">
       <div class="card h-100">
-        <a href="{% url 'bartender:drink_list' %}" class="dashboard_text">
+        <a href="{% url 'bartender:drink_list' %}" class="dashboard_text stretched-link">
           <div class="card-body">
             <div class="card-title text-center">Drinki</div>
             <div class="card-text text-center">
@@ -68,7 +67,7 @@
     </div>
     <div class="col-lg-4 col-12 my-2">
       <div class="card h-100">
-        <a href="{% url 'bartender:orders_list' %}" class="dashboard_text">
+        <a href="{% url 'bartender:orders_list' %}" class="dashboard_text stretched-link">
           <div class="card-body">
             <div class="card-title text-center">Kolejka zamówień</div>
             <div class="card-text text-center">
@@ -83,7 +82,7 @@
     </div>
     <div class="col-lg-4 col-12 my-2">
       <div class="card h-100">
-        <a href="{% url 'bartender:history_orders_list' %}" class="dashboard_text">
+        <a href="{% url 'bartender:history_orders_list' %}" class="dashboard_text stretched-link">
           <div class="card-body">
             <div class="card-title text-center">Historia zamówień</div>
             <div class="card-text text-center">
@@ -97,7 +96,7 @@
     </div>
     <div class="col-lg-4 col-12 my-2">
       <div class="card h-100">
-        <a href="{% url 'bartender:home' %}" class="dashboard_text">
+        <a href="{% url 'bartender:drink_suggestions_dashboard' %}" class="dashboard_text stretched-link">
           <div class="card-body">
             <div class="card-title text-center">Propozycje drinków</div>
             <div class="card-text text-center">
@@ -111,7 +110,7 @@
     </div>
     <div class="col-lg-4 col-12 my-2">
       <div class="card h-100">
-        <a href="{% url 'bartender:home' %}" class="dashboard_text">
+        <a href="{% url 'bartender:home' %}" class="dashboard_text stretched-link">
           <div class="card-body">
             <div class="card-title text-center">Statystyki</div>
             <div class="card-text text-center">

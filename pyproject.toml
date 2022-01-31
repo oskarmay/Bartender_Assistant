@@ -17,6 +17,7 @@ django-filter = "^21.1"
 django-debug-toolbar = "^3.2.2"
 isort = "^5.10.1"
 django-qr-code = "^3.0.0"
+requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
 

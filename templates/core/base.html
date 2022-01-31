@@ -12,65 +12,55 @@
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
         name='viewport'/>
   <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet"/>
-  integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  {#  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet"/>#}
   <link href="{% static 'css/fontawesome_all.min.css' %}" rel="stylesheet"/>
   <!-- CSS Files -->
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
-  <link href="{% static 'css/now-ui-kit.css' %}?v=1.3.0" rel="stylesheet"/>
+  <link href="{% static 'css/now-ui-kit.min.css' %}?v=1.3.0" rel="stylesheet"/>
   <!-- CSS Just for demo purpose, don't include it in your project -->
   {#  <link href="{% static 'demo/demo.css' %}" rel="stylesheet"/>#}
   <link href="{% static 'css/core.css' %}" rel="stylesheet"/>
 </head>
 
-<body class="landing-page sidebar-collapse">
-
+<body>
 <!-- Navbar -->
-<div class="pb-5">
-  <nav class="navbar navbar-expand-lg navbar-default navbar-color fixed-top">
-    {#  <a class="navbar-brand" href="#">Navbar</a>#}
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-color text-light sticky-top">
+  <div class="container-fluid">
+    {% if request.user.is_authenticated %}
+      <p class="nav-item my-auto pe-2" style="font-size: 12px">
+        Aplikacja: {{ request.user.get_role_display }}<br>Użytkownik: {{ request.user.username }}
+        {% if request.user.is_customer %}
+          <br>Stolik: {{ request.user.customer_table }}
+        {% endif %}
+      </p>
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <i class="fas fa-bars fa-xs text-light"></i>
     </button>
-
-    <div class="collapse navbar-collapse justify-content-en" id="navbarSupportedContent"
-         style="background: rebeccapurple">
-      <div class="justify-content-between">
-        <ul class="navbar-nav align-items-center">
-          {% if not request.user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:login' %}">Zaloguj <i class="fa fa-sign-out-alt"></i></a>
-            </li>
-          {% else %}
-            <li class="nav-item ms-2">
-              <a class="nav-item" style="text-decoration: none">Aplikacja: {{ request.user.get_role_display }}<br>Użytkownik: {{ request.user.username }}
-                {% if request.user.is_customer %}
-                  <br>Stolik: {{ request.user.customer_table }}
-                {% endif %}
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:logout' %}">Wyloguj <i class="fa fa-sign-out-alt"></i></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'core:change_password' %}">Zmień hasło <i class="fa fa-key"></i></a>
-            </li>
-          {% endif %}
-
-          {% block navbar %} {% endblock %}
-        </ul>
-      </div>
-
-      <!--- Search form--->
-      {#    <form class="form-inline my-2 my-lg-0">#}
-      {#      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
-      {#      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>#}
-      {#    </form>#}
-      <!--- End Search form--->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% block navbar %} {% endblock %}
+      </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if not request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'core:login' %}">Zaloguj <i class="fa fa-sign-out-alt"></i></a>
+          </li>
+        {% else %}
+          {% block navbar_set %} {% endblock %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'core:change_password' %}">Zmień hasło <i class="fa fa-key"></i></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'core:logout' %}">Wyloguj <i class="fa fa-sign-out-alt"></i></a>
+          </li>
+        {% endif %}
+      </ul>
     </div>
-  </nav>
-</div>
+  </div>
+</nav>
 <!-- End Navbar -->
 
 
