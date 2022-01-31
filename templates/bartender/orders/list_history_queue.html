@@ -1,0 +1,55 @@
+{% extends "bartender/base.html" %}
+{% load static %}
+{% block title %}Kolejka Zamówień{% endblock %}
+
+
+{% block content %}
+  <div class="row justify-content-center"><h3>Historia Zamówień</h3></div>
+
+  {# orders with status completed #}
+  <div class="row">
+    <h4>Ukończone zamówienia ({{ orders_completed.count }})
+      <button class="btn btn-default collapseButton" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseCompleted"
+              aria-expanded="false" aria-controls="collapseCompleted">
+        Pokaż/Ukryj
+      </button>
+    </h4>
+  </div>
+  <div class="collapse collapseItem" id="collapseCompleted">
+    <div class="row">
+      {% for order in orders_completed %}
+        {% include "bartender/orders/component/list_history_queue_ingredient_detail.html" %}
+      {% empty %}
+        <div class="col text-center">
+          <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {# END of closed orders #}
+
+  {# orders with status rejected #}
+  <div class="row">
+    <h4>Odrzucone zamówienia ({{ orders_rejected.count }})
+      <button class="btn btn-default collapseButton" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapseRejected"
+              aria-expanded="false" aria-controls="collapseRejected">
+        Pokaż/Ukryj
+      </button>
+    </h4>
+  </div>
+  <div class="collapse collapseItem" id="collapseRejected">
+    <div class="row">
+      {% for order in orders_rejected %}
+        {% include "bartender/orders/component/list_history_queue_ingredient_detail.html" %}
+      {% empty %}
+        <div class="col text-center">
+          <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {# END of rejected orders #}
+
+{% endblock %}

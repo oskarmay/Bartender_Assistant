@@ -1,0 +1,74 @@
+{% extends "customer/base.html" %}
+{% load static %}
+{% block title %}Strona główna - bartender{% endblock %}
+
+{% block content %}
+  {% include "core/baner.html" %}
+
+  <div class="row">
+    <h4 class="text-center">Dashboard</h4>
+  </div>
+  <div class="row pt-4 justify-content-center">
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'customer:menu' %}" class="dashboard_text">
+          <div class="card-body">
+            <div class="card-title text-center">Menu</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Dostępne są tam Drinki, które barman może ci przygotować
+                (te na które aktualnie nie ma składników są ukryte) oraz piwa i inne rzeczy które możesz u nas
+                zamówić.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'customer:orders_list' %}" class="dashboard_text">
+          <div class="card-body">
+            <div class="card-title text-center">Aktualne Zamówienia</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Możesz tam zobaczyć aktualnie realizowane
+                zamówienia i ich status. Barman może odrzucić twoje zamówienie, ty sam też możesz je anulować ale tylko
+                wtedy kiedy ma status "utworzono".
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'customer:history_orders_list' %}" class="dashboard_text">
+          <div class="card-body">
+            <div class="card-title text-center">Historia Zamówień</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Znajdują się tam już zrealizowane zamówienie oraz anulowane przez ciebie i odrzucone przez barmana.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'customer:set_table' %}" class="dashboard_text">
+          <div class="card-body">
+            <div class="card-title text-center">Zmien stolik</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Określasz tam przy jakim stoliku aktualnie siedzisz.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

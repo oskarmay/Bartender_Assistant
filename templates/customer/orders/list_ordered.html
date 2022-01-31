@@ -1,0 +1,108 @@
+{% extends "customer/base.html" %}
+{% load static %}
+{% block title %}Moje Zamówienia{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <p>Tutaj jakieś Filtry w planie</p>
+  </div>
+  <div class="row justify-content-center"><h3>Drinki</h3></div>
+  <div class="row">
+    {% for order_drink in orders %}
+      {% if order_drink.drink %}
+        <div class="col-12 col-lg-6 d-flex align-items-stretch">
+          <div class="card rounded" style="font-size:2vmin">
+            <div class="card-body text-center core_image_frame">
+              {% if order_drink.drink.image %}
+                <img class="card-img-top core_image_sizes" src="{{ order_drink.drink.image.url }}"
+                     alt="{{ order_drink.drink.name }}">
+              {% else %}
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
+              {% endif %}
+            </div>
+            <div class="card-body">
+              {% if order_drink.is_created %}
+                <div class="card-text text-center">
+                  <button type="submit" onclick="PromptCancelOrder({{ order_drink.id }})" class="btn btn-warning">Anuluj
+                  </button>
+                </div>
+              {% endif %}
+              <div class="card-text">Nazwa: <p>{{ order_drink.drink.name }}</p></div>
+              <div class="row">
+                <div class="col-6">Data zamówienia: <p>{{ order_drink.order_date }}</p></div>
+                <div class="col-6">Status: <p>{{ order_drink.get_status_display }}</p></div>
+              </div>
+              <div class="card-text">Składniki:
+                {% for ingredeint in order_drink.drink.ingredient_needed.all %}
+                  <p>- {{ ingredeint.storage_ingredient.name }}</p>
+                {% empty %}
+                  <p>Nie przypisano składników</p>
+                {% endfor %}
+              </div>
+              <div class="card-text">
+                <div class="row">
+                  <div class="col-6">Typ: <p>{{ order_drink.drink.get_type_display }}</p></div>
+                  <div class="col-6">Cena: <p>{{ order_drink.drink.price }}</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% empty %}
+      <div class="col text-center">
+        <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="row justify-content-center"><h3>Inne zamówienia</h3></div>
+  <div class="row">
+    {% for order_other in orders %}
+      {% if order_other.storage_order %}
+        <div class="col-12 col-lg-6 d-flex align-items-stretch">
+          <div class="card rounded" style="font-size:2vmin">
+            <div class="card-body text-center core_image_frame">
+              {% if order_other.storage_order.image %}
+                <img class="card-img-top core_image_sizes" src="{{ order_other.storage_order.image.url }}"
+                     alt="{{ order_other.storage_order.name }}">
+              {% else %}
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
+              {% endif %}
+            </div>
+            <div class="card-body">
+              {% if order_other.is_created %}
+                <div class="card-text text-center">
+                  <button type="submit" onclick="PromptCancelOrder({{ order_other.id }})" class="btn btn-warning">Anuluj
+                  </button>
+                </div>
+              {% endif %}
+              <div class="card-text">Nazwa: <p>{{ order_other.storage_order.name }}</p></div>
+              <div class="row">
+                <div class="col-6">Data zamówienia: <p>{{ order_other.order_date }}</p></div>
+                <div class="col-6">Status: <p>{{ order_other.get_status_display }}</p></div>
+              </div>
+              <div class="card-text">
+                <div class="row">
+                  <div class="col-6">Typ: <p>{{ order_other.storage_order.get_type_display }}</p></div>
+                  <div class="col-6">Cena: <p>{{ order_other.storage_order.price }}</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% empty %}
+      <div class="col text-center">
+        <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
+{% block js %}
+  <script src="{% static 'js/plugins/sweetalert2.all.min.js' %}"></script>
+  <script src="{% static 'js/customer/api_method.js' %}" type="text/javascript"></script>
+{% endblock %}

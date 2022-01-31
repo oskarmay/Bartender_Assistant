@@ -1,0 +1,42 @@
+{% extends "bartender/base.html" %}
+{% block title %}Tworzenie użytkownika{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 col-lg-6 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-warning alert-dismissible fade show mt-1 mb-3" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+          <div class="card-title">Tworzenie konta klienckiego konta użytkownika</div>
+          <div class="card-text py-2">
+            <blockquote class="blockquote-footer justify-content-center">Tutaj możesz podać imię, nazwisko lub ksywkę,
+              którą poda użytkownik zostanie to dodane do wygenerowanego loginu i pomoże to w powiązaniu konta z
+              fizycznym klientem (można zostawić puste).
+            </blockquote>
+          </div>
+          <div class="card-text">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="row">
+                {{ form }}
+              </div>
+              <div class="row">
+                <div class="col-4 col-lg-4 mx-auto">
+                  <button type="submit" class="btn btn-outline-success btn-round">Create</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

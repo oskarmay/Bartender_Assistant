@@ -1,0 +1,127 @@
+{% extends "bartender/base.html" %}
+{% load static %}
+{% block title %}Strona główna - bartender{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <h4 class="text-center">Dashboard</h4>
+  </div>
+  <div class="row pt-1 justify-content-center">
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'bartender:customer_list' %}" class="dashboard_text stretched-link">
+          <div class="card-body ">
+            <div class="card-title text-center">Lista klientów</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Widok listy kont klientów serwisie.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'bartender:create_customer_account' %}" class="dashboard_text stretched-link">
+          <div class="card-body ">
+            <div class="card-title text-center">Utwórz konto klienta</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Znajduje się tam formularz dzięki, któremu można generować login i hasło dla klientów baru.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'bartender:storage_ingredient_list' %}" class="dashboard_text stretched-link">
+          <div class="card-body">
+            <div class="card-title text-center">Magazyn</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Znajduje się tam lista stanów magazynowych baru. Możesz tam dodać nowe produkty, usuwać oraz edytować
+                (uzupełniać stany) aktualnych produktów.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'bartender:drink_list' %}" class="dashboard_text stretched-link">
+          <div class="card-body">
+            <div class="card-title text-center">Drinki</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Znajduje się tam lista drinków. Możesz tam dodawać nowe drinki, usuwać je oraz edytować aktualne drinki.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'bartender:orders_list' %}" class="dashboard_text stretched-link">
+          <div class="card-body">
+            <div class="card-title text-center">Kolejka zamówień</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Znajdują się tam aktualne zamówienia do realizacji. Lądują tam zamówienia ze statusem utworzono,
+                zaakceptowano oraz w trakcie przygotowania.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'bartender:history_orders_list' %}" class="dashboard_text stretched-link">
+          <div class="card-body">
+            <div class="card-title text-center">Historia zamówień</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Znajdują się ukończone, anulowane oraz odrzucone zamówienia.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'bartender:drink_suggestions_dashboard' %}" class="dashboard_text stretched-link">
+          <div class="card-body">
+            <div class="card-title text-center">Propozycje drinków</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Znajdują się tam propozycje drinków do dodania w barze.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 col-12 my-2">
+      <div class="card h-100">
+        <a href="{% url 'bartender:home' %}" class="dashboard_text stretched-link">
+          <div class="card-body">
+            <div class="card-title text-center">Statystyki</div>
+            <div class="card-text text-center">
+              <p class="text-justify">
+                Znajdują się tam przychody baru w danym dniu.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

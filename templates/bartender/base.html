@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+{% block navbar %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'bartender:home' %}">Strona główna</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'bartender:storage_ingredient_list' %}">Magazyn</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'bartender:drink_list' %}">Drinki</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'bartender:create_customer_account' %}">Utwórz konto klienta</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'bartender:orders_list' %}">Kolejka zamówień</a>
+  </li>
+  <li class="nav-item">
+    <div style="position:relative">
+      <a class="nav-link dropdown-toggle" type="button" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
+         aria-haspopup="true" aria-expanded="false">
+        Inne
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item" href="{% url 'bartender:history_orders_list' %}">Historia zamówień</a>
+        <a class="dropdown-item" href="{% url 'bartender:customer_list' %}">Lista Klientów</a>
+        <a class="dropdown-item" href="{% url 'bartender:drink_suggestions_random' %}">Propozycja losowego drinku</a>
+        <a class="dropdown-item" href="#">Statystyki</a>
+      </div>
+    </div>
+  </li>
+{% endblock %}

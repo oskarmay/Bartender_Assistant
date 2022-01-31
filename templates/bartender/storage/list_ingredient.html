@@ -1,0 +1,41 @@
+{% extends "bartender/base.html" %}
+{% load static %}
+{% block title %}Magazyn{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-4">
+      <a class="btn btn-primary" href="{% url 'bartender:create_ingredient' %}">DODAJ</a>
+    </div>
+  </div>
+  <div class="row">
+    <p>Tutaj jakieś Filtry w planie</p>
+  </div>
+  <div class="row">
+    {% for ingredient in storage_ingredients %}
+      <div class="col-6 col-lg-3 d-flex align-items-stretch">
+        <div class="card rounded" style="font-size:2vmin">
+          <a href="{% url 'bartender:update_ingredient' ingredient.pk %}" style="text-decoration: none; color:inherit">
+            <div class="card-body text-center core_image_frame">
+              {% if ingredient.image %}
+                <img class="card-img-top core_image_sizes" src="{{ ingredient.image.url }}" alt="{{ ingredient.name }}">
+              {% else %}
+                <img class="card-img-top core_image_sizes" src="{% static 'img/no-image-available.jpg' %}"
+                     alt="No image available">
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <div class="card-text">Liczba:
+                <p>{{ ingredient.storage_amount }}
+                  +/- {{ ingredient.storage_amount_calculation_margin }} {{ ingredient.get_unit_display }}</p>
+              </div>
+              <div class="card-text">Nazwa: <p>{{ ingredient.name }}</p></div>
+              <div class="card-text">Typ: <p>{{ ingredient.get_type_display }}</p></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

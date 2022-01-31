@@ -1,0 +1,63 @@
+{
+  "login": {
+    "color_list": [
+      "yellow",
+      "green",
+      "blue",
+      "violet",
+      "red",
+      "orange"
+    ],
+    "animal_list": [
+      "cat",
+      "dog",
+      "ant",
+      "bird",
+      "cow",
+      "fish",
+      "fox",
+      "lion",
+      "pig",
+      "sheep",
+      "tiger",
+      "whale",
+      "wolf",
+      "horse"
+    ]
+  },
+  "password": {
+    "country_list": [
+      "chad",
+      "cuba",
+      "fiji",
+      "iran",
+      "iraq",
+      "laos",
+      "mali",
+      "oman",
+      "peru",
+      "togo"
+    ],
+    "code_list": [
+      "alpha",
+      "bravo",
+      "charlie",
+      "delta",
+      "echo",
+      "golf",
+      "hotel",
+      "india",
+      "juliet",
+      "kilo",
+      "lima",
+      "mike",
+      "oscar",
+      "papa",
+      "romeo",
+      "sierra",
+      "tango",
+      "victor",
+      "zulu"
+    ]
+  }
+}

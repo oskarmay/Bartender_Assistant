@@ -10,8 +10,19 @@ Django = "^3.2.7"
 django-bootstrap5 = "^2.1.2"
 python-decouple = "^3.4"
 psycopg2 = "^2.9.1"
+rules = "^3.0"
+djangorestframework = "^3.12.4"
+django-crispy-forms = "^1.13.0"
+django-filter = "^21.1"
+django-debug-toolbar = "^3.2.2"
+isort = "^5.10.1"
+django-qr-code = "^3.0.0"
+requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
+
+[tool.isort]
+profile = "black"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
