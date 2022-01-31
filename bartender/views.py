@@ -1,5 +1,8 @@
+from itertools import zip_longest
+
 from django.contrib import messages
 from django.shortcuts import redirect
+import requests
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import (
@@ -373,4 +376,64 @@ class CustomerAccountDetailView(PermissionRequiredMixin, DetailView):
         query_param = f"?login={self.object.username}&password={self.object.one_use_account_password}"
         ctx["qr"] = f"{host_url}{login_url}{query_param}"
 
+        return ctx
+
+
+class DrinkSuggestionsDashboardTemplateView(PermissionRequiredMixin, TemplateView):
+    """View of drink suggestions."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/drink/suggestions_drink.html"
+
+    # def get_context_data(self, **kwargs):
+    #     """TODO"""
+    #
+    #     ctx = super().get_context_data()
+    #
+    #     # url_ingredient_filter = "www.thecocktaildb.com/api/json/v1/1/filter.php?i="
+    #     # url_drink_detail = "www.thecocktaildb.com/api/json/v1/1/lookup.php?i="
+    #     # url_drink_alcoholic = (
+    #     #     "www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic"
+    #     # )
+    #     # url_drink_non_alcoholic = (
+    #     #     "www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic"
+    #     # )
+    #     return ctx
+
+
+class DrinkSuggestionsRandomTemplateView(PermissionRequiredMixin, TemplateView):
+    """View of random drink to add."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/drink/suggestions_random_drink.html"
+
+    def get_context_data(self, **kwargs):
+        """Request to drink api for random drink and add to ctx response data."""
+        ctx = super().get_context_data()
+        url_drink_random = "http://www.thecocktaildb.com/api/json/v1/1/random.php"
+
+        response = requests.get(url_drink_random).json()
+        response = response["drinks"][0]
+
+        ingredient_name_list = []
+        ingredient_amount_list = []
+        for key, value in response.items():
+            if key.startswith("strIngredient") and value:
+                ingredient_name_list.append(value)
+            if key.startswith("strMeasure") and value:
+                ingredient_amount_list.append(value)
+
+        ingredient_dict = dict(
+            zip_longest(ingredient_name_list, ingredient_amount_list)
+        )
+        drink_data = {
+            "id": response["idDrink"],
+            "name": response["strDrink"],
+            "has_alcohol": response["strAlcoholic"],
+            "description": response["strInstructions"],
+            "img_url": response["strDrinkThumb"],
+            "date_modified": response["dateModified"],
+            "ingridient_dict": ingredient_dict,
+        }
+        ctx["random_drink"] = drink_data
         return ctx

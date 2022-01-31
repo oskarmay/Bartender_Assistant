@@ -25,6 +25,8 @@ from bartender.views import (
     StorageIngredientDeleteView,
     StorageIngredientListView,
     StorageIngredientUpdateView,
+    DrinkSuggestionsDashboardTemplateView,
+    DrinkSuggestionsRandomTemplateView,
 )
 
 app_name = "bartender"
@@ -138,5 +140,15 @@ urlpatterns = [
         "customer/<int:pk>/user_detail",
         CustomerAccountDetailView.as_view(),
         name="customer_user_detail",
+    ),
+    path(
+        "drink_suggestions/",
+        DrinkSuggestionsDashboardTemplateView.as_view(),
+        name="drink_suggestions_dashboard",
+    ),
+    path(
+        "drink_suggestions/random",
+        DrinkSuggestionsRandomTemplateView.as_view(),
+        name="drink_suggestions_random",
     ),
 ]

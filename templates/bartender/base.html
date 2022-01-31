@@ -16,9 +16,6 @@
     <a class="nav-link" href="{% url 'bartender:orders_list' %}">Kolejka zamówień</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Propozycje drinków</a>
-  </li>
-  <li class="nav-item">
     <div style="position:relative">
       <a class="nav-link dropdown-toggle" type="button" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
          aria-haspopup="true" aria-expanded="false">
@@ -27,6 +24,7 @@
       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <a class="dropdown-item" href="{% url 'bartender:history_orders_list' %}">Historia zamówień</a>
         <a class="dropdown-item" href="{% url 'bartender:customer_list' %}">Lista Klientów</a>
+        <a class="dropdown-item" href="{% url 'bartender:drink_suggestions_random' %}">Propozycja losowego drinku</a>
         <a class="dropdown-item" href="#">Statystyki</a>
       </div>
     </div>

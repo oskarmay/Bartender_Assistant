@@ -5,9 +5,19 @@
         <button type="submit" onclick="promptRejectOrder({{ order.id }})" class="btn btn-warning btn-block">
           Odrzuć
         </button>
-        <button type="submit" onclick="completesOrder({{ order.id }})" class="btn btn-success btn-block">
-          Ukończ
-        </button>
+        {% if order.is_created %}
+          <button type="submit" onclick="acceptOrder({{ order.id }})" class="btn btn-success btn-block">
+            Zaakceptuj
+          </button>
+        {% elif order.is_accepted %}
+          <button type="submit" onclick="inProgressOrder({{ order.id }})" class="btn btn-success btn-block">
+            Rozpocznij
+          </button>
+        {% elif order.is_in_progress %}
+          <button type="submit" onclick="completesOrder({{ order.id }})" class="btn btn-success btn-block">
+            Ukończ
+          </button>
+        {% endif %}
       </div>
       <div class="card-text">Nazwa:
         <p>

@@ -19,7 +19,7 @@
   <div class="collapse collapseItem" id="collapseCompleted">
     <div class="row">
       {% for order in orders_completed %}
-        {% include "bartender/orders/list_history_queue_ingredient_detail.html" %}
+        {% include "bartender/orders/component/list_history_queue_ingredient_detail.html" %}
       {% empty %}
         <div class="col text-center">
           <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
@@ -42,7 +42,7 @@
   <div class="collapse collapseItem" id="collapseRejected">
     <div class="row">
       {% for order in orders_rejected %}
-        {% include "bartender/orders/list_history_queue_ingredient_detail.html" %}
+        {% include "bartender/orders/component/list_history_queue_ingredient_detail.html" %}
       {% empty %}
         <div class="col text-center">
           <blockquote class="blockquote-footer justify-content-center">Brak zamówień</blockquote>
