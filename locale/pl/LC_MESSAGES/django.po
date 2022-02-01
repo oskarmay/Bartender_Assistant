@@ -1,0 +1,389 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-02-01 00:11+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: .\core\admin.py:157 .\core\models.py:242
+msgctxt "ingredient_storage"
+msgid "name"
+msgstr "Nazwa składnika"
+
+#: .\core\admin.py:164 .\core\models.py:257
+msgctxt "ingredient_storage"
+msgid "unit"
+msgstr "Jednostka"
+
+#: .\core\admin.py:171 .\core\models.py:250
+msgctxt "ingredient_storage"
+msgid "type"
+msgstr "Typ"
+
+#: .\core\admin.py:178 .\core\models.py:100
+msgctxt "drink"
+msgid "name"
+msgstr "Nazwa drinka"
+
+#: .\core\admin.py:185 .\core\models.py:107
+msgctxt "drink"
+msgid "complicated"
+msgstr "Skomplikowanie"
+
+#: .\core\forms.py:11
+msgid "Old password"
+msgstr "Stare hasło"
+
+#: .\core\forms.py:15
+msgid "New password"
+msgstr "Nowe hasło"
+
+#: .\core\forms.py:19
+msgid "Repeat new password"
+msgstr "Powtórz nowe hasło"
+
+#: .\core\models.py:18
+msgid "bartender"
+msgstr "Barman"
+
+#: .\core\models.py:19
+msgid "waiter"
+msgstr "Kelner"
+
+#: .\core\models.py:20
+msgid "customer"
+msgstr "Klient"
+
+#: .\core\models.py:23
+msgctxt "user"
+msgid "one-time account password"
+msgstr "Jednorazowe hasło"
+
+#: .\core\models.py:30
+msgctxt "user"
+msgid "expire date"
+msgstr "Data wygaśnięcia"
+
+#: .\core\models.py:34
+msgctxt "user"
+msgid "role"
+msgstr "Rola"
+
+#: .\core\models.py:42
+msgctxt "user"
+msgid "customer table"
+msgstr "Stolik klienta"
+
+#: .\core\models.py:84
+msgctxt "drink"
+msgid "easy"
+msgstr "Łatwy"
+
+#: .\core\models.py:85
+msgctxt "drink"
+msgid "medium"
+msgstr "Średni"
+
+#: .\core\models.py:86
+msgctxt "drink"
+msgid "hard"
+msgstr "Trudny"
+
+#: .\core\models.py:91
+msgctxt "drink"
+msgid "one shot"
+msgstr "one shot"
+
+#: .\core\models.py:92
+msgctxt "drink"
+msgid "multiple shot"
+msgstr "multi-shot"
+
+#: .\core\models.py:93
+msgctxt "drink"
+msgid "alcoholic"
+msgstr "Alkoholowy"
+
+#: .\core\models.py:94
+msgctxt "drink"
+msgid "non alcoholic"
+msgstr "Bez alkoholowy"
+
+#: .\core\models.py:114
+msgctxt "drink"
+msgid "preparation description"
+msgstr "Opis przygotowania"
+
+#: .\core\models.py:121
+msgctxt "drink"
+msgid "type"
+msgstr "Typ"
+
+#: .\core\models.py:127
+msgctxt "drink"
+msgid "amount"
+msgstr "Ilość"
+
+#: .\core\models.py:133
+msgctxt "drink"
+msgid "price"
+msgstr "Cena"
+
+#: .\core\models.py:138
+msgctxt "drink"
+msgid "is possible to make"
+msgstr "Możliwy do przygotowania"
+
+#: .\core\models.py:143
+msgctxt "drink"
+msgid "date created"
+msgstr "Data utworzenia"
+
+#: .\core\models.py:148
+msgctxt "drink"
+msgid "date modified"
+msgstr "Data zmodyfikowania"
+
+#: .\core\models.py:152
+msgctxt "drink"
+msgid "drink image"
+msgstr "Zdjęcie drinka"
+
+#: .\core\models.py:204
+msgctxt "drink"
+msgid "drink"
+msgstr "Drink"
+
+#: .\core\models.py:205
+msgctxt "drink"
+msgid "drinks"
+msgstr "Drinki"
+
+#: .\core\models.py:209
+#, python-brace-format
+msgid "Drink: {name} | Is possible to make?: {answer} | Complicated: {level} "
+msgstr ""
+
+#: .\core\models.py:212
+msgid "yes"
+msgstr "Tak"
+
+#: .\core\models.py:214
+msgid "no"
+msgstr "Nie"
+
+#: .\core\models.py:225
+msgctxt "ingredient_storage"
+msgid "liquid"
+msgstr "Płynny"
+
+#: .\core\models.py:226
+msgctxt "ingredient_storage"
+msgid "beer"
+msgstr "Piwo"
+
+#: .\core\models.py:227
+msgctxt "ingredient_storage"
+msgid "fruit"
+msgstr "Owoc"
+
+#: .\core\models.py:228
+msgctxt "ingredient_storage"
+msgid "vegetable"
+msgstr "Warzywo"
+
+#: .\core\models.py:229
+msgctxt "ingredient_storage"
+msgid "snack"
+msgstr "Przekąska"
+
+#: .\core\models.py:230
+msgctxt "ingredient_storage"
+msgid "other"
+msgstr "Inne"
+
+#: .\core\models.py:235
+msgctxt "ingredient_storage"
+msgid "milliliter"
+msgstr "Mililitr"
+
+#: .\core\models.py:236
+msgctxt "ingredient_storage"
+msgid "piece"
+msgstr "Sztuka"
+
+#: .\core\models.py:237
+msgctxt "ingredient_storage"
+msgid "pack"
+msgstr "Opakowanie"
+
+#: .\core\models.py:261
+msgctxt "ingredient_storage"
+msgid "image"
+msgstr "Zdjęcie składnika"
+
+#: .\core\models.py:269
+msgctxt "ingredient_storage"
+msgid "amount in storage"
+msgstr "Ilość w magazynie"
+
+#: .\core\models.py:276
+msgctxt "ingredient_storage"
+msgid "calculation margin of amount in storage"
+msgstr "Margines błędu ilości w magazynie"
+
+#: .\core\models.py:284
+msgctxt "ingredient_storage"
+msgid "price"
+msgstr "Cena"
+
+#: .\core\models.py:290
+msgctxt "ingredient_storage"
+msgid "has alcohol"
+msgstr "Zawiera alkohol?"
+
+#: .\core\models.py:296
+msgctxt "ingredient_storage"
+msgid "can be ordered"
+msgstr "Może być zamówiony?"
+
+#: .\core\models.py:337
+msgctxt "ingredient_storage"
+msgid "ingredient in storage"
+msgstr "Składnik w magazynie"
+
+#: .\core\models.py:339
+msgctxt "ingredient_storage"
+msgid "ingredients in storage"
+msgstr "Składniki w magazynie"
+
+#: .\core\models.py:343 .\core\models.py:409
+#, python-brace-format
+msgid "{name}: {amount} ({unit})"
+msgstr ""
+
+#: .\core\models.py:357
+msgctxt "ingredient_needed"
+msgid "drink"
+msgstr "Drink"
+
+#: .\core\models.py:364
+msgctxt "ingredient_needed"
+msgid "ingredient in storage"
+msgstr "Składnik w magazynie"
+
+#: .\core\models.py:372
+msgctxt "ingredient_needed"
+msgid "amount needed"
+msgstr "Ilość potrzebna"
+
+#: .\core\models.py:405
+msgctxt "ingredient_needed"
+msgid "ingredient needed"
+msgstr "Składnik potrzebny"
+
+#: .\core\models.py:406
+msgctxt "ingredient_needed"
+msgid "ingredients needed"
+msgstr "Składniki potrzebne"
+
+#: .\core\models.py:422
+#, fuzzy
+#| msgctxt "drink"
+#| msgid "date created"
+msgctxt "order"
+msgid "created"
+msgstr "Utworzono"
+
+#: .\core\models.py:423
+msgctxt "order"
+msgid "accepted"
+msgstr "Zaakceptowano"
+
+#: .\core\models.py:424
+msgctxt "order"
+msgid "in progress"
+msgstr "W trakcie przygotowania"
+
+#: .\core\models.py:425
+#, fuzzy
+#| msgctxt "drink"
+#| msgid "complicated"
+msgctxt "order"
+msgid "completed"
+msgstr "Ukończono"
+
+#: .\core\models.py:426
+msgctxt "order"
+msgid "rejected"
+msgstr "Odrzucono"
+
+#: .\core\models.py:427
+msgctxt "order"
+msgid "canceled"
+msgstr "Anulowano"
+
+#: .\core\models.py:435
+msgctxt "order"
+msgid "user"
+msgstr "Użytkownik"
+
+#: .\core\models.py:444 .\core\models.py:453 .\core\models.py:469
+msgctxt "order"
+msgid "order"
+msgstr "Zamówienie"
+
+#: .\core\models.py:460
+msgctxt "order"
+msgid "status"
+msgstr "Status"
+
+#: .\core\models.py:465
+#, fuzzy
+#| msgctxt "user"
+#| msgid "expire date"
+msgctxt "order"
+msgid "order date"
+msgstr "Data zamówienia"
+
+#: .\core\models.py:470
+msgctxt "order"
+msgid "orders"
+msgstr "Zamówienia"
+
+#: .\core\models.py:474
+#, python-brace-format
+msgid "User: {username}, Order: {order}, Status: {status}"
+msgstr ""
+
+#: .\core\models.py:556
+msgctxt "earnings"
+msgid "sum date"
+msgstr "Data sumy"
+
+#: .\core\models.py:561
+msgctxt "earnings"
+msgid "sum"
+msgstr "Suma"
+
+#, fuzzy
+#~| msgctxt "drink"
+#~| msgid "complicated"
+#~ msgctxt "order"
+#~ msgid "complicated"
+#~ msgstr "Skomplikowanie"

@@ -25,6 +25,7 @@ urlpatterns = [
     path("customer/", include("customer.urls")),
     path("bartender/", include("bartender.urls")),
     path("__debug__/", include(debug_toolbar.urls)),
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
 
 handler403 = error_403

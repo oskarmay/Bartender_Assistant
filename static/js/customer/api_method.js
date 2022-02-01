@@ -47,7 +47,7 @@ function createOrder(order_id, is_drink) {
                             Swal.fire({
                                 icon: 'warning',
                                 title: 'Ktoś chce szybko skończyć wieczór',
-                                text: 'Mamy limit aktualnie obsługiwanych zamówień (4 na klienta). ' +
+                                text: 'Mamy limit aktualnie obsługiwanych zamówień (5 na klienta). ' +
                                     'Poczekaj na swoje zamówienia lub anuluj jedno ze statusem utworzono.',
                             })
                         } else if (data.status === "not_enough_storage_amount") {

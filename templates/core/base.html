@@ -31,7 +31,7 @@
       <p class="nav-item my-auto pe-2" style="font-size: 12px">
         Aplikacja: {{ request.user.get_role_display }}<br>Użytkownik: {{ request.user.username }}
         {% if request.user.is_customer %}
-          <br>Stolik: {{ request.user.customer_table }}
+          <br>Stolik: {{ request.user.customer_table|default_if_none:"Brak" }}
         {% endif %}
       </p>
     {% endif %}

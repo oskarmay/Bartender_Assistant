@@ -419,20 +419,20 @@ class Orders(models.Model):
     class OrdersStatus(models.TextChoices):
         """Available status for order."""
 
-        CREATED = "CREATED", pgettext_lazy("drink_queue", "created")
-        ACCEPTED = "ACCEPTED", pgettext_lazy("drink_queue", "accepted")
-        IN_PROGRESS = "IN_PROGRESS", pgettext_lazy("drink_queue", "in progress")
-        COMPLETED = "COMPLETED", pgettext_lazy("drink_queue", "completed")
-        REJECTED = "REJECTED", pgettext_lazy("drink_queue", "rejected")
-        CANCELED = "CANCELED", pgettext_lazy("drink_queue", "canceled")
+        CREATED = "CREATED", pgettext_lazy("order", "created")
+        ACCEPTED = "ACCEPTED", pgettext_lazy("order", "accepted")
+        IN_PROGRESS = "IN_PROGRESS", pgettext_lazy("order", "in progress")
+        COMPLETED = "COMPLETED", pgettext_lazy("order", "completed")
+        REJECTED = "REJECTED", pgettext_lazy("order", "rejected")
+        CANCELED = "CANCELED", pgettext_lazy("order", "canceled")
 
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="drink_queue",
-        verbose_name=pgettext_lazy("drink_queue", "user"),
+        related_name="order",
+        verbose_name=pgettext_lazy("order", "user"),
     )
 
     drink = models.ForeignKey(
@@ -440,8 +440,8 @@ class Orders(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="drink_queue",
-        verbose_name=pgettext_lazy("drink_queue", "order"),
+        related_name="order",
+        verbose_name=pgettext_lazy("order", "order"),
     )
 
     storage_order = models.ForeignKey(
@@ -449,25 +449,25 @@ class Orders(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="drink_queue",
-        verbose_name=pgettext_lazy("drink_queue", "order"),
+        related_name="order",
+        verbose_name=pgettext_lazy("order", "order"),
     )
 
     status = models.CharField(
         max_length=255,
         choices=OrdersStatus.choices,
         blank=False,
-        verbose_name=pgettext_lazy("drink_queue", "complicated"),
+        verbose_name=pgettext_lazy("order", "status"),
     )
 
     order_date = models.DateTimeField(
         auto_now_add=True,
-        verbose_name=pgettext_lazy("drink_queue", "order date"),
+        verbose_name=pgettext_lazy("order", "order date"),
     )
 
     class Meta:
-        verbose_name = pgettext_lazy("drink_queue", "order")
-        verbose_name_plural = pgettext_lazy("drink_queue", "orders")
+        verbose_name = pgettext_lazy("order", "order")
+        verbose_name_plural = pgettext_lazy("order", "orders")
 
     def __str__(self):
         return ugettext_lazy(

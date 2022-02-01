@@ -6,7 +6,7 @@ authors = ["oskarmay <46371006+oskarmay@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
 python = "3.9"
-Django = "^3.2.7"
+Django = "3.2.11"
 django-bootstrap5 = "^2.1.2"
 python-decouple = "^3.4"
 psycopg2 = "^2.9.1"

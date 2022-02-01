@@ -437,3 +437,10 @@ class DrinkSuggestionsRandomTemplateView(PermissionRequiredMixin, TemplateView):
         }
         ctx["random_drink"] = drink_data
         return ctx
+
+
+class EarnsTemplateView(PermissionRequiredMixin, TemplateView):
+    """View of bar earns stat."""
+
+    permission_required = "is_in_staff"
+    template_name = "bartender/earns.html"

@@ -122,7 +122,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = "pl-pl"
+LANGUAGE_CODE = "pl"
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)
 
 TIME_ZONE = "Europe/Warsaw"
 
@@ -142,7 +144,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = f"{BASE_DIR}/static/media"
+MEDIA_ROOT = os.path.join(BASE_DIR, "static", "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
