@@ -41,11 +41,16 @@
             {% endfor %}
 
             <div class="row">
-              <div class="col-lg-6 col-8">
+              <div class="col-lg-5 col-5">
                 <a class="btn btn-secondary btn-round" href="{% url 'bartender:detail_drink' drink.id %}">Wróć do
                   szczegółów</a>
               </div>
-              <div class="col-lg-6 col-4 text-right">
+              <div class="col-lg-5 col-5 text-right">
+                <button class="btn btn-outline-success btn-round" type="submit" name="add_another">Zapisz i dodaj
+                  kolejny
+                </button>
+              </div>
+              <div class="col-lg-2 col-2 text-center">
                 <button class="btn btn-outline-success btn-round" type="submit">Zapisz</button>
               </div>
             </div>

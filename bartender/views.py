@@ -164,6 +164,11 @@ class IngredientNeededCreateView(PermissionRequiredMixin, CreateView):
         return ctx
 
     def get_success_url(self, **kwargs):
+        if "add_another" in self.request.POST:
+            return (
+                reverse_lazy("bartender:create_ingredient_needed")
+                + f"?drink={self.object.drink.id}"
+            )
         return reverse_lazy("bartender:detail_drink", args=(self.object.drink.id,))
 
 
